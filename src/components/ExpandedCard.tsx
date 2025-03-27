@@ -147,31 +147,282 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
 
                   {/* Long Description Section */}
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 font-medium mb-4">Detailed Description</h3>
+                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Detailed Description
+                    </h3>
                     <div className="prose prose-gray max-w-none">
-                      {item.longDescription.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                      ))}
+                      {/* First show regular paragraphs that are not numbered */}
+                      {item.longDescription.split('\n\n')
+                        .filter(para => !para.trim().match(/^\d+\.\s+/) && !para.includes('Architectural Components:') && !para.includes('Key Components:'))
+                        .slice(0, 1)
+                        .map((paragraph, index) => (
+                          <p key={`regular-${index}`} className="mb-4 text-gray-700">{paragraph}</p>
+                        ))
+                      }
+                      
+                      {/* Now handle the Architectural Components section specifically */}
+                      {item.longDescription.includes('Architectural Components:') && (
+                        <div className="mt-4 mb-6">
+                          <p className={`font-medium ${colors.text} mb-4`}>
+                            Architectural Components:
+                          </p>
+                          
+                          <div className="space-y-4 mt-3">
+                            {/* Manually handle the numbered points based on what we see in the screenshot */}
+                            <div className="flex items-start gap-3">
+                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                <span className="text-sm font-bold text-white">1</span>
+                              </div>
+                              <div className="text-gray-700 flex-1 pt-1.5">
+                                Serverless Platform - Application deployment - Function execution - Resource allocation - Performance optimization
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-start gap-3">
+                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                <span className="text-sm font-bold text-white">2</span>
+                              </div>
+                              <div className="text-gray-700 flex-1 pt-1.5">
+                                Integration Layer - API gateway integration - Event-driven communication - Data consistency and consistency
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-start gap-3">
+                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                <span className="text-sm font-bold text-white">3</span>
+                              </div>
+                              <div className="text-gray-700 flex-1 pt-1.5">
+                                Infrastructure Layer - Virtual machine and server provisioning - Storage and database services - Network and security configurations
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-start gap-3">
+                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                <span className="text-sm font-bold text-white">4</span>
+                              </div>
+                              <div className="text-gray-700 flex-1 pt-1.5">
+                                DevOps Integration - CI/CD pipeline setup - Monitoring and alerting systems - Logging and tracing frameworks - Configuration management tools
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Handle Key Components section with bullet points */}
+                      {item.longDescription.includes('Key Components:') && (
+                        <div className="mt-4 mb-6">
+                          <p className={`font-medium ${colors.text} mb-4`}>
+                            Key Components:
+                          </p>
+                          
+                          <div className="space-y-3 mt-3">
+                            {/* Manually handle dot points for the Key Components section */}
+                            {['Digital banking evolution roadmap', 
+                              'Technology architecture principles', 
+                              'Customer experience imperatives', 
+                              'Operational excellence framework', 
+                              'Risk and compliance considerations', 
+                              'Innovation adoption methodology'].map((point, idx) => (
+                              <div key={idx} className="flex items-start gap-3">
+                                <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
+                                  <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                </div>
+                                <span className="text-gray-700 flex-1">{point}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Show any remaining paragraphs that aren't part of the numbered sections */}
+                      {item.longDescription.split('\n\n')
+                        .filter(para => !para.trim().match(/^\d+\.\s+/) && !para.includes('Architectural Components:') && !para.includes('Key Components:'))
+                        .slice(1)
+                        .map((paragraph, index) => (
+                          <p key={`remaining-${index}`} className="mb-4 text-gray-700">{paragraph}</p>
+                        ))
+                      }
                     </div>
                   </div>
                   
                   {/* Business Value Section */}
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 font-medium mb-4">Business Value</h3>
+                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Business Value
+                    </h3>
                     <div className="prose prose-gray max-w-none">
-                      {item.businessValue.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                      ))}
+                      {item.businessValue.split('\n\n').map((paragraph, index) => {
+                        // Check if this paragraph is a header (ends with ":")
+                        if (paragraph.trim().endsWith(':')) {
+                          return (
+                            <p key={index} className={`font-medium ${colors.text} mb-3`}>
+                              {paragraph.trim()}
+                            </p>
+                          );
+                        }
+                        
+                        // Check if this paragraph has bullet points
+                        if (paragraph.includes('• ')) {
+                          // Check if there's a header section before bullets
+                          const headerEndIndex = paragraph.indexOf('• ');
+                          const headerPart = headerEndIndex > 0 ? paragraph.substring(0, headerEndIndex).trim() : null;
+                          
+                          // Extract all bullet points - handle both multi-line and single-line cases
+                          let bulletPoints: string[] = [];
+                          const bulletContent = paragraph.substring(headerEndIndex);
+                          
+                          // Handle case where bullets are on separate lines
+                          if (bulletContent.includes('\n')) {
+                            bulletPoints = bulletContent
+                              .split('\n')
+                              .filter(line => line.trim().startsWith('• '))
+                              .map(line => line.trim().substring(2).trim());
+                          } 
+                          // Handle case where bullets are all on one line separated by •
+                          else {
+                            bulletPoints = bulletContent
+                              .split('• ')
+                              .filter(point => point.trim().length > 0)
+                              .map(point => point.trim());
+                          }
+
+                          return (
+                            <div key={index} className="mb-6">
+                              {headerPart && (
+                                <p className="mb-3 text-gray-700">{headerPart}</p>
+                              )}
+                              <ul className="space-y-2 pl-2">
+                                {bulletPoints.map((point, idx) => (
+                                  <li key={idx} className="flex items-start gap-3 group">
+                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
+                                      <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                    </div>
+                                    <span className="text-gray-700 flex-1">{point}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        }
+                        
+                        // Check if this paragraph starts with a number followed by a dot (like "1. Something")
+                        const numberedMatch = paragraph.trim().match(/^(\d+)\.\s+(.+)$/);
+                        if (numberedMatch) {
+                          // Extract the number and content
+                          const number = numberedMatch[1];
+                          const content = numberedMatch[2];
+                          
+                          return (
+                            <div key={index} className="mb-3">
+                              <div className="flex items-start gap-3">
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                  <span className="text-sm font-bold text-white">{number}</span>
+                                </div>
+                                <div className="text-gray-700 flex-1 pt-1.5 font-medium">
+                                  {content}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        // Handle paragraphs that are continuations of numbered items (indented content)
+                        if (index > 0) {
+                          const prevParagraph = item.businessValue.split('\n\n')[index - 1];
+                          const isPrevNumbered = prevParagraph.trim().match(/^(\d+)\.\s+(.+)$/);
+                          
+                          if (isPrevNumbered && !paragraph.trim().match(/^(\d+)\.\s+/) && !paragraph.trim().endsWith(':')) {
+                            return (
+                              <div key={index} className="mb-4 ml-11 pl-0 border-l-2 border-gray-200">
+                                <p className="text-gray-600 pl-4 py-1">{paragraph}</p>
+                              </div>
+                            );
+                          }
+                        }
+
+                        // Regular paragraph
+                        return (
+                          <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+                        );
+                      })}
                     </div>
                   </div>
                   
                   {/* Key Capabilities Section */}
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 font-medium mb-4">Key Capabilities</h3>
+                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Key Capabilities
+                    </h3>
                     <div className="prose prose-gray max-w-none">
-                      {item.keyCapabilities.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                      ))}
+                      {item.keyCapabilities.split('\n').length > 1 || item.keyCapabilities.includes('• ') ? (
+                        // For structured content with bullet points or multiple lines
+                        <div>
+                          {/* Extract any header/intro text before bullet points */}
+                          {item.keyCapabilities.includes(':') && (
+                            <p className={`font-medium ${colors.text} mb-4`}>
+                              {item.keyCapabilities.split(':')[0]}:
+                            </p>
+                          )}
+                          
+                          <ul className="space-y-3 pl-0">
+                            {/* Parse and extract bullet points */}
+                            {item.keyCapabilities.includes('• ') ? 
+                              // Handle bullet points format
+                              item.keyCapabilities
+                                .split('• ')
+                                .filter(point => point.trim().length > 0)
+                                .map((point, idx) => (
+                                  <li key={idx} className="flex items-start gap-3">
+                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
+                                      <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                    </div>
+                                    <span className="text-gray-700 flex-1">{point.trim()}</span>
+                                  </li>
+                                ))
+                              : 
+                              // Handle multi-line format
+                              item.keyCapabilities.split('\n')
+                                .filter(line => line.trim() && !line.includes(':'))
+                                .map((line, idx) => {
+                                  // Check if this is a numbered point
+                                  const numberedMatch = line.trim().match(/^(\d+)\.\s+(.+)$/);
+                                  if (numberedMatch) {
+                                    const number = numberedMatch[1];
+                                    const content = numberedMatch[2];
+                                    
+                                    return (
+                                      <li key={idx} className="flex items-start gap-3 mb-3">
+                                        <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                          <span className="text-sm font-bold text-white">{number}</span>
+                                        </div>
+                                        <div className="text-gray-700 flex-1 pt-1.5">
+                                          {content}
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                  
+                                  // Handle regular lines as bullet points
+                                  const content = line.trim();
+                                  return (
+                                    <li key={idx} className="flex items-start gap-3">
+                                      <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                      </div>
+                                      <span className="text-gray-700 flex-1">{content}</span>
+                                    </li>
+                                  );
+                                })
+                            }
+                          </ul>
+                        </div>
+                      ) : (
+                        // If it's just a single paragraph without bullet points
+                        <p className="text-gray-700">{item.keyCapabilities}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -183,7 +434,10 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                   <p className="text-gray-600">All resources and materials available for this toolkit item.</p>
                   
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
+                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Available Materials
+                    </h3>
                     <div className="space-y-3">
                       {item.materials.map((material, index) => (
                         <div 
@@ -221,13 +475,107 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                   <p className="text-gray-600">Code examples and implementation guides.</p>
                   
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 font-medium mb-4">Sample Usage</h3>
+                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Sample Usage
+                    </h3>
                     <div className="prose prose-gray max-w-none">
-                      {item.selectedTools && item.selectedTools.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                      ))}
-                      
-                      {!item.selectedTools && (
+                      {item.selectedTools ? (
+                        item.selectedTools.split('\n\n').map((paragraph, index) => {
+                          // Check if this paragraph is a header (ends with ":")
+                          if (paragraph.trim().endsWith(':')) {
+                            return (
+                              <p key={index} className={`font-medium ${colors.text} mb-3`}>
+                                {paragraph.trim()}
+                              </p>
+                            );
+                          }
+                          
+                          // Check if this paragraph has bullet points
+                          if (paragraph.includes('• ')) {
+                            // Check if there's a header section before bullets
+                            const headerEndIndex = paragraph.indexOf('• ');
+                            const headerPart = headerEndIndex > 0 ? paragraph.substring(0, headerEndIndex).trim() : null;
+                            
+                            // Extract all bullet points - handle both multi-line and single-line cases
+                            let bulletPoints: string[] = [];
+                            const bulletContent = paragraph.substring(headerEndIndex);
+                            
+                            // Handle case where bullets are on separate lines
+                            if (bulletContent.includes('\n')) {
+                              bulletPoints = bulletContent
+                                .split('\n')
+                                .filter(line => line.trim().startsWith('• '))
+                                .map(line => line.trim().substring(2).trim());
+                            } 
+                            // Handle case where bullets are all on one line separated by •
+                            else {
+                              bulletPoints = bulletContent
+                                .split('• ')
+                                .filter(point => point.trim().length > 0)
+                                .map(point => point.trim());
+                            }
+
+                            return (
+                              <div key={index} className="mb-6">
+                                {headerPart && (
+                                  <p className="mb-3 text-gray-700">{headerPart}</p>
+                                )}
+                                <ul className="space-y-2 pl-2">
+                                  {bulletPoints.map((point, idx) => (
+                                    <li key={idx} className="flex items-start gap-3 group">
+                                      <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                      </div>
+                                      <span className="text-gray-700 flex-1">{point}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            );
+                          }
+
+                          // Check if this paragraph starts with a number followed by a dot (like "1. Something")
+                          const numberedMatch = paragraph.trim().match(/^(\d+)\.\s+(.+)$/);
+                          if (numberedMatch) {
+                            // Extract the number and content
+                            const number = numberedMatch[1];
+                            const content = numberedMatch[2];
+                            
+                            return (
+                              <div key={index} className="mb-3">
+                                <div className="flex items-start gap-3">
+                                  <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                    <span className="text-sm font-bold text-white">{number}</span>
+                                  </div>
+                                  <div className="text-gray-700 flex-1 pt-1.5 font-medium">
+                                    {content}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          // Handle paragraphs that are continuations of numbered items (indented content)
+                          if (index > 0) {
+                            const prevParagraph = item.selectedTools.split('\n\n')[index - 1];
+                            const isPrevNumbered = prevParagraph?.trim().match(/^(\d+)\.\s+(.+)$/);
+                            
+                            if (isPrevNumbered && !paragraph.trim().match(/^(\d+)\.\s+/) && !paragraph.trim().endsWith(':')) {
+                              return (
+                                <div key={index} className="mb-4 ml-11 pl-0 border-l-2 border-gray-200">
+                                  <p className="text-gray-600 pl-4 py-1">{paragraph}</p>
+                                </div>
+                              );
+                            }
+                          }
+
+                          // Regular paragraph
+                          return (
+                            <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+                          );
+                        })
+                      ) : (
                         <p className="text-gray-500 italic">No code examples available for this item.</p>
                       )}
                     </div>
@@ -241,7 +589,10 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                   <p className="text-gray-600">Contact information for support and questions.</p>
                   
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 font-medium mb-4">Support</h3>
+                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Support
+                    </h3>
                     <p className="text-gray-700">
                       For questions or support regarding this toolkit item, please contact the team at:
                     </p>
