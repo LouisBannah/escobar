@@ -15,6 +15,7 @@ interface ToolkitItem {
     title: string;
   }[];
   lastUpdated: string;
+  version: string;
 }
 
 export const toolkitItems: ToolkitItem[] = [
@@ -26,7 +27,8 @@ export const toolkitItems: ToolkitItem[] = [
     shortDescription: 'Curated banking transformation success stories with measurable outcomes and client testimonials to strengthen sales proposals.',
     availableTags: ['References', 'Banking', 'Success Stories'],
     selectedTools: 'Credentials deck and client references',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-15',
+    version: '1.0',
     longDescription: `The Credential References deck is a presentation resource designed to highlight successful banking projects and transformation initiatives across different clients. It consolidates our most impactful examples and approaches to support early-stage discussions and proposal development.
 
 This tool enables teams to present a strong track record with credibility. Organized through clear evidence of prior achievements and industry expertise, it provides a compelling narrative of our capabilities and success stories.
@@ -72,7 +74,8 @@ Its structured format ensures consistency in messaging, ensuring teams globally 
     shortDescription: 'Strategic vision for next-generation banking with digital transformation roadmap and innovation adoption frameworks.',
     availableTags: ['Innovation', 'Digital Banking', 'Strategy'],
     selectedTools: 'Our POV on the ideal future-ready bank',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-03',
+    version: '2.0',
     longDescription: `The Future-Ready Bank POV is a strategic artifact that offers a comprehensive perspective on what defines a modern, resilient, and innovative bank. It explores key building blocks such as cloud enablement, open banking, data-driven services, and embedded finance.
 
 This asset can be used to shape visioning workshops, influence target state design, and support leadership alignment on transformation priorities.
@@ -119,7 +122,8 @@ It can accelerate strategic planning cycles and ensure that technology and busin
     shortDescription: 'Regulatory-aligned cloud implementation strategy with technical controls and risk frameworks for European banking sector.',
     availableTags: ['Regulatory', 'Cloud Computing', 'Risk Management'],
     selectedTools: 'White paper explaining we comply with ECB Cloud regulation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-28',
+    version: '1.0',
     longDescription: `The ECB Cloud Compliance white paper outlines how our cloud implementation approach aligns with the European Central Bank's regulatory expectations. It maps technical and operational features to the ECB/SSM requirements around governance, risk, and controls.
 
 It serves as a risk mitigation tool in regulated engagements, ensuring that cloud migration strategies are defensible and audit-ready.
@@ -166,7 +170,8 @@ It also strengthens the perception of regulatory readiness and lowers barriers t
     shortDescription: 'Pre-sprint preparation and project initiation methodology with stakeholder alignment and technical readiness assessment tools.',
     availableTags: ['Agile', 'Project Management', 'Implementation'],
     selectedTools: 'Standardized approach sprint 0 & kick-off plan from 0 to execution',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-10',
+    version: '3.0',
     longDescription: `Our comprehensive Sprint and Kick-off Framework provides a structured approach to initiating transformation projects, ensuring all critical elements are addressed from day zero through execution. This methodology has been refined through numerous successful banking transformation programs.
 
 Key Framework Components:
@@ -245,7 +250,8 @@ The framework has demonstrated success in:
     shortDescription: 'Cloud-native API gateway infrastructure for PSD2 compliance with strong authentication and real-time payment processing capabilities.',
     availableTags: ['Integration', 'API Design', 'Security'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-22',
+    version: '1.1',
     longDescription: `Our PSD2 Reference Architecture provides a comprehensive technical framework for implementing PSD2 compliance using modern, cloud-native approaches. This solution leverages serverless architecture to ensure scalability, security, and regulatory compliance.
 
 Architectural Components:
@@ -315,7 +321,8 @@ The solution has been successfully implemented at multiple tier-1 banks across E
     shortDescription: 'Scalable pay-per-use serverless framework with event-driven communication patterns and automated resource provisioning.',
     availableTags: ['Cloud Computing', 'Integration', 'Security'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-18',
+    version: '2.0',
     longDescription: `Our Serverless Architecture Design provides a comprehensive technical framework for implementing serverless applications and functions. This solution leverages serverless computing to ensure scalability, security, and maintainability.
 
 Architectural Components:
@@ -383,7 +390,8 @@ Architectural Components:
     shortDescription: 'Integrated documentation platform with API specifications, standards guidelines, and DevOps-enabled content lifecycle management.',
     availableTags: ['Documentation', 'Standards', 'Guidelines'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-05',
+    version: '1.0',
     longDescription: `Our Technical Documentation Design provides a comprehensive technical framework for implementing technical documentation and standards. This solution leverages documentation technology to ensure scalability, security, and compliance.
 
 Architectural Components:
@@ -451,7 +459,8 @@ Architectural Components:
     shortDescription: 'KPI tracking methodology that quantifies business impact through benchmarking and ROI analysis for banking transformations.',
     availableTags: ['Metrics', 'Value Assessment', 'ROI'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-12',
+    version: '1.2',
     longDescription: `Our Value Measurement Design provides a comprehensive technical framework for implementing value measurement and ROI assessment. This solution leverages measurement technology to ensure scalability, security, and compliance.
 
 Architectural Components:
@@ -519,7 +528,8 @@ Architectural Components:
     shortDescription: 'End-to-end data profiling and validation toolkit with standardized metrics and automated quality assessment capabilities.',
     availableTags: ['Data Governance', 'Quality Assurance', 'Automation'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-24',
+    version: '1.0',
     longDescription: `Our Data Quality Framework provides a comprehensive technical framework for implementing data quality governance and automation. This solution leverages data technology to ensure scalability, security, and compliance.
 
 Architectural Components:
@@ -587,7 +597,8 @@ Architectural Components:
     shortDescription: 'Real-time transaction monitoring system with machine learning anomaly detection and risk scoring functionality.',
     availableTags: ['Risk Management', 'Real-time Processing', 'Analytics'],
     selectedTools: 'Serverless fraud detection and prevention systems',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-08',
+    version: '2.1',
     longDescription: `Our Fraud Detection Framework provides a comprehensive framework for implementing real-time fraud detection systems in banking environments. This solution leverages cloud-native services to deliver scalable, cost-effective fraud prevention.
 
 Key Architecture Components:
@@ -661,7 +672,8 @@ The solution has demonstrated success in:
     shortDescription: 'Accelerated testing lifecycle solution with automated execution tools and comprehensive coverage analytics for banking systems.',
     availableTags: ['Testing', 'Automation', 'Quality'],
     selectedTools: 'Test automation framework and tools',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-18',
+    version: '1.0',
     longDescription: `Our Test Automation Framework provides a comprehensive solution for implementing automated testing across banking applications. This framework ensures consistent quality, reduces manual effort, and accelerates the testing lifecycle.
 
 Framework Components:
@@ -735,7 +747,8 @@ The framework has demonstrated success in:
     shortDescription: 'Load simulation and capacity planning toolkit with bottleneck detection and resource optimization recommendations.',
     availableTags: ['Testing', 'Performance', 'Optimization'],
     selectedTools: 'Performance testing framework and tools',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-05',
+    version: '2.0',
     longDescription: `Our Performance Testing Framework provides a structured approach to validating and optimizing the performance of banking applications. This framework ensures systems meet performance requirements under various load conditions.
 
 Framework Components:
@@ -809,7 +822,8 @@ Successfully implemented for:
     shortDescription: 'Vulnerability assessment and penetration testing methodology with compliance validation and threat modeling capabilities.',
     availableTags: ['Security', 'Testing', 'Compliance'],
     selectedTools: 'Security testing framework and tools',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-01',
+    version: '3.1',
     longDescription: `Our Security Testing Framework provides a robust approach to identifying and mitigating security vulnerabilities in banking applications. This framework ensures compliance with security standards and protects against emerging threats.
 
 Framework Components:
@@ -883,7 +897,8 @@ Successfully implemented for:
     shortDescription: 'Kubernetes-based containerization blueprint with infrastructure provisioning and CI/CD integration for banking applications.',
     availableTags: ['Cloud Computing', 'DevOps', 'Infrastructure'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-10',
+    version: '1.0',
     longDescription: `Our Container Architecture Design provides a comprehensive technical framework for implementing containerized applications and infrastructure. This solution leverages container technology to ensure scalability, security, and compliance.
 
 Architectural Components:
@@ -951,7 +966,8 @@ Architectural Components:
     shortDescription: 'End-to-end payment processing framework with integration adaptors and risk management controls for multi-channel transactions.',
     availableTags: ['Payments', 'Integration', 'Security'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-20',
+    version: '1.0',
     longDescription: `Our Payment Orchestration Design provides a comprehensive technical framework for implementing payment orchestration and integration. This solution leverages orchestration technology to ensure scalability, security, and compliance.
 
 Architectural Components:
@@ -1019,7 +1035,8 @@ Architectural Components:
     shortDescription: 'Reference architecture for transformation methodologies and change management.',
     availableTags: ['Change Management', 'Training', 'Implementation'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-15',
+    version: '2.0',
     longDescription: `Our Transformation Workbook provides a comprehensive technical framework for implementing transformation methodologies and change management. This solution leverages transformation technology to ensure scalability, security, and compliance.
 
 Architectural Components:
@@ -1087,7 +1104,8 @@ Architectural Components:
     shortDescription: 'Reference architecture for implementing serverless fraud detection and prevention systems.',
     availableTags: ['Risk Management', 'Real-time Processing', 'Analytics'],
     selectedTools: 'Serverless fraud detection and prevention systems',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-18',
+    version: '1.0',
     longDescription: `Our Serverless Fraud Detection Architecture provides a comprehensive framework for implementing real-time fraud detection systems in banking environments. This solution leverages cloud-native services to deliver scalable, cost-effective fraud prevention.
 
 Key Architecture Components:
@@ -1161,7 +1179,8 @@ The solution has demonstrated success in:
     shortDescription: 'Interactive loan origination demonstration with end-to-end process visualization and decision points for client presentations.',
     availableTags: ['Loan Origination', 'Process Design', 'Banking'],
     selectedTools: 'Origination demo showcasing loan origination process and capabilities',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-28',
+    version: '3.2',
     longDescription: `The Origination Demo showcases our loan origination process and capabilities. It provides a visual representation of the entire loan origination lifecycle, from initial application to final approval.
 
 Key Features:
@@ -1202,7 +1221,8 @@ Its interactive nature ensures engagement and understanding across stakeholders.
     shortDescription: 'Framework for testing API endpoints and ensuring compliance with API specifications.',
     availableTags: ['Testing', 'API', 'Compliance'],
     selectedTools: 'API testing tools and frameworks',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-01-25',
+    version: '1.0',
     longDescription: `The API Testing Framework provides a structured approach to testing API endpoints and ensuring compliance with API specifications. This framework ensures consistent quality, reduces manual effort, and accelerates the testing lifecycle.
 
 Key Features:
@@ -1256,7 +1276,8 @@ Successfully implemented for:
     shortDescription: 'Patterns and guidelines for integrating different systems and services in a distributed environment.',
     availableTags: ['Integration', 'Enterprise', 'Patterns'],
     selectedTools: 'Enterprise integration frameworks and tools',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-02-08',
+    version: '2.1',
     longDescription: `The Enterprise Integration Patterns provides a comprehensive framework for integrating different systems and services in a distributed environment. This framework ensures consistent quality, reduces manual effort, and accelerates the integration lifecycle.
 
 Key Features:
@@ -1312,7 +1333,8 @@ Successfully implemented for:
     shortDescription: 'Methodology for assessing and prioritizing risk based on predefined criteria and thresholds.',
     availableTags: ['Risk Management', 'Risk Assessment', 'Thresholds'],
     selectedTools: 'Risk scoring tools and frameworks',
-    lastUpdated: '2024-03-20',
+    lastUpdated: '2025-03-12',
+    version: '1.0',
     longDescription: `The Risk Scoring Methodology provides a structured approach to assessing and prioritizing risk based on predefined criteria and thresholds. This methodology ensures consistent risk assessment, reduces manual effort, and accelerates the risk management lifecycle.
 
 Key Features:

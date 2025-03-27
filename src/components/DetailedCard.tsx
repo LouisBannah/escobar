@@ -37,8 +37,8 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         return {
           light: 'bg-gradient-to-r from-emerald-100/70 to-teal-200/70 backdrop-blur-sm',
           lighter: 'bg-gradient-to-r from-emerald-50/40 to-teal-50/40 backdrop-blur-sm',
-          medium: 'bg-gradient-to-br from-emerald-100 to-teal-100',
-          text: 'text-emerald-700',
+          medium: 'bg-emerald-200',
+          text: 'text-emerald-800',
           border: 'border-emerald-200',
           button: 'bg-emerald-600 hover:bg-emerald-700',
           success: 'bg-emerald-50',
@@ -48,8 +48,8 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         return {
           light: 'bg-gradient-to-r from-blue-100/70 to-indigo-200/70 backdrop-blur-sm',
           lighter: 'bg-gradient-to-r from-blue-50/40 to-indigo-50/40 backdrop-blur-sm',
-          medium: 'bg-gradient-to-br from-blue-100 to-indigo-100',
-          text: 'text-blue-700',
+          medium: 'bg-blue-200',
+          text: 'text-blue-800',
           border: 'border-blue-200',
           button: 'bg-blue-600 hover:bg-blue-700',
           success: 'bg-blue-50',
@@ -59,8 +59,8 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         return {
           light: 'bg-gradient-to-r from-purple-100/70 to-fuchsia-200/70 backdrop-blur-sm',
           lighter: 'bg-gradient-to-r from-purple-50/40 to-fuchsia-50/40 backdrop-blur-sm',
-          medium: 'bg-gradient-to-br from-purple-100 to-fuchsia-100',
-          text: 'text-purple-700',
+          medium: 'bg-purple-200',
+          text: 'text-purple-800',
           border: 'border-purple-200',
           button: 'bg-purple-600 hover:bg-purple-700',
           success: 'bg-purple-50',
@@ -82,23 +82,25 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
             
             {/* Header */}
             <div className={`p-6 ${colors.light} border-b ${colors.border}`}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-semibold text-gray-800">{item.shortTitle}</h2>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${colors.medium} ${colors.text}`}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-xl font-semibold text-gray-900">{item.shortTitle}</h2>
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                      ${colors.medium} ${colors.text}`}>
                       {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                     </span>
-                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-700 shadow-sm border border-gray-300">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                      bg-gray-100 text-gray-700 shadow-sm border border-gray-200">
                       {item.category}
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-black/5 rounded-full transition-colors"
+                  className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -172,6 +174,20 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                     </div>
                   </div>
                 </div>
+                
+                {/* Footer with Last Updated and Version Information */}
+                <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
+                  <div>
+                    Last updated: {new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+                      day: '2-digit', 
+                      month: '2-digit', 
+                      year: 'numeric' 
+                    })}
+                  </div>
+                  <div>
+                    Version {item.version}
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="p-6 space-y-6">
@@ -193,6 +209,20 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                         documentation, and download materials.
                       </p>
                     </div>
+                  </div>
+                </div>
+                
+                {/* Footer with Last Updated and Version Information */}
+                <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
+                  <div>
+                    Last updated: {new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+                      day: '2-digit', 
+                      month: '2-digit', 
+                      year: 'numeric' 
+                    })}
+                  </div>
+                  <div>
+                    Version {item.version}
                   </div>
                 </div>
               </div>
