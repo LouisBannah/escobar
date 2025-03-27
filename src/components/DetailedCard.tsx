@@ -35,8 +35,9 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
     switch (theme) {
       case 'Sales':
         return {
-          light: 'bg-gradient-to-br from-emerald-50 to-teal-50',
-          medium: 'bg-emerald-100',
+          light: 'bg-gradient-to-r from-emerald-100/70 to-teal-200/70 backdrop-blur-sm',
+          lighter: 'bg-gradient-to-r from-emerald-50/40 to-teal-50/40 backdrop-blur-sm',
+          medium: 'bg-gradient-to-br from-emerald-100 to-teal-100',
           text: 'text-emerald-700',
           border: 'border-emerald-200',
           button: 'bg-emerald-600 hover:bg-emerald-700',
@@ -45,8 +46,9 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         };
       case 'Delivery':
         return {
-          light: 'bg-gradient-to-br from-blue-50 to-indigo-50',
-          medium: 'bg-blue-100',
+          light: 'bg-gradient-to-r from-blue-100/70 to-indigo-200/70 backdrop-blur-sm',
+          lighter: 'bg-gradient-to-r from-blue-50/40 to-indigo-50/40 backdrop-blur-sm',
+          medium: 'bg-gradient-to-br from-blue-100 to-indigo-100',
           text: 'text-blue-700',
           border: 'border-blue-200',
           button: 'bg-blue-600 hover:bg-blue-700',
@@ -55,8 +57,9 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         };
       default: // Quality Assurance
         return {
-          light: 'bg-gradient-to-br from-purple-50 to-fuchsia-50',
-          medium: 'bg-purple-100',
+          light: 'bg-gradient-to-r from-purple-100/70 to-fuchsia-200/70 backdrop-blur-sm',
+          lighter: 'bg-gradient-to-r from-purple-50/40 to-fuchsia-50/40 backdrop-blur-sm',
+          medium: 'bg-gradient-to-br from-purple-100 to-fuchsia-100',
           text: 'text-purple-700',
           border: 'border-purple-200',
           button: 'bg-purple-600 hover:bg-purple-700',
@@ -75,7 +78,7 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         <div className="inline-block w-full max-w-3xl my-8 text-left align-middle transition-all transform">
           <div className={`rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/90 relative z-[51] border ${colors.border}`}>
             {/* Gradient Banner */}
-            <div className={`h-3 ${colors.banner}`} />
+            <div className={`h-4 ${colors.banner}`} />
             
             {/* Header */}
             <div className={`p-6 ${colors.light} border-b ${colors.border}`}>
@@ -120,7 +123,7 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                 </div>
 
                 {/* Materials Section */}
-                <div className={`rounded-xl p-6 ${colors.light}`}>
+                <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
                   <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
                   <div className="space-y-3">
                     {item.materials.map((material, index) => (
@@ -147,8 +150,8 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                 </div>
 
                 {/* Access Restricted Notice */}
-                <div className={`rounded-xl p-6 bg-amber-50/50 border border-amber-200/70 backdrop-blur-sm`}>
-                  <div className="flex items-start gap-4">
+                <div className="rounded-xl p-6 bg-amber-50/50 border border-amber-200/70 backdrop-blur-sm relative overflow-hidden group hover:shadow-md transition-all duration-300">
+                  <div className="relative flex items-start gap-4">
                     <Lock className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
                     <div className="flex-grow">
                       <h3 className="text-lg font-medium text-amber-800 mb-2">
@@ -169,52 +172,27 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                     </div>
                   </div>
                 </div>
-
-                {/* Footer */}
-                <div className="mt-8 pt-6 border-t border-gray-100">
-                  <div className={`flex items-center gap-2 text-sm text-gray-500
-                    group cursor-default hover:text-gray-700 transition-colors duration-200`}>
-                    <svg 
-                      className="w-4 h-4 group-hover:text-gray-700 transition-colors duration-200" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={1.5} 
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
-                      />
-                    </svg>
-                    <span>Last updated {item.lastUpdated}</span>
-                    <div className={`ml-auto px-3 py-1 rounded-full text-xs font-medium
-                      bg-gray-50 text-gray-600 group-hover:bg-gray-100 transition-colors duration-200`}>
-                      Version {item.version}
-                    </div>
-                  </div>
-                </div>
               </div>
             ) : (
-              <div className="p-8 text-center">
-                <div className="max-w-md mx-auto">
-                  <div className="mb-6 flex justify-center">
-                    <div className={`w-20 h-20 ${colors.success} rounded-full flex items-center justify-center`}>
-                      <CheckCircle className={`w-10 h-10 ${colors.text}`} />
+              <div className="p-6 space-y-6">
+                {/* Access Granted Notice */}
+                <div className={`rounded-xl p-6 ${colors.light} border ${colors.border} relative overflow-hidden group hover:shadow-md transition-all duration-300`}>
+                  <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
+                  {/* Decorative Elements */}
+                  <div className={`absolute top-0 right-0 w-64 h-64 -mr-32 -mt-32 rounded-full ${colors.medium} opacity-20 blur-3xl`} />
+                  <div className={`absolute bottom-0 left-0 w-48 h-48 -ml-24 -mb-24 rounded-full ${colors.medium} opacity-20 blur-3xl`} />
+                  
+                  <div className="relative flex items-start gap-4">
+                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
+                    <div className="flex-grow">
+                      <h3 className="text-lg font-medium text-emerald-800 mb-2">
+                        Access Granted
+                      </h3>
+                      <p className="text-emerald-700 mb-4">
+                        You now have Level 2 access. You can view comprehensive details,
+                        documentation, and download materials.
+                      </p>
                     </div>
-                  </div>
-                  
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-                    Access Request Sent
-                  </h3>
-                  
-                  <p className="text-gray-600 text-lg mb-6">
-                    Your request for Level 2 access to "{item.shortTitle}" has been submitted.
-                    You will receive a notification once your request has been approved.
-                  </p>
-                  
-                  <div className="text-sm text-gray-500 animate-pulse">
-                    Closing automatically...
                   </div>
                 </div>
               </div>
@@ -226,4 +204,4 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
   );
 };
 
-export default DetailedCard; 
+export default DetailedCard;
