@@ -154,15 +154,73 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                       <div className={`rounded-xl p-8 bg-white shadow-sm border border-gray-100 relative group 
                         hover:shadow-md transition-all duration-300`}>
                         <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
-                        <h3 className={`text-lg font-semibold mb-4 ${colors.text} flex items-center gap-2`}>
+                        <h3 className={`text-lg font-semibold mb-6 ${colors.text} flex items-center gap-2`}>
                           Description
                         </h3>
                         <div className="prose prose-gray max-w-none">
-                          {item.longDescription.split('\n\n').map((paragraph, index) => (
-                            <p key={index} className="text-gray-600 mb-4 last:mb-0 leading-relaxed">
-                              {paragraph}
-                            </p>
-                          ))}
+                          {item.longDescription.split('\n\n').map((paragraph, index) => {
+                            // Check if the paragraph contains bullet points (• or - or *)
+                            const containsBullets = paragraph.includes('•') || paragraph.includes('- ') || paragraph.includes('* ');
+                            if (containsBullets) {
+                              // Split into lines and process each bullet point
+                              const points = paragraph
+                                .split('\n')
+                                .map(line => line.trim())
+                                .filter(line => line.length > 0)
+                                .map(line => line.replace(/^[•\-*]\s*/, '')); // Remove bullet characters
+                              
+                              return (
+                                <div key={index} className="space-y-2 my-4">
+                                  {points.map((point, idx) => (
+                                    <div key={idx} 
+                                      className={`flex items-start gap-4 p-3 rounded-lg group/item
+                                        hover:bg-gray-50/80 transition-all duration-200`}
+                                    >
+                                      <div className={`flex-shrink-0 w-6 h-6 rounded-full ${colors.medium} 
+                                        flex items-center justify-center mt-1
+                                        group-hover/item:scale-110 transition-transform duration-200`}
+                                      >
+                                        <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`} />
+                                      </div>
+                                      <p className="text-gray-600 flex-1 leading-relaxed">
+                                        {point}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            }
+                            // Handle key components section specially
+                            if (paragraph.startsWith('Key Components:')) {
+                              const [title, ...points] = paragraph.split(':')[1].split('•').map(p => p.trim()).filter(p => p);
+                              return (
+                                <div key={index} className="mt-6 space-y-3">
+                                  <h4 className={`font-medium ${colors.text} mb-4`}>Key Components</h4>
+                                  {points.map((point, idx) => (
+                                    <div key={idx} 
+                                      className={`flex items-start gap-4 p-3 rounded-lg group/item
+                                        hover:bg-gray-50/80 transition-all duration-200`}
+                                    >
+                                      <div className={`flex-shrink-0 w-6 h-6 rounded-full ${colors.medium} 
+                                        flex items-center justify-center mt-1
+                                        group-hover/item:scale-110 transition-transform duration-200`}
+                                      >
+                                        <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`} />
+                                      </div>
+                                      <p className="text-gray-600 flex-1 leading-relaxed">
+                                        {point}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            }
+                            return (
+                              <p key={index} className="text-gray-600 mb-4 last:mb-0 leading-relaxed">
+                                {paragraph}
+                              </p>
+                            );
+                          })}
                         </div>
                       </div>
 
@@ -173,18 +231,26 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                         <h3 className={`text-lg font-semibold mb-6 ${colors.text} flex items-center gap-2`}>
                           Key Capabilities
                         </h3>
-                        <div className="space-y-4">
-                          {item.keyCapabilities.split('\n').filter(cap => cap.trim()).map((capability, index) => (
-                            <div key={index} 
-                              className={`flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 
-                                transition-colors duration-200 group/item`}
-                            >
-                              <div className={`w-2 h-2 rounded-full mt-2 ${colors.button} 
-                                group-hover/item:scale-125 transition-transform duration-200`} />
-                              <p className="text-gray-600 flex-1 leading-relaxed">
-                                {capability.replace('• ', '')}
-                              </p>
-                            </div>
+                        <div className="grid grid-cols-1 gap-3">
+                          {item.keyCapabilities.split('\n')
+                            .map(cap => cap.trim())
+                            .filter(cap => cap.length > 0)
+                            .map((capability, index) => (
+                              <div key={index} 
+                                className={`flex items-start gap-4 p-3 rounded-lg bg-gray-50/50 
+                                  hover:bg-gray-50 transition-all duration-200 group/item
+                                  border border-gray-100/50 hover:border-gray-200`}
+                              >
+                                <div className={`flex-shrink-0 w-6 h-6 rounded-full ${colors.medium} 
+                                  flex items-center justify-center mt-1
+                                  group-hover/item:scale-110 transition-transform duration-200`}
+                                >
+                                  <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`} />
+                                </div>
+                                <p className="text-gray-700 flex-1 leading-relaxed">
+                                  {capability.replace(/^[•\-*]\s*/, '')}
+                                </p>
+                              </div>
                           ))}
                         </div>
                       </div>
@@ -196,15 +262,47 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                       <div className={`rounded-xl p-8 bg-white shadow-sm border border-gray-100 relative group 
                         hover:shadow-md transition-all duration-300`}>
                         <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
-                        <h3 className={`text-lg font-semibold mb-4 ${colors.text} flex items-center gap-2`}>
+                        <h3 className={`text-lg font-semibold mb-6 ${colors.text} flex items-center gap-2`}>
                           Business Value
                         </h3>
-                        <div className="prose prose-gray max-w-none">
-                          {item.businessValue.split('\n\n').map((paragraph, index) => (
-                            <p key={index} className="text-gray-600 mb-4 last:mb-0 leading-relaxed">
-                              {paragraph}
-                            </p>
-                          ))}
+                        <div className="space-y-6">
+                          {item.businessValue.split('\n\n').map((paragraph, index) => {
+                            // Check if the paragraph contains bullet points
+                            const containsBullets = paragraph.includes('•') || paragraph.includes('- ') || paragraph.includes('* ');
+                            if (containsBullets) {
+                              const points = paragraph
+                                .split('\n')
+                                .map(line => line.trim())
+                                .filter(line => line.length > 0)
+                                .map(line => line.replace(/^[•\-*]\s*/, '')); // Remove bullet characters
+
+                              return (
+                                <div key={index} 
+                                  className={`space-y-3 rounded-lg bg-gray-50/50 border border-gray-100/50 
+                                    hover:bg-gray-50 hover:border-gray-200 transition-all duration-200 p-4`}
+                                >
+                                  {points.map((point, idx) => (
+                                    <div key={idx} className="flex items-start gap-4 group/item">
+                                      <div className={`flex-shrink-0 w-6 h-6 rounded-full ${colors.medium} 
+                                        flex items-center justify-center mt-1
+                                        group-hover/item:scale-110 transition-transform duration-200`}
+                                      >
+                                        <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`} />
+                                      </div>
+                                      <p className="text-gray-700 flex-1 leading-relaxed">
+                                        {point}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            }
+                            return (
+                              <p key={index} className="text-gray-600 leading-relaxed">
+                                {paragraph}
+                              </p>
+                            );
+                          })}
                         </div>
                       </div>
 
@@ -215,18 +313,26 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                         <h3 className={`text-lg font-semibold mb-6 ${colors.text} flex items-center gap-2`}>
                           Selected Tools
                         </h3>
-                        <div className="space-y-4">
-                          {item.selectedTools.split('\n').filter(tool => tool.trim()).map((tool, index) => (
-                            <div key={index} 
-                              className={`flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 
-                                transition-colors duration-200 group/item`}
-                            >
-                              <div className={`w-2 h-2 rounded-full mt-2 ${colors.button} 
-                                group-hover/item:scale-125 transition-transform duration-200`} />
-                              <p className="text-gray-600 flex-1 leading-relaxed">
-                                {tool.replace('• ', '')}
-                              </p>
-                            </div>
+                        <div className="grid grid-cols-1 gap-3">
+                          {item.selectedTools.split('\n')
+                            .map(tool => tool.trim())
+                            .filter(tool => tool.length > 0)
+                            .map((tool, index) => (
+                              <div key={index} 
+                                className={`flex items-start gap-4 p-3 rounded-lg bg-gray-50/50
+                                  hover:bg-gray-50 transition-all duration-200 group/item
+                                  border border-gray-100/50 hover:border-gray-200`}
+                              >
+                                <div className={`flex-shrink-0 w-6 h-6 rounded-full ${colors.medium}
+                                  flex items-center justify-center mt-1
+                                  group-hover/item:scale-110 transition-transform duration-200`}
+                                >
+                                  <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`} />
+                                </div>
+                                <p className="text-gray-700 flex-1 leading-relaxed">
+                                  {tool.replace(/^[•\-*]\s*/, '')}
+                                </p>
+                              </div>
                           ))}
                         </div>
                       </div>
