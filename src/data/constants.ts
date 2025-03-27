@@ -1,8 +1,10 @@
 export const VALID_CATEGORIES = [
-  'Testing',
-  'Development',
-  'Architecture',
-  'Infrastructure',
-  'Security',
-  'Analytics'
+  'Client Success',
+  'Presentation',
+  'Reference Architecture',
+  'Transformation',
+  'Best Practices',
+  'Modules',
+  'Demo',
+  'Testing'
 ] as const; 

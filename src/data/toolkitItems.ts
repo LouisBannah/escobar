@@ -23,7 +23,7 @@ export const toolkitItems: ToolkitItem[] = [
     theme: 'Sales',
     category: 'Client Success',
     shortTitle: 'Credential References',
-    shortDescription: 'Deck showcasing banking credentials and client success stories.',
+    shortDescription: 'Curated banking transformation success stories with measurable outcomes and client testimonials to strengthen sales proposals.',
     availableTags: ['References', 'Banking', 'Success Stories'],
     selectedTools: 'Credentials deck and client references',
     lastUpdated: '2024-03-20',
@@ -69,7 +69,7 @@ Its structured format ensures consistency in messaging, ensuring teams globally 
     theme: 'Sales',
     category: 'Presentation',
     shortTitle: 'Future-Ready Bank POV',
-    shortDescription: 'Perspective on capabilities and features of the next-generation bank.',
+    shortDescription: 'Strategic vision for next-generation banking with digital transformation roadmap and innovation adoption frameworks.',
     availableTags: ['Innovation', 'Digital Banking', 'Strategy'],
     selectedTools: 'Our POV on the ideal future-ready bank',
     lastUpdated: '2024-03-20',
@@ -116,7 +116,7 @@ It can accelerate strategic planning cycles and ensure that technology and busin
     theme: 'Sales',
     category: 'Reference Architecture',
     shortTitle: 'ECB Cloud Compliance',
-    shortDescription: 'White paper detailing compliance with ECB cloud regulatory guidance.',
+    shortDescription: 'Regulatory-aligned cloud implementation strategy with technical controls and risk frameworks for European banking sector.',
     availableTags: ['Regulatory', 'Cloud Computing', 'Risk Management'],
     selectedTools: 'White paper explaining we comply with ECB Cloud regulation',
     lastUpdated: '2024-03-20',
@@ -163,7 +163,7 @@ It also strengthens the perception of regulatory readiness and lowers barriers t
     theme: 'Delivery',
     category: 'Transformation',
     shortTitle: 'Sprint & Kick-off Framework',
-    shortDescription: 'Standardized approach for sprint planning and project initiation from 0 to execution.',
+    shortDescription: 'Pre-sprint preparation and project initiation methodology with stakeholder alignment and technical readiness assessment tools.',
     availableTags: ['Agile', 'Project Management', 'Implementation'],
     selectedTools: 'Standardized approach sprint 0 & kick-off plan from 0 to execution',
     lastUpdated: '2024-03-20',
@@ -238,11 +238,11 @@ The framework has demonstrated success in:
     ]
   },
   {
-    id: 'pssd2-architecture',
+    id: 'psd2-architecture',
     theme: 'Delivery',
     category: 'Reference Architecture',
-    shortTitle: 'PSD2 Architecture Design',
-    shortDescription: 'Reference architecture for PSD2 compliance and implementation.',
+    shortTitle: 'PSD2 Reference Architecture',
+    shortDescription: 'Cloud-native API gateway infrastructure for PSD2 compliance with strong authentication and real-time payment processing capabilities.',
     availableTags: ['Integration', 'API Design', 'Security'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
@@ -312,7 +312,7 @@ The solution has been successfully implemented at multiple tier-1 banks across E
     theme: 'Delivery',
     category: 'Reference Architecture',
     shortTitle: 'Serverless Architecture Design',
-    shortDescription: 'Reference architecture for serverless applications and functions.',
+    shortDescription: 'Scalable pay-per-use serverless framework with event-driven communication patterns and automated resource provisioning.',
     availableTags: ['Cloud Computing', 'Integration', 'Security'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
@@ -378,9 +378,9 @@ Architectural Components:
   {
     id: 'technical-documentation',
     theme: 'Delivery',
-    category: 'Best Practises',
+    category: 'Best Practices',
     shortTitle: 'Technical Documentation Design',
-    shortDescription: 'Reference architecture for technical documentation and standards.',
+    shortDescription: 'Integrated documentation platform with API specifications, standards guidelines, and DevOps-enabled content lifecycle management.',
     availableTags: ['Documentation', 'Standards', 'Guidelines'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
@@ -446,9 +446,9 @@ Architectural Components:
   {
     id: 'value-measurement',
     theme: 'Quality Assurance',
-    category: 'Best Practises',
-    shortTitle: 'Value Metrics Framework',
-    shortDescription: 'Comprehensive framework for measuring and validating delivered value.',
+    category: 'Best Practices',
+    shortTitle: 'Value Measurement Framework',
+    shortDescription: 'KPI tracking methodology that quantifies business impact through benchmarking and ROI analysis for banking transformations.',
     availableTags: ['Metrics', 'Value Assessment', 'ROI'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
@@ -512,22 +512,22 @@ Architectural Components:
     ]
   },
   {
-    id: 'testing-tools',
-    theme: 'Delivery',
-    category: 'Reference Architecture',
-    shortTitle: 'Testing Tools Design',
-    shortDescription: 'Reference architecture for testing tools and automation.',
-    availableTags: ['Testing', 'Quality Assurance', 'Automation'],
+    id: 'data-quality',
+    theme: 'Quality Assurance',
+    category: 'Best Practices',
+    shortTitle: 'Data Quality Framework',
+    shortDescription: 'End-to-end data profiling and validation toolkit with standardized metrics and automated quality assessment capabilities.',
+    availableTags: ['Data Governance', 'Quality Assurance', 'Automation'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
-    longDescription: `Our Testing Tools Design provides a comprehensive technical framework for implementing testing tools and automation. This solution leverages testing technology to ensure scalability, security, and compliance.
+    longDescription: `Our Data Quality Framework provides a comprehensive technical framework for implementing data quality governance and automation. This solution leverages data technology to ensure scalability, security, and compliance.
 
 Architectural Components:
-1. Testing Platform
-   - Automated testing
-   - Manual testing
-   - Performance optimization
-   - Risk management and compliance
+1. Data Governance Platform
+   - Data quality governance
+   - Data profiling and validation
+   - Data integration and transformation
+   - Data access and sharing
 
 2. Integration Layer
    - API gateway integration
@@ -544,23 +544,171 @@ Architectural Components:
    - Monitoring and alerting systems
    - Logging and tracing frameworks
    - Configuration management tools`,
-    businessValue: `This testing tools architecture delivers significant business benefits:
+    businessValue: `This data quality architecture delivers significant business benefits:
 
-• Reduced testing time by 50%
-• Improved automated testing
-• Enhanced manual testing
-• Simplified performance optimization
+• Reduced data quality time by 50%
+• Improved data quality
+• Enhanced data governance
+• Simplified data profiling and validation
 • Pay-per-use cost model
 • DevOps integration patterns`,
-    keyCapabilities: `• Testing technology patterns
-• Automated testing
-• Manual testing
-• Performance optimization
-• Risk management and compliance
+    keyCapabilities: `• Data technology patterns
+• Data quality governance
+• Data profiling and validation
+• Data integration and transformation
+• Data access and sharing
 • API gateway integration
 • Event-driven communication
 • Data consistency and consistency
 • Configuration management tools`,
+    materials: [
+      {
+        type: 'pdf',
+        url: '/documents/data-governance.pdf',
+        title: 'Data Governance Guide'
+      },
+      {
+        type: 'yaml',
+        url: '/documents/data-specs.yaml',
+        title: 'Data Specifications'
+      },
+      {
+        type: 'json',
+        url: '/documents/quality-metrics.json',
+        title: 'Quality Metrics'
+      }
+    ]
+  },
+  {
+    id: 'fraud-detection',
+    theme: 'Quality Assurance',
+    category: 'Best Practices',
+    shortTitle: 'Fraud Detection Framework',
+    shortDescription: 'Real-time transaction monitoring system with machine learning anomaly detection and risk scoring functionality.',
+    availableTags: ['Risk Management', 'Real-time Processing', 'Analytics'],
+    selectedTools: 'Serverless fraud detection and prevention systems',
+    lastUpdated: '2024-03-20',
+    longDescription: `Our Fraud Detection Framework provides a comprehensive framework for implementing real-time fraud detection systems in banking environments. This solution leverages cloud-native services to deliver scalable, cost-effective fraud prevention.
+
+Key Architecture Components:
+1. Real-time Processing Engine
+   - Event stream processing
+   - Pattern recognition
+   - Machine learning integration
+   - Rule engine implementation
+
+2. Detection Framework
+   - Behavioral analysis
+   - Transaction monitoring
+   - Risk scoring engine
+   - Alert management system
+
+3. Integration Layer
+   - Core banking connectors
+   - Payment system integration
+   - External data sources
+   - Reporting systems
+
+4. Management Console
+   - Rule configuration
+   - Alert management
+   - Performance monitoring
+   - Analytics dashboard`,
+    businessValue: `This architecture delivers significant fraud prevention capabilities:
+
+• 90% reduction in false positives
+• Real-time fraud detection
+• Reduced operational costs
+• Improved customer experience
+• Enhanced regulatory compliance
+
+The solution has demonstrated success in:
+• Credit card fraud prevention
+• Payment fraud detection
+• Account takeover prevention
+• Identity theft protection`,
+    keyCapabilities: `• Real-time detection engine
+• Machine learning integration
+• Rule management system
+• Alert prioritization
+• Case management
+• Performance analytics
+• Compliance reporting
+• Integration framework`,
+    materials: [
+      {
+        type: 'pdf',
+        url: '/documents/fraud-detection.pdf',
+        title: 'Fraud Detection Guide'
+      },
+      {
+        type: 'pdf',
+        url: '/documents/risk-assessment.pdf',
+        title: 'Risk Assessment Framework'
+      },
+      {
+        type: 'xls',
+        url: '/documents/risk-metrics.xlsx',
+        title: 'Risk Metrics'
+      }
+    ]
+  },
+  {
+    id: 'test-automation',
+    theme: 'Quality Assurance',
+    category: 'Testing',
+    shortTitle: 'Test Automation Framework',
+    shortDescription: 'Accelerated testing lifecycle solution with automated execution tools and comprehensive coverage analytics for banking systems.',
+    availableTags: ['Testing', 'Automation', 'Quality'],
+    selectedTools: 'Test automation framework and tools',
+    lastUpdated: '2024-03-20',
+    longDescription: `Our Test Automation Framework provides a comprehensive solution for implementing automated testing across banking applications. This framework ensures consistent quality, reduces manual effort, and accelerates the testing lifecycle.
+
+Framework Components:
+• Automation Architecture
+• Testing Strategy
+• Execution Framework
+• Quality Metrics
+
+The framework includes:
+1. Core Testing Components
+   - Test case management
+   - Test data generation
+   - Automated execution
+   - Results reporting
+
+2. Integration Testing
+   - API testing
+   - Service integration
+   - End-to-end flows
+   - Performance validation
+
+3. Quality Assurance
+   - Code coverage analysis
+   - Test coverage tracking
+   - Defect management
+   - Quality metrics`,
+    businessValue: `The Test Automation Framework delivers significant value through:
+
+• 70% reduction in testing time
+• Increased test coverage
+• Improved defect detection
+• Reduced testing costs
+• Enhanced quality assurance
+
+The framework has demonstrated success in:
+• Core banking testing
+• Payment system validation
+• Digital channel testing
+• Regulatory compliance validation`,
+    keyCapabilities: `• Test automation
+• Coverage analysis
+• Performance testing
+• Security validation
+• Regression testing
+• Results reporting
+• Defect tracking
+• Quality metrics`,
     materials: [
       {
         type: 'pdf',
@@ -580,111 +728,150 @@ Architectural Components:
     ]
   },
   {
-    id: 'origination-demo',
-    theme: 'Sales',
-    category: 'Demo',
-    shortTitle: 'Origination Demo',
-    shortDescription: 'Demo showcasing loan origination process and capabilities.',
-    availableTags: ['Loan Origination', 'Process Design', 'Banking'],
-    selectedTools: 'Origination demo showcasing loan origination process and capabilities',
+    id: 'performance-testing',
+    theme: 'Quality Assurance',
+    category: 'Testing',
+    shortTitle: 'Performance Testing Framework',
+    shortDescription: 'Load simulation and capacity planning toolkit with bottleneck detection and resource optimization recommendations.',
+    availableTags: ['Testing', 'Performance', 'Optimization'],
+    selectedTools: 'Performance testing framework and tools',
     lastUpdated: '2024-03-20',
-    longDescription: `The Origination Demo showcases our loan origination process and capabilities. It provides a visual representation of the entire loan origination lifecycle, from initial application to final approval.
+    longDescription: `Our Performance Testing Framework provides a structured approach to validating and optimizing the performance of banking applications. This framework ensures systems meet performance requirements under various load conditions.
+
+Framework Components:
+• Load Testing Architecture
+• Performance Metrics
+• Monitoring Tools
+• Analysis Framework
 
 Key Features:
-• Visual representation of the loan origination process
-• Detailed explanation of each step
-• Highlight of key features and capabilities
-• Interactive demonstration of loan processing`,
-    businessValue: `The Origination Demo strengthens the value proposition by providing a tangible demonstration of our loan origination capabilities. It reduces time spent explaining the process and improves the effectiveness of client engagements.
+1. Load Testing
+   - Transaction throughput
+   - Response time analysis
+   - Concurrent user simulation
+   - Peak load testing
 
-Its interactive nature ensures engagement and understanding across stakeholders.`,
-    keyCapabilities: `• Visual representation of the loan origination process
-• Detailed explanation of each step
-• Highlight of key features and capabilities
-• Interactive demonstration of loan processing`,
+2. Performance Monitoring
+   - Resource utilization
+   - System bottlenecks
+   - Performance metrics
+   - Real-time monitoring
+
+3. Analysis and Reporting
+   - Performance baselines
+   - Trend analysis
+   - Optimization recommendations
+   - Executive reporting`,
+    businessValue: `The Performance Testing Framework delivers measurable benefits:
+
+• 40% faster performance validation
+• Accurate capacity planning
+• Early bottleneck detection
+• Optimized resource utilization
+• Enhanced user experience
+
+Successfully implemented for:
+• Core banking platforms
+• Payment gateways
+• Digital channels
+• API services`,
+    keyCapabilities: `• Load testing
+• Performance monitoring
+• Capacity planning
+• Bottleneck detection
+• Resource optimization
+• Metrics analysis
+• Trend reporting
+• Recommendations`,
     materials: [
       {
         type: 'pdf',
-        url: '/documents/demo-script.pdf',
-        title: 'Demo Script'
+        url: '/documents/performance-guide.pdf',
+        title: 'Performance Testing Guide'
       },
       {
-        type: 'html',
-        url: '/documents/interactive-demo.html',
-        title: 'Interactive Demo'
+        type: 'zip',
+        url: '/documents/test-scripts.zip',
+        title: 'Load Test Scripts'
       },
       {
-        type: 'ppt',
-        url: '/documents/presentation-deck.pptx',
-        title: 'Presentation Deck'
+        type: 'xls',
+        url: '/documents/performance-metrics.xlsx',
+        title: 'Performance Metrics'
       }
     ]
   },
   {
-    id: 'business-logic-change',
-    theme: 'Delivery',
-    category: 'Transformation',
-    shortTitle: 'Business Logic Change',
-    shortDescription: 'Reference architecture for business logic change and process design.',
-    availableTags: ['Implementation', 'Process Design', 'Workflow'],
-    selectedTools: 'Serverless PSD2 reachability design and/or implementation',
+    id: 'security-testing',
+    theme: 'Quality Assurance',
+    category: 'Testing',
+    shortTitle: 'Security Testing Framework',
+    shortDescription: 'Vulnerability assessment and penetration testing methodology with compliance validation and threat modeling capabilities.',
+    availableTags: ['Security', 'Testing', 'Compliance'],
+    selectedTools: 'Security testing framework and tools',
     lastUpdated: '2024-03-20',
-    longDescription: `Our Business Logic Change provides a comprehensive technical framework for implementing business logic change and process design. This solution leverages change management technology to ensure scalability, security, and compliance.
+    longDescription: `Our Security Testing Framework provides a robust approach to identifying and mitigating security vulnerabilities in banking applications. This framework ensures compliance with security standards and protects against emerging threats.
 
-Architectural Components:
-1. Change Management Platform
-   - Business logic change
-   - Process design
-   - Workflow automation
-   - Risk management and compliance
+Framework Components:
+• Security Architecture
+• Vulnerability Assessment
+• Penetration Testing
+• Compliance Validation
 
-2. Integration Layer
-   - API gateway integration
-   - Event-driven communication
-   - Data consistency and consistency
+Key Features:
+1. Security Testing
+   - Vulnerability scanning
+   - Penetration testing
+   - Security compliance
+   - Threat modeling
 
-3. Infrastructure Layer
-   - Virtual machine and server provisioning
-   - Storage and database services
-   - Network and security configurations
+2. Risk Assessment
+   - Security analysis
+   - Risk evaluation
+   - Mitigation planning
+   - Compliance checking
 
-4. DevOps Integration
-   - CI/CD pipeline setup
-   - Monitoring and alerting systems
-   - Logging and tracing frameworks
-   - Configuration management tools`,
-    businessValue: `This business logic change architecture delivers significant business benefits:
+3. Reporting and Remediation
+   - Security findings
+   - Risk prioritization
+   - Remediation guidance
+   - Compliance reporting`,
+    businessValue: `The Security Testing Framework provides critical benefits:
 
-• Reduced change management time by 50%
-• Improved business logic change
-• Enhanced process design
-• Simplified workflow automation
-• Pay-per-use cost model
-• DevOps integration patterns`,
-    keyCapabilities: `• Change management technology patterns
-• Business logic change
-• Process design
-• Workflow automation
-• Risk management and compliance
-• API gateway integration
-• Event-driven communication
-• Data consistency and consistency
-• Configuration management tools`,
+• 60% faster vulnerability detection
+• Enhanced security posture
+• Regulatory compliance
+• Reduced security risks
+• Protected reputation
+
+Successfully implemented for:
+• Banking security
+• Payment protection
+• Data security
+• Regulatory compliance`,
+    keyCapabilities: `• Vulnerability scanning
+• Penetration testing
+• Risk assessment
+• Compliance validation
+• Threat detection
+• Security analysis
+• Remediation planning
+• Compliance reporting`,
     materials: [
       {
         type: 'pdf',
-        url: '/documents/change-framework.pdf',
-        title: 'Change Framework'
+        url: '/documents/security-guide.pdf',
+        title: 'Security Testing Guide'
       },
       {
-        type: 'docx',
-        url: '/documents/communication-templates.docx',
-        title: 'Communication Templates'
+        type: 'pdf',
+        url: '/documents/compliance-checklist.pdf',
+        title: 'Compliance Checklist'
       },
       {
         type: 'xls',
-        url: '/documents/tracking-tools.xlsx',
-        title: 'Tracking Tools'
+        url: '/documents/security-metrics.xlsx',
+        title: 'Security Metrics'
       }
     ]
   },
@@ -693,7 +880,7 @@ Architectural Components:
     theme: 'Delivery',
     category: 'Reference Architecture',
     shortTitle: 'Container Architecture Design',
-    shortDescription: 'Reference architecture for containerized applications and infrastructure.',
+    shortDescription: 'Kubernetes-based containerization blueprint with infrastructure provisioning and CI/CD integration for banking applications.',
     availableTags: ['Cloud Computing', 'DevOps', 'Infrastructure'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
@@ -761,7 +948,7 @@ Architectural Components:
     theme: 'Delivery',
     category: 'Reference Architecture',
     shortTitle: 'Payment Orchestration Design',
-    shortDescription: 'Reference architecture for payment orchestration and integration.',
+    shortDescription: 'End-to-end payment processing framework with integration adaptors and risk management controls for multi-channel transactions.',
     availableTags: ['Payments', 'Integration', 'Security'],
     selectedTools: 'Serverless PSD2 reachability design and/or implementation',
     lastUpdated: '2024-03-20',
@@ -967,66 +1154,87 @@ The solution has demonstrated success in:
     ]
   },
   {
-    id: 'test-automation',
-    theme: 'Quality Assurance',
-    category: 'Testing',
-    shortTitle: 'Test Automation Framework',
-    shortDescription: 'Comprehensive framework for automated testing across banking applications.',
-    availableTags: ['Testing', 'Automation', 'Quality'],
-    selectedTools: 'Test automation framework and tools',
+    id: 'origination-demo',
+    theme: 'Sales',
+    category: 'Demo',
+    shortTitle: 'Origination Demo',
+    shortDescription: 'Interactive loan origination demonstration with end-to-end process visualization and decision points for client presentations.',
+    availableTags: ['Loan Origination', 'Process Design', 'Banking'],
+    selectedTools: 'Origination demo showcasing loan origination process and capabilities',
     lastUpdated: '2024-03-20',
-    longDescription: `Our Test Automation Framework provides a comprehensive solution for implementing automated testing across banking applications. This framework ensures consistent quality, reduces manual effort, and accelerates the testing lifecycle.
+    longDescription: `The Origination Demo showcases our loan origination process and capabilities. It provides a visual representation of the entire loan origination lifecycle, from initial application to final approval.
 
-Framework Components:
-• Automation Architecture
-• Testing Strategy
-• Execution Framework
-• Quality Metrics
+Key Features:
+• Visual representation of the loan origination process
+• Detailed explanation of each step
+• Highlight of key features and capabilities
+• Interactive demonstration of loan processing`,
+    businessValue: `The Origination Demo strengthens the value proposition by providing a tangible demonstration of our loan origination capabilities. It reduces time spent explaining the process and improves the effectiveness of client engagements.
 
-The framework includes:
-1. Core Testing Components
-   - Test case management
-   - Test data generation
-   - Automated execution
-   - Results reporting
-
-2. Integration Testing
-   - API testing
-   - Service integration
-   - End-to-end flows
-   - Performance validation
-
-3. Quality Assurance
-   - Code coverage analysis
-   - Test coverage tracking
-   - Defect management
-   - Quality metrics`,
-    businessValue: `The Test Automation Framework delivers significant value through:
-
-• 70% reduction in testing time
-• Increased test coverage
-• Improved defect detection
-• Reduced testing costs
-• Enhanced quality assurance
-
-The framework has demonstrated success in:
-• Core banking testing
-• Payment system validation
-• Digital channel testing
-• Regulatory compliance validation`,
-    keyCapabilities: `• Test automation
-• Coverage analysis
-• Performance testing
-• Security validation
-• Regression testing
-• Results reporting
-• Defect tracking
-• Quality metrics`,
+Its interactive nature ensures engagement and understanding across stakeholders.`,
+    keyCapabilities: `• Visual representation of the loan origination process
+• Detailed explanation of each step
+• Highlight of key features and capabilities
+• Interactive demonstration of loan processing`,
     materials: [
       {
         type: 'pdf',
-        url: '/documents/automation-guide.pdf',
-        title: 'Automation Guide'
+        url: '/documents/demo-script.pdf',
+        title: 'Demo Script'
+      },
+      {
+        type: 'html',
+        url: '/documents/interactive-demo.html',
+        title: 'Interactive Demo'
+      },
+      {
+        type: 'ppt',
+        url: '/documents/presentation-deck.pptx',
+        title: 'Presentation Deck'
+      }
+    ]
+  },
+  {
+    id: 'api-testing',
+    theme: 'Delivery',
+    category: 'Best Practices',
+    shortTitle: 'API Testing Framework',
+    shortDescription: 'Framework for testing API endpoints and ensuring compliance with API specifications.',
+    availableTags: ['Testing', 'API', 'Compliance'],
+    selectedTools: 'API testing tools and frameworks',
+    lastUpdated: '2024-03-20',
+    longDescription: `The API Testing Framework provides a structured approach to testing API endpoints and ensuring compliance with API specifications. This framework ensures consistent quality, reduces manual effort, and accelerates the testing lifecycle.
+
+Key Features:
+• Automated API testing
+• Test case management
+• Test data generation
+• Results reporting
+• Defect tracking
+• API compliance validation`,
+    businessValue: `The API Testing Framework delivers significant value through:
+
+• Increased test coverage
+• Improved defect detection
+• Reduced testing costs
+• Enhanced API compliance
+
+Successfully implemented for:
+• Core banking systems
+• Payment gateways
+• Digital channels
+• API services`,
+    keyCapabilities: `• Automated API testing
+• Test case management
+• Test data generation
+• Results reporting
+• Defect tracking
+• API compliance validation`,
+    materials: [
+      {
+        type: 'pdf',
+        url: '/documents/api-testing-guide.pdf',
+        title: 'API Testing Guide'
       },
       {
         type: 'zip',
@@ -1041,150 +1249,116 @@ The framework has demonstrated success in:
     ]
   },
   {
-    id: 'performance-testing',
-    theme: 'Quality Assurance',
-    category: 'Testing',
-    shortTitle: 'Performance Testing Framework',
-    shortDescription: 'Framework for conducting comprehensive performance testing of banking applications.',
-    availableTags: ['Testing', 'Performance', 'Optimization'],
-    selectedTools: 'Performance testing framework and tools',
+    id: 'enterprise-integration',
+    theme: 'Delivery',
+    category: 'Best Practices',
+    shortTitle: 'Enterprise Integration Patterns',
+    shortDescription: 'Patterns and guidelines for integrating different systems and services in a distributed environment.',
+    availableTags: ['Integration', 'Enterprise', 'Patterns'],
+    selectedTools: 'Enterprise integration frameworks and tools',
     lastUpdated: '2024-03-20',
-    longDescription: `Our Performance Testing Framework provides a structured approach to validating and optimizing the performance of banking applications. This framework ensures systems meet performance requirements under various load conditions.
-
-Framework Components:
-• Load Testing Architecture
-• Performance Metrics
-• Monitoring Tools
-• Analysis Framework
+    longDescription: `The Enterprise Integration Patterns provides a comprehensive framework for integrating different systems and services in a distributed environment. This framework ensures consistent quality, reduces manual effort, and accelerates the integration lifecycle.
 
 Key Features:
-1. Load Testing
-   - Transaction throughput
-   - Response time analysis
-   - Concurrent user simulation
-   - Peak load testing
+• Pattern-based integration
+• Message-driven architecture
+• Decoupled system design
+• Flexible and scalable
 
-2. Performance Monitoring
-   - Resource utilization
-   - System bottlenecks
-   - Performance metrics
-   - Real-time monitoring
+The framework includes:
+• Integration patterns
+• Guidelines and best practices
+• Pattern catalog
+• Integration tooling`,
+    businessValue: `The Enterprise Integration Patterns delivers significant value through:
 
-3. Analysis and Reporting
-   - Performance baselines
-   - Trend analysis
-   - Optimization recommendations
-   - Executive reporting`,
-    businessValue: `The Performance Testing Framework delivers measurable benefits:
-
-• 40% faster performance validation
-• Accurate capacity planning
-• Early bottleneck detection
-• Optimized resource utilization
-• Enhanced user experience
+• Increased integration speed
+• Improved system flexibility
+• Reduced integration costs
+• Enhanced system resilience
 
 Successfully implemented for:
-• Core banking platforms
+• Core banking systems
 • Payment gateways
 • Digital channels
 • API services`,
-    keyCapabilities: `• Load testing
-• Performance monitoring
-• Capacity planning
-• Bottleneck detection
-• Resource optimization
-• Metrics analysis
-• Trend reporting
-• Recommendations`,
+    keyCapabilities: `• Pattern-based integration
+• Message-driven architecture
+• Decoupled system design
+• Flexible and scalable`,
     materials: [
       {
         type: 'pdf',
-        url: '/documents/performance-guide.pdf',
-        title: 'Performance Testing Guide'
+        url: '/documents/integration-patterns.pdf',
+        title: 'Enterprise Integration Patterns'
       },
       {
         type: 'zip',
-        url: '/documents/test-scripts.zip',
-        title: 'Load Test Scripts'
+        url: '/documents/pattern-catalog.zip',
+        title: 'Pattern Catalog'
       },
       {
         type: 'xls',
-        url: '/documents/performance-metrics.xlsx',
-        title: 'Performance Metrics'
+        url: '/documents/metrics-dashboard.xlsx',
+        title: 'Metrics Dashboard'
       }
     ]
   },
   {
-    id: 'security-testing',
+    id: 'risk-scoring',
     theme: 'Quality Assurance',
-    category: 'Testing',
-    shortTitle: 'Security Testing Framework',
-    shortDescription: 'Comprehensive framework for security testing and vulnerability assessment.',
-    availableTags: ['Security', 'Testing', 'Compliance'],
-    selectedTools: 'Security testing framework and tools',
+    category: 'Best Practices',
+    shortTitle: 'Risk Scoring Methodology',
+    shortDescription: 'Methodology for assessing and prioritizing risk based on predefined criteria and thresholds.',
+    availableTags: ['Risk Management', 'Risk Assessment', 'Thresholds'],
+    selectedTools: 'Risk scoring tools and frameworks',
     lastUpdated: '2024-03-20',
-    longDescription: `Our Security Testing Framework provides a robust approach to identifying and mitigating security vulnerabilities in banking applications. This framework ensures compliance with security standards and protects against emerging threats.
-
-Framework Components:
-• Security Architecture
-• Vulnerability Assessment
-• Penetration Testing
-• Compliance Validation
+    longDescription: `The Risk Scoring Methodology provides a structured approach to assessing and prioritizing risk based on predefined criteria and thresholds. This methodology ensures consistent risk assessment, reduces manual effort, and accelerates the risk management lifecycle.
 
 Key Features:
-1. Security Testing
-   - Vulnerability scanning
-   - Penetration testing
-   - Security compliance
-   - Threat modeling
+• Risk scoring algorithms
+• Risk threshold management
+• Risk assessment consistency
+• Risk prioritization
+• Risk reporting
 
-2. Risk Assessment
-   - Security analysis
-   - Risk evaluation
-   - Mitigation planning
-   - Compliance checking
+The methodology includes:
+• Risk scoring criteria
+• Risk threshold setting
+• Risk assessment process
+• Risk reporting templates`,
+    businessValue: `The Risk Scoring Methodology delivers significant value through:
 
-3. Reporting and Remediation
-   - Security findings
-   - Risk prioritization
-   - Remediation guidance
-   - Compliance reporting`,
-    businessValue: `The Security Testing Framework provides critical benefits:
-
-• 60% faster vulnerability detection
-• Enhanced security posture
-• Regulatory compliance
-• Reduced security risks
-• Protected reputation
+• Improved risk assessment accuracy
+• Reduced risk assessment time
+• Enhanced risk prioritization
+• Reduced risk management costs
 
 Successfully implemented for:
-• Banking security
-• Payment protection
-• Data security
-• Regulatory compliance`,
-    keyCapabilities: `• Vulnerability scanning
-• Penetration testing
-• Risk assessment
-• Compliance validation
-• Threat detection
-• Security analysis
-• Remediation planning
-• Compliance reporting`,
+• Core banking systems
+• Payment gateways
+• Digital channels
+• API services`,
+    keyCapabilities: `• Risk scoring algorithms
+• Risk threshold management
+• Risk assessment consistency
+• Risk prioritization
+• Risk reporting`,
     materials: [
       {
         type: 'pdf',
-        url: '/documents/security-guide.pdf',
-        title: 'Security Testing Guide'
-      },
-      {
-        type: 'pdf',
-        url: '/documents/compliance-checklist.pdf',
-        title: 'Compliance Checklist'
+        url: '/documents/risk-scoring-guide.pdf',
+        title: 'Risk Scoring Guide'
       },
       {
         type: 'xls',
-        url: '/documents/security-metrics.xlsx',
-        title: 'Security Metrics'
+        url: '/documents/risk-threshold-management.xlsx',
+        title: 'Risk Threshold Management'
+      },
+      {
+        type: 'xls',
+        url: '/documents/risk-metrics.xlsx',
+        title: 'Risk Metrics'
       }
     ]
   }
