@@ -117,21 +117,83 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-8">
               {activeTab === 'Overview' && (
                 <>
-                  <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
-                  
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {item.availableTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                  {/* Short Description */}
+                  <div className="space-y-6">
+                    <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
+                    
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {item.availableTags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Detailed Information */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Left Column */}
+                    <div className="space-y-6">
+                      {/* Long Description */}
+                      <div className={`rounded-xl p-6 ${colors.light} border ${colors.border}`}>
+                        <h3 className="text-gray-900 font-medium mb-4">Description</h3>
+                        <div className="prose prose-gray max-w-none">
+                          {item.longDescription.split('\n\n').map((paragraph, index) => (
+                            <p key={index} className="text-gray-600 mb-4 last:mb-0">
+                              {paragraph}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Key Capabilities */}
+                      <div className={`rounded-xl p-6 bg-white/80 border border-gray-200`}>
+                        <h3 className="text-gray-900 font-medium mb-4">Key Capabilities</h3>
+                        <div className="space-y-2">
+                          {item.keyCapabilities.split('\n').filter(cap => cap.trim()).map((capability, index) => (
+                            <div key={index} className="flex items-start gap-3">
+                              <div className={`w-1.5 h-1.5 rounded-full mt-2 ${colors.button}`} />
+                              <p className="text-gray-600 flex-1">{capability.replace('• ', '')}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="space-y-6">
+                      {/* Business Value */}
+                      <div className={`rounded-xl p-6 ${colors.light} border ${colors.border}`}>
+                        <h3 className="text-gray-900 font-medium mb-4">Business Value</h3>
+                        <div className="prose prose-gray max-w-none">
+                          {item.businessValue.split('\n\n').map((paragraph, index) => (
+                            <p key={index} className="text-gray-600 mb-4 last:mb-0">
+                              {paragraph}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Selected Tools */}
+                      <div className={`rounded-xl p-6 bg-white/80 border border-gray-200`}>
+                        <h3 className="text-gray-900 font-medium mb-4">Selected Tools</h3>
+                        <div className="space-y-2">
+                          {item.selectedTools.split('\n').filter(tool => tool.trim()).map((tool, index) => (
+                            <div key={index} className="flex items-start gap-3">
+                              <div className={`w-1.5 h-1.5 rounded-full mt-2 ${colors.button}`} />
+                              <p className="text-gray-600 flex-1">{tool.replace('• ', '')}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </>
               )}
