@@ -1,8 +1,11 @@
+import { VALID_CATEGORIES } from './data/constants';
+
 export interface Tool {
   id: string;
   title: string;
   description: string;
-  category: 'Sales' | 'Delivery' | 'Quality Assurance';
+  theme: 'Sales' | 'Delivery' | 'Quality Assurance';
+  category: typeof VALID_CATEGORIES[number];
   accessLevel: 1 | 2;
   owner: string;
   contact: string;

@@ -30,8 +30,7 @@ const Toolkit: React.FC = () => {
   const [accessRequests, setAccessRequests] = useState<string[]>([]);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Get unique categories and material types from our data
-  const categories = Array.from(new Set(toolkitItems.map(item => item.category)));
+  // Get unique material types from our data
   const materialTypes = Array.from(new Set(toolkitItems.flatMap(item => 
     item.materials.map(material => material.type)
   )));
