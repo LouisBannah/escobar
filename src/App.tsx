@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserProvider } from './contexts/UserContext';
-import Toolkit from './components/Toolkit';
+import { Toolkit } from './components/Toolkit';
 import ToolkitItemDetail from './components/ToolkitItemDetail';
 
 const App: React.FC = () => {
