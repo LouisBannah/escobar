@@ -1,33 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toolkitItems } from '../data/toolkitItems';
 import { VALID_CATEGORIES } from '../data/constants';
-import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye, ChevronLeft, ChevronRight, Lock, CheckCircle } from 'lucide-react';
+import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe } from 'lucide-react';
 import FeedbackModal from './FeedbackModal';
 import ExpandedCard from './ExpandedCard';
 import DetailedCard from './DetailedCard';
 import { useUser } from '../contexts/UserContext';
 
-const Toolkit: React.FC = () => {
+interface Filters {
+  category: string[];
+  materials: string[];
+  theme: string[];
+}
+
+export const Toolkit: React.FC = () => {
   const { user, setUser } = useUser();
   const [activeTab, setActiveTab] = useState<'Sales' | 'Delivery' | 'Quality Assurance' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({
+  const [activeFilters, setActiveFilters] = useState<Filters>({
     category: [],
     materials: [],
     theme: []
   });
-  const [pdfViewer, setPdfViewer] = useState<{ isOpen: boolean; materialName: string | null }>({
-    isOpen: false,
-    materialName: null
-  });
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  const [selectedItem, setSelectedItem] = useState<any>(null);
-  const [showPdfViewer, setShowPdfViewer] = useState(false);
-  const [pdfViewerContent, setPdfViewerContent] = useState<{ name: string; url: string } | null>(null);
-  const [accessRequests, setAccessRequests] = useState<string[]>([]);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [currentItemId, setCurrentItemId] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Get unique material types from our data
@@ -56,45 +57,35 @@ const Toolkit: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Filter logic
-  const filteredItems = toolkitItems.filter(item => {
-    // Theme filter (from both top nav and filter panel)
-    if (activeTab && item.theme !== activeTab) {
-      return false;
-    }
-    if (activeFilters.theme.length > 0 && !activeFilters.theme.includes(item.theme)) {
-      return false;
-    }
+  const filteredItems = React.useMemo(() => {
+    return toolkitItems.filter(item => {
+      // Filter by theme if active tab is set
+      if (activeTab && item.theme !== activeTab) {
+        return false;
+      }
 
-    // Category filter
-    if (activeFilters.category.length > 0 && 
-        !activeFilters.category.includes(item.category)) {
-      return false;
-    }
+      // Apply category filters
+      if (activeFilters.category.length > 0 && !activeFilters.category.includes(item.category)) {
+        return false;
+      }
 
-    // Material type filter
-    if (activeFilters.materials.length > 0 && 
-        !item.materials.some(m => activeFilters.materials.includes(m.type))) {
-      return false;
-    }
+      // Apply theme filters
+      if (activeFilters.theme.length > 0 && !activeFilters.theme.includes(item.theme)) {
+        return false;
+      }
 
-    // Search query
-    if (searchQuery) {
-      const searchLower = searchQuery.toLowerCase();
-      return (
-        item.shortTitle.toLowerCase().includes(searchLower) ||
-        item.shortDescription.toLowerCase().includes(searchLower) ||
-        item.category.toLowerCase().includes(searchLower) ||
-        item.availableTags.some(tag => tag.toLowerCase().includes(searchLower)) ||
-        item.materials.some(material => material.title.toLowerCase().includes(searchLower))
-      );
-    }
+      // Apply materials filters (this is more complex as we need to check array elements)
+      if (activeFilters.materials.length > 0) {
+        // Check if any of the item's materials match any of the filtered materials
+        const materialTypes = item.materials.map(m => m.type);
+        return activeFilters.materials.some(type => materialTypes.includes(type));
+      }
 
-    return true;
-  });
+      return true;
+    });
+  }, [activeTab, activeFilters]);
 
   const handleRequestAccess = (itemId: string) => {
-    setAccessRequests(prev => [...prev, itemId]);
     // Here you would typically make an API call to submit the access request
     console.log(`Access requested for item: ${itemId}`);
     
@@ -105,13 +96,11 @@ const Toolkit: React.FC = () => {
   };
 
   const handleCardClick = (item: any) => {
-    setSelectedItem(item);
+    setCurrentItemId(item.id);
   };
 
   const handleCloseCard = () => {
-    setSelectedItem(null);
-    setShowPdfViewer(false);
-    setPdfViewerContent(null);
+    setCurrentItemId(null);
   };
 
   return (
@@ -356,7 +345,7 @@ const Toolkit: React.FC = () => {
             {filteredItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setSelectedItem(item)}
+                onClick={() => setCurrentItemId(item.id)}
                 className="text-left bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow flex flex-col relative"
               >
                 {/* Theme Badge */}
@@ -442,50 +431,19 @@ const Toolkit: React.FC = () => {
       </main>
 
       {/* Card Modal */}
-      {selectedItem && (
+      {currentItemId && (
         user?.accessLevel === 2 ? (
           <ExpandedCard
-            item={selectedItem}
+            item={toolkitItems.find(item => item.id === currentItemId)!}
             onClose={handleCloseCard}
-            onViewPdf={(name, url) => {
-              setPdfViewerContent({ name, url });
-              setShowPdfViewer(true);
-            }}
           />
         ) : (
           <DetailedCard
-            item={selectedItem}
+            item={toolkitItems.find(item => item.id === currentItemId)!}
             onClose={handleCloseCard}
             onRequestAccess={handleRequestAccess}
           />
         )
-      )}
-
-      {/* PDF Viewer Modal */}
-      {showPdfViewer && pdfViewerContent && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="min-h-screen px-4 text-center">
-            <div className="fixed inset-0" onClick={() => setShowPdfViewer(false)} />
-            <div className="inline-block w-full max-w-4xl my-8 text-left align-middle bg-white rounded-xl shadow-xl transition-all">
-              <div className="flex items-center justify-between p-4 border-b">
-                <h2 className="text-xl font-semibold text-gray-900">{pdfViewerContent.name}</h2>
-                <button
-                  onClick={() => setShowPdfViewer(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
-              </div>
-              <div className="p-4">
-                <iframe
-                  src={pdfViewerContent.url}
-                  className="w-full h-[80vh] rounded-lg"
-                  title="PDF Viewer"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
       )}
 
       {/* Feedback Modal */}
@@ -495,6 +453,4 @@ const Toolkit: React.FC = () => {
       />
     </div>
   );
-};
-
-export default Toolkit; 
+}; 
