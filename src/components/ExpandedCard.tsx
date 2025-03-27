@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { X, FileText, Archive, Table, Presentation, Code, Globe, Download } from 'lucide-react';
+import StructuredContent from './StructuredContent';
+import { detailedDescriptionsMap } from '../data/content';
 
 interface ExpandedCardProps {
   item: {
@@ -66,6 +68,9 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   };
 
   const colors = getThemeColors(item.theme);
+  
+  // Get the detailed description for this item
+  const detailedDescription = detailedDescriptionsMap[item.id];
 
   const handleDownload = (url: string) => {
     // Implementation for downloading a file
@@ -151,99 +156,17 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
                       Detailed Description
                     </h3>
-                    <div className="prose prose-gray max-w-none">
-                      {/* First show regular paragraphs that are not numbered */}
-                      {item.longDescription.split('\n\n')
-                        .filter(para => !para.trim().match(/^\d+\.\s+/) && !para.includes('Architectural Components:') && !para.includes('Key Components:'))
-                        .slice(0, 1)
-                        .map((paragraph, index) => (
-                          <p key={`regular-${index}`} className="mb-4 text-gray-700">{paragraph}</p>
-                        ))
-                      }
-                      
-                      {/* Now handle the Architectural Components section specifically */}
-                      {item.longDescription.includes('Architectural Components:') && (
-                        <div className="mt-4 mb-6">
-                          <p className={`font-medium ${colors.text} mb-4`}>
-                            Architectural Components:
-                          </p>
-                          
-                          <div className="space-y-4 mt-3">
-                            {/* Manually handle the numbered points based on what we see in the screenshot */}
-                            <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
-                                <span className="text-sm font-bold text-white">1</span>
-                              </div>
-                              <div className="text-gray-700 flex-1 pt-1.5">
-                                Serverless Platform - Application deployment - Function execution - Resource allocation - Performance optimization
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
-                                <span className="text-sm font-bold text-white">2</span>
-                              </div>
-                              <div className="text-gray-700 flex-1 pt-1.5">
-                                Integration Layer - API gateway integration - Event-driven communication - Data consistency and consistency
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
-                                <span className="text-sm font-bold text-white">3</span>
-                              </div>
-                              <div className="text-gray-700 flex-1 pt-1.5">
-                                Infrastructure Layer - Virtual machine and server provisioning - Storage and database services - Network and security configurations
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
-                                <span className="text-sm font-bold text-white">4</span>
-                              </div>
-                              <div className="text-gray-700 flex-1 pt-1.5">
-                                DevOps Integration - CI/CD pipeline setup - Monitoring and alerting systems - Logging and tracing frameworks - Configuration management tools
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Handle Key Components section with bullet points */}
-                      {item.longDescription.includes('Key Components:') && (
-                        <div className="mt-4 mb-6">
-                          <p className={`font-medium ${colors.text} mb-4`}>
-                            Key Components:
-                          </p>
-                          
-                          <div className="space-y-3 mt-3">
-                            {/* Manually handle dot points for the Key Components section */}
-                            {['Digital banking evolution roadmap', 
-                              'Technology architecture principles', 
-                              'Customer experience imperatives', 
-                              'Operational excellence framework', 
-                              'Risk and compliance considerations', 
-                              'Innovation adoption methodology'].map((point, idx) => (
-                              <div key={idx} className="flex items-start gap-3">
-                                <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
-                                  <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
-                                </div>
-                                <span className="text-gray-700 flex-1">{point}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Show any remaining paragraphs that aren't part of the numbered sections */}
-                      {item.longDescription.split('\n\n')
-                        .filter(para => !para.trim().match(/^\d+\.\s+/) && !para.includes('Architectural Components:') && !para.includes('Key Components:'))
-                        .slice(1)
-                        .map((paragraph, index) => (
-                          <p key={`remaining-${index}`} className="mb-4 text-gray-700">{paragraph}</p>
-                        ))
-                      }
-                    </div>
+                    
+                    {detailedDescription ? (
+                      <StructuredContent blocks={detailedDescription.blocks} themeColors={colors} />
+                    ) : (
+                      <div className="prose prose-gray max-w-none">
+                        {/* Fallback to original rendering if no structured content is available */}
+                        {item.longDescription.split('\n\n').map((paragraph, index) => (
+                          <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   
                   {/* Business Value Section */}
@@ -480,104 +403,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       Sample Usage
                     </h3>
                     <div className="prose prose-gray max-w-none">
-                      {item.selectedTools ? (
-                        item.selectedTools.split('\n\n').map((paragraph, index) => {
-                          // Check if this paragraph is a header (ends with ":")
-                          if (paragraph.trim().endsWith(':')) {
-                            return (
-                              <p key={index} className={`font-medium ${colors.text} mb-3`}>
-                                {paragraph.trim()}
-                              </p>
-                            );
-                          }
-                          
-                          // Check if this paragraph has bullet points
-                          if (paragraph.includes('• ')) {
-                            // Check if there's a header section before bullets
-                            const headerEndIndex = paragraph.indexOf('• ');
-                            const headerPart = headerEndIndex > 0 ? paragraph.substring(0, headerEndIndex).trim() : null;
-                            
-                            // Extract all bullet points - handle both multi-line and single-line cases
-                            let bulletPoints: string[] = [];
-                            const bulletContent = paragraph.substring(headerEndIndex);
-                            
-                            // Handle case where bullets are on separate lines
-                            if (bulletContent.includes('\n')) {
-                              bulletPoints = bulletContent
-                                .split('\n')
-                                .filter(line => line.trim().startsWith('• '))
-                                .map(line => line.trim().substring(2).trim());
-                            } 
-                            // Handle case where bullets are all on one line separated by •
-                            else {
-                              bulletPoints = bulletContent
-                                .split('• ')
-                                .filter(point => point.trim().length > 0)
-                                .map(point => point.trim());
-                            }
-
-                            return (
-                              <div key={index} className="mb-6">
-                                {headerPart && (
-                                  <p className="mb-3 text-gray-700">{headerPart}</p>
-                                )}
-                                <ul className="space-y-2 pl-2">
-                                  {bulletPoints.map((point, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 group">
-                                      <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
-                                        <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
-                                      </div>
-                                      <span className="text-gray-700 flex-1">{point}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            );
-                          }
-
-                          // Check if this paragraph starts with a number followed by a dot (like "1. Something")
-                          const numberedMatch = paragraph.trim().match(/^(\d+)\.\s+(.+)$/);
-                          if (numberedMatch) {
-                            // Extract the number and content
-                            const number = numberedMatch[1];
-                            const content = numberedMatch[2];
-                            
-                            return (
-                              <div key={index} className="mb-3">
-                                <div className="flex items-start gap-3">
-                                  <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
-                                    <span className="text-sm font-bold text-white">{number}</span>
-                                  </div>
-                                  <div className="text-gray-700 flex-1 pt-1.5 font-medium">
-                                    {content}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          }
-
-                          // Handle paragraphs that are continuations of numbered items (indented content)
-                          if (index > 0) {
-                            const prevParagraph = item.selectedTools.split('\n\n')[index - 1];
-                            const isPrevNumbered = prevParagraph?.trim().match(/^(\d+)\.\s+(.+)$/);
-                            
-                            if (isPrevNumbered && !paragraph.trim().match(/^(\d+)\.\s+/) && !paragraph.trim().endsWith(':')) {
-                              return (
-                                <div key={index} className="mb-4 ml-11 pl-0 border-l-2 border-gray-200">
-                                  <p className="text-gray-600 pl-4 py-1">{paragraph}</p>
-                                </div>
-                              );
-                            }
-                          }
-
-                          // Regular paragraph
-                          return (
-                            <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                          );
-                        })
-                      ) : (
-                        <p className="text-gray-500 italic">No code examples available for this item.</p>
-                      )}
+                      <p className="text-gray-700">{item.selectedTools}</p>
                     </div>
                   </div>
                 </div>
@@ -586,39 +412,34 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               {/* Contact Tab */}
               {activeTab === 'Contact' && (
                 <div className="space-y-6">
-                  <p className="text-gray-600">Contact information for support and questions.</p>
+                  <p className="text-gray-600">Get in touch for more information about this toolkit item.</p>
                   
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
                     <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
-                      Support
+                      Contact Information
                     </h3>
-                    <p className="text-gray-700">
-                      For questions or support regarding this toolkit item, please contact the team at:
-                    </p>
-                    <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                      <p className="font-medium text-gray-800">Toolkit Support Team</p>
-                      <p className="text-gray-600">Email: toolkit-support@example.com</p>
-                      <p className="text-gray-600">Internal Slack: #toolkit-support</p>
+                    <div className="space-y-3">
+                      <p className="text-gray-700">For more information about this toolkit item, please contact the responsible team.</p>
+                      <div className="mt-4">
+                        <button className={`px-4 py-2 rounded-lg text-white ${colors.button} transition-all duration-200 shadow-sm hover:shadow-md`}>
+                          Request Information
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
-              
-              {/* Footer with Last Updated and Version Information */}
-              <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
-                <div>
-                  Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
-                    day: '2-digit', 
-                    month: '2-digit', 
-                    year: 'numeric' 
-                  })}</span>
-                </div>
-                <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                  bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
-                  Version {item.version}
-                </div>
-              </div>
+            </div>
+
+            {/* Footer */}
+            <div className={`px-6 py-3 border-t ${colors.border} flex justify-between items-center`}>
+              <span className="text-sm text-gray-500">
+                Last updated: {item.lastUpdated} • Version {item.version}
+              </span>
+              <button className="text-sm text-gray-500 hover:text-gray-700">
+                Share
+              </button>
             </div>
           </div>
         </div>
