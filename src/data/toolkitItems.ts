@@ -17,17 +17,6 @@ interface ToolkitItem {
   lastUpdated: string;
 }
 
-const VALID_CATEGORIES = [
-  'Presentation',
-  'Demo',
-  'Transformation',
-  'Reference Architecture',
-  'Best Practices',
-  'Modules',
-  'Testing',
-  'Client Success'
-] as const;
-
 export const toolkitItems: ToolkitItem[] = [
   {
     id: 'credentials-deck',
@@ -321,7 +310,7 @@ The solution has been successfully implemented at multiple tier-1 banks across E
   {
     id: 'serverless-architecture',
     theme: 'Delivery',
-    category: 'Best Practices',
+    category: 'Reference Architecture',
     shortTitle: 'Serverless Architecture Design',
     shortDescription: 'Reference architecture for serverless applications and functions.',
     availableTags: ['Cloud Computing', 'Integration', 'Security'],
@@ -389,7 +378,7 @@ Architectural Components:
   {
     id: 'technical-documentation',
     theme: 'Delivery',
-    category: 'Modules',
+    category: 'Best Practises',
     shortTitle: 'Technical Documentation Design',
     shortDescription: 'Reference architecture for technical documentation and standards.',
     availableTags: ['Documentation', 'Standards', 'Guidelines'],
@@ -457,7 +446,7 @@ Architectural Components:
   {
     id: 'value-measurement',
     theme: 'Quality Assurance',
-    category: 'Best Practices',
+    category: 'Best Practises',
     shortTitle: 'Value Metrics Framework',
     shortDescription: 'Comprehensive framework for measuring and validating delivered value.',
     availableTags: ['Metrics', 'Value Assessment', 'ROI'],
@@ -525,7 +514,7 @@ Architectural Components:
   {
     id: 'testing-tools',
     theme: 'Delivery',
-    category: 'Reference architecture/design',
+    category: 'Reference Architecture',
     shortTitle: 'Testing Tools Design',
     shortDescription: 'Reference architecture for testing tools and automation.',
     availableTags: ['Testing', 'Quality Assurance', 'Automation'],
@@ -634,7 +623,7 @@ Its interactive nature ensures engagement and understanding across stakeholders.
   {
     id: 'business-logic-change',
     theme: 'Delivery',
-    category: 'Best Practices',
+    category: 'Transformation',
     shortTitle: 'Business Logic Change',
     shortDescription: 'Reference architecture for business logic change and process design.',
     availableTags: ['Implementation', 'Process Design', 'Workflow'],
@@ -702,7 +691,7 @@ Architectural Components:
   {
     id: 'container-architecture',
     theme: 'Delivery',
-    category: 'Reference Architecture',
+    category: 'Modules',
     shortTitle: 'Container Architecture Design',
     shortDescription: 'Reference architecture for containerized applications and infrastructure.',
     availableTags: ['Cloud Computing', 'DevOps', 'Infrastructure'],
@@ -770,7 +759,7 @@ Architectural Components:
   {
     id: 'payment-orchestration',
     theme: 'Delivery',
-    category: 'Reference Architecture',
+    category: 'Modules',
     shortTitle: 'Payment Orchestration Design',
     shortDescription: 'Reference architecture for payment orchestration and integration.',
     availableTags: ['Payments', 'Integration', 'Security'],
