@@ -691,7 +691,7 @@ Architectural Components:
   {
     id: 'container-architecture',
     theme: 'Delivery',
-    category: 'Modules',
+    category: 'Reference Architecture',
     shortTitle: 'Container Architecture Design',
     shortDescription: 'Reference architecture for containerized applications and infrastructure.',
     availableTags: ['Cloud Computing', 'DevOps', 'Infrastructure'],
@@ -759,7 +759,7 @@ Architectural Components:
   {
     id: 'payment-orchestration',
     theme: 'Delivery',
-    category: 'Modules',
+    category: 'Reference Architecture',
     shortTitle: 'Payment Orchestration Design',
     shortDescription: 'Reference architecture for payment orchestration and integration.',
     availableTags: ['Payments', 'Integration', 'Security'],
