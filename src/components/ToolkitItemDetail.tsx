@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ChevronLeft, Copy, Download, ExternalLink, User, Settings, LogOut, MessageSquare, Lock, CheckCircle, X } from 'lucide-react';
+import { ChevronLeft, Copy, Download, ExternalLink, User, Settings, LogOut, MessageSquare, Lock } from 'lucide-react';
 import { toolkitItems } from '../data/toolkitItems';
 import AccessChallenge from './AccessChallenge';
 import FeedbackModal from './FeedbackModal';
@@ -20,10 +20,6 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
 
   const item = toolkitItems.find(i => i.id === itemId);
   if (!item) return null;
-
-  const handleCopyToClipboard = () => {
-    // Implementation for copying to clipboard
-  };
 
   const handleDownload = (url: string) => {
     // Implementation for downloading a file

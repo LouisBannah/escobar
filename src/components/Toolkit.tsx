@@ -11,6 +11,7 @@ interface Filters {
   category: string[];
   materials: string[];
   theme: string[];
+  [key: string]: string[]; // Add index signature to allow string indexing
 }
 
 export const Toolkit: React.FC = () => {
@@ -25,10 +26,7 @@ export const Toolkit: React.FC = () => {
     materials: [],
     theme: []
   });
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [currentItemId, setCurrentItemId] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Get unique material types from our data
@@ -93,10 +91,6 @@ export const Toolkit: React.FC = () => {
     setTimeout(() => {
       handleCloseCard();
     }, 2000);
-  };
-
-  const handleCardClick = (item: any) => {
-    setCurrentItemId(item.id);
   };
 
   const handleCloseCard = () => {

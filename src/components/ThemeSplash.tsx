@@ -1,41 +1,9 @@
 import React from 'react';
-import { ArrowRight, Building2, LineChart, Shield, TrendingUp, Truck, CheckCircle } from 'lucide-react';
-
-interface ThemeOption {
-  id: 'Sales' | 'Delivery' | 'Quality assurance';
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  color: string;
-}
+import { TrendingUp, LineChart, CheckCircle } from 'lucide-react';
 
 interface ThemeSplashProps {
   onThemeSelect: (theme: 'Sales' | 'Delivery' | 'Quality assurance') => void;
 }
-
-const themeOptions: ThemeOption[] = [
-  {
-    id: 'Sales',
-    title: 'Sales & Origination',
-    description: 'Explore tools and resources for sales activities, loan origination, and client acquisition.',
-    icon: <Building2 className="w-8 h-8" />,
-    color: 'bg-emerald-50 text-emerald-600'
-  },
-  {
-    id: 'Delivery',
-    title: 'Delivery & Operations',
-    description: 'Access operational tools, process guides, and efficiency improvements for loan delivery.',
-    icon: <LineChart className="w-8 h-8" />,
-    color: 'bg-blue-50 text-blue-600'
-  },
-  {
-    id: 'Quality assurance',
-    title: 'Quality & Compliance',
-    description: 'Review quality assurance tools, compliance checkers, and risk management resources.',
-    icon: <Shield className="w-8 h-8" />,
-    color: 'bg-purple-50 text-purple-600'
-  }
-];
 
 const ThemeSplash: React.FC<ThemeSplashProps> = ({ onThemeSelect }) => {
   return (
