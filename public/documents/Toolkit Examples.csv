@@ -1,0 +1,31 @@
+Theme,Category,Selected tools (Artifacts),Short Title,Short Description,Available materials (Doc type),Tags,Long Description,Business value,Key capabilities,Materials,Business Value,Key Capabilities
+Sales,Presentations & white-papers,Credentials deck and client references,Client References,Deck showcasing banking credentials and client success stories.,"Credentials Deck (PDF), Case Library (PDF)","sales, credentials, case studies, references","The 'Client References' deck is a presentation resource designed to highlight successful banking projects and transformation initiatives across different clients. It consolidates real-world examples and outcomes to support early-stage discussions and proposal development.
+
+This tool enables teams to present a strong track record with confidence, helping to build trust with stakeholders through clear evidence of prior achievements and industry expertise.",,,"Credentials Deck (PDF), Case Library (PDF)","The reference deck strengthens the value proposition by providing tangible proof of success, which accelerates relationship building and supports decision-making processes. It reduces the time spent curating examples and improves the effectiveness of client engagements.
+
+Its structured format ensures consistency in messaging, allowing teams to easily tailor the content to the industry or client context. This improves alignment across stakeholders and increases the likelihood of winning new business.",
+Sales,Presentations & white-papers,Our POV on the ideal future-ready bank,Future-Ready Bank POV,Perspective on capabilities and features of the next-generation bank.,"POV Paper (PDF), Strategy Summary (Document)","vision, strategy, banking, innovation, future-ready","The 'Future-Ready Bank POV' outlines a strategic perspective on what defines a modern, resilient, and innovative bank. It explores key building blocks such as cloud enablement, open banking, data-driven services, and embedded finance.
+
+This asset can be used to shape visioning workshops, influence target state design, and support leadership alignment on transformation priorities.",,,"POV Paper (PDF), Strategy Summary (Document)","The point of view serves as a strategic anchor for financial institutions planning their next wave of transformation. It offers a benchmark for evaluating current maturity and identifying key gaps.
+
+It can accelerate strategic planning cycles and ensure that technology and business roadmaps are aligned with emerging market expectations.",
+Sales,Presentations & white-papers,White paper explaining we comply with ECB Cloud regulation,ECB Cloud Compliance,White paper detailing compliance with ECB cloud regulatory guidance.,"Compliance Overview (PDF), ECB Regulation Summary (Document)","ECB, cloud, compliance, regulation, governance","The 'ECB Cloud Compliance' white paper outlines how a cloud implementation approach aligns with the European Central Bank's regulatory expectations. It maps technical and operational features to the ECB’s requirements around governance, risk, and controls.
+
+It serves as a risk mitigation tool in regulated engagements, ensuring that cloud migration strategies are defensible and audit-ready.",,,"Compliance Overview (PDF), ECB Regulation Summary (Document)","This paper reduces regulatory friction during cloud-related discussions and can be used as a supporting artifact in compliance reviews. It provides assurance to client stakeholders, including legal, compliance, and risk management functions.
+
+It also strengthens the perception of regulatory readiness and lowers barriers to cloud adoption within the banking sector.",
+Sales,Transformation methodologies,Standardized approach sprint 0 & kick-off plan from 0 to execution,,,,,,,,,,
+Sales,Demos,Origination demo payments ,,,,,,,,,,
+Delivery,Reference architecture/design,Serverless PSD2 reachability design and/or implementation,,,,,,,,,,
+Delivery,Reference architecture/design,Reference architecture for serverless ,,,,,,,,,,
+Delivery,Reference architecture/design,Reference serverless architecture for default banking flows,,,,,,,,,,
+Delivery,Reference architecture/design,Reference architecture for container-based,,,,,,,,,,
+Delivery,Reference architecture/design,As-is architecture templates or designs,,,,,,,,,,
+Delivery,Reference architecture/design,Serverless payment orchestration setup,,,,,,,,,,
+Delivery,Guidelines & best practices,Streamlined process for business logic change implementation,,,,,,,,,,
+Delivery,Guidelines & best practices,Best practices in serverless architecture per product type,,,,,,,,,,
+Delivery,Guidelines & best practices,Technical documentation and functional documentation ,,,,,,,,,,
+Delivery,Transformation methodologies,"Transformation runbook: change management, learning, and proposition after completion",,,,,,,,,,
+Delivery,Tech modules,Serverless scalable Fraud detection,,,,,,,,,,
+Quality Assurance,Value measurement,Metrics dashboarding to measure value realized,,,,,,,,,,
+Quality Assurance,Testing,Testing tools developed in projects for journey and E2E testing,,,,,,,,,,
