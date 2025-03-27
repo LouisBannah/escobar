@@ -120,33 +120,46 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
             <div className="p-6 space-y-8">
               {activeTab === 'Overview' && (
                 <>
-                  {/* Short Description */}
-                  <div className="space-y-6">
-                    <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
+                  {/* Hero Section */}
+                  <div className={`rounded-xl p-8 ${colors.light} border ${colors.border} relative overflow-hidden`}>
+                    {/* Decorative Elements */}
+                    <div className={`absolute top-0 right-0 w-64 h-64 -mr-32 -mt-32 rounded-full ${colors.medium} opacity-20 blur-3xl`} />
+                    <div className={`absolute bottom-0 left-0 w-48 h-48 -ml-24 -mb-24 rounded-full ${colors.medium} opacity-20 blur-3xl`} />
                     
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {item.availableTags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    {/* Content */}
+                    <div className="relative">
+                      <p className="text-gray-600 text-xl leading-relaxed mb-6">{item.shortDescription}</p>
+                      
+                      {/* Tags with enhanced styling */}
+                      <div className="flex flex-wrap gap-2">
+                        {item.availableTags.map((tag) => (
+                          <span
+                            key={tag}
+                            className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium 
+                              ${colors.medium} ${colors.text} ring-1 ring-gray-200/50 shadow-sm 
+                              hover:scale-105 transition-all duration-200 cursor-default`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Detailed Information */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Main Content Grid */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Left Column */}
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                       {/* Long Description */}
-                      <div className={`rounded-xl p-6 ${colors.light} border ${colors.border}`}>
-                        <h3 className="text-gray-900 font-medium mb-4">Description</h3>
+                      <div className={`rounded-xl p-8 bg-white shadow-sm border border-gray-100 relative group 
+                        hover:shadow-md transition-all duration-300`}>
+                        <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
+                        <h3 className={`text-lg font-semibold mb-4 ${colors.text} flex items-center gap-2`}>
+                          Description
+                        </h3>
                         <div className="prose prose-gray max-w-none">
                           {item.longDescription.split('\n\n').map((paragraph, index) => (
-                            <p key={index} className="text-gray-600 mb-4 last:mb-0">
+                            <p key={index} className="text-gray-600 mb-4 last:mb-0 leading-relaxed">
                               {paragraph}
                             </p>
                           ))}
@@ -154,13 +167,23 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                       </div>
 
                       {/* Key Capabilities */}
-                      <div className={`rounded-xl p-6 bg-white/80 border border-gray-200`}>
-                        <h3 className="text-gray-900 font-medium mb-4">Key Capabilities</h3>
-                        <div className="space-y-2">
+                      <div className={`rounded-xl p-8 bg-white shadow-sm border border-gray-100 relative group 
+                        hover:shadow-md transition-all duration-300`}>
+                        <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
+                        <h3 className={`text-lg font-semibold mb-6 ${colors.text} flex items-center gap-2`}>
+                          Key Capabilities
+                        </h3>
+                        <div className="space-y-4">
                           {item.keyCapabilities.split('\n').filter(cap => cap.trim()).map((capability, index) => (
-                            <div key={index} className="flex items-start gap-3">
-                              <div className={`w-1.5 h-1.5 rounded-full mt-2 ${colors.button}`} />
-                              <p className="text-gray-600 flex-1">{capability.replace('• ', '')}</p>
+                            <div key={index} 
+                              className={`flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 
+                                transition-colors duration-200 group/item`}
+                            >
+                              <div className={`w-2 h-2 rounded-full mt-2 ${colors.button} 
+                                group-hover/item:scale-125 transition-transform duration-200`} />
+                              <p className="text-gray-600 flex-1 leading-relaxed">
+                                {capability.replace('• ', '')}
+                              </p>
                             </div>
                           ))}
                         </div>
@@ -168,13 +191,17 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                     </div>
 
                     {/* Right Column */}
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                       {/* Business Value */}
-                      <div className={`rounded-xl p-6 ${colors.light} border ${colors.border}`}>
-                        <h3 className="text-gray-900 font-medium mb-4">Business Value</h3>
+                      <div className={`rounded-xl p-8 bg-white shadow-sm border border-gray-100 relative group 
+                        hover:shadow-md transition-all duration-300`}>
+                        <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
+                        <h3 className={`text-lg font-semibold mb-4 ${colors.text} flex items-center gap-2`}>
+                          Business Value
+                        </h3>
                         <div className="prose prose-gray max-w-none">
                           {item.businessValue.split('\n\n').map((paragraph, index) => (
-                            <p key={index} className="text-gray-600 mb-4 last:mb-0">
+                            <p key={index} className="text-gray-600 mb-4 last:mb-0 leading-relaxed">
                               {paragraph}
                             </p>
                           ))}
@@ -182,13 +209,23 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf })
                       </div>
 
                       {/* Selected Tools */}
-                      <div className={`rounded-xl p-6 bg-white/80 border border-gray-200`}>
-                        <h3 className="text-gray-900 font-medium mb-4">Selected Tools</h3>
-                        <div className="space-y-2">
+                      <div className={`rounded-xl p-8 bg-white shadow-sm border border-gray-100 relative group 
+                        hover:shadow-md transition-all duration-300`}>
+                        <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
+                        <h3 className={`text-lg font-semibold mb-6 ${colors.text} flex items-center gap-2`}>
+                          Selected Tools
+                        </h3>
+                        <div className="space-y-4">
                           {item.selectedTools.split('\n').filter(tool => tool.trim()).map((tool, index) => (
-                            <div key={index} className="flex items-start gap-3">
-                              <div className={`w-1.5 h-1.5 rounded-full mt-2 ${colors.button}`} />
-                              <p className="text-gray-600 flex-1">{tool.replace('• ', '')}</p>
+                            <div key={index} 
+                              className={`flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 
+                                transition-colors duration-200 group/item`}
+                            >
+                              <div className={`w-2 h-2 rounded-full mt-2 ${colors.button} 
+                                group-hover/item:scale-125 transition-transform duration-200`} />
+                              <p className="text-gray-600 flex-1 leading-relaxed">
+                                {tool.replace('• ', '')}
+                              </p>
                             </div>
                           ))}
                         </div>
