@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Download, Eye, FileText, Archive, Table, Presentation, Code, Globe } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface ExpandedCardProps {
   item: {
@@ -22,10 +22,9 @@ interface ExpandedCardProps {
     version: string;
   };
   onClose: () => void;
-  onViewPdf: (name: string, url: string) => void;
 }
 
-const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf }) => {
+const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Documentation' | 'Examples'>('Overview');
 
   const getThemeColors = (theme: string) => {

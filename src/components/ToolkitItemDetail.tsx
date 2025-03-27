@@ -21,6 +21,16 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
   const item = toolkitItems.find(i => i.id === itemId);
   if (!item) return null;
 
+  const handleCopyToClipboard = () => {
+    // Implementation for copying to clipboard
+  };
+
+  const handleDownload = (url: string) => {
+    // Implementation for downloading a file
+    console.log(`Downloading file from: ${url}`);
+    window.open(url, '_blank');
+  };
+
   if (!hasAccess) {
     return (
       <div className="flex flex-col h-full bg-white">
@@ -55,14 +65,15 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
                 <h3 className="text-lg font-semibold mb-4">Available Materials</h3>
                 <ul className="space-y-4">
                   {item.materials.map((material, index) => {
-                    const [name, format] = material.split('(');
+                    const name = material.title;
+                    const format = material.type.toUpperCase();
                     return (
                       <li key={index} className="flex items-start space-x-3">
                         <span className="px-2 py-1 text-xs rounded bg-emerald-100 text-emerald-700 mt-0.5">
-                          {format.replace(')', '')}
+                          {format}
                         </span>
                         <span className="text-gray-700 font-medium">
-                          {name.trim()}
+                          {name}
                         </span>
                       </li>
                     );
@@ -242,17 +253,19 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
                   <h2 className="text-2xl font-semibold text-gray-800">Available Materials</h2>
                   <div className="mt-4 space-y-4">
                     {item.materials.map((material, index) => {
-                      const [name, format] = material.split('(');
+                      const name = material.title;
+                      const format = material.type.toUpperCase();
                       return (
-                        <div 
-                          key={index} 
-                          className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100"
+                        <div
+                          key={index}
+                          onClick={() => handleDownload(material.url)}
+                          className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md cursor-pointer transition-all"
                         >
                           <div className="flex items-center space-x-3">
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                              {format.replace(')', '')}
+                              {format}
                             </span>
-                            <span className="text-gray-900 font-medium">{name.trim()}</span>
+                            <span className="text-gray-900 font-medium">{name}</span>
                           </div>
                           <div className="flex space-x-2">
                             <button 
