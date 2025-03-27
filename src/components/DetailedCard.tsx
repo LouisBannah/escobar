@@ -178,13 +178,14 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                 {/* Footer with Last Updated and Version Information */}
                 <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
                   <div>
-                    Last updated: {new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+                    Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
                       day: '2-digit', 
                       month: '2-digit', 
                       year: 'numeric' 
-                    })}
+                    })}</span>
                   </div>
-                  <div>
+                  <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                    bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
                     Version {item.version}
                   </div>
                 </div>
@@ -215,13 +216,14 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                 {/* Footer with Last Updated and Version Information */}
                 <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
                   <div>
-                    Last updated: {new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+                    Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
                       day: '2-digit', 
                       month: '2-digit', 
                       year: 'numeric' 
-                    })}
+                    })}</span>
                   </div>
-                  <div>
+                  <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                    bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
                     Version {item.version}
                   </div>
                 </div>
