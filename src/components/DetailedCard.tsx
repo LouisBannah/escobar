@@ -15,6 +15,7 @@ interface DetailedCardProps {
       title: string;
     }[];
     lastUpdated: string;
+    version: string;
   };
   onClose: () => void;
   onRequestAccess: (itemId: string) => void;
@@ -71,7 +72,7 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
     <div className="fixed inset-0 z-50 overflow-y-auto backdrop-blur-sm bg-black/30">
       <div className="min-h-screen px-4 text-center">
         <div className="fixed inset-0" onClick={onClose} />
-        <div className="inline-block w-full max-w-xl my-8 text-left align-middle transition-all transform">
+        <div className="inline-block w-full max-w-3xl my-8 text-left align-middle transition-all transform">
           <div className={`rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/90 relative z-[51] border ${colors.border}`}>
             {/* Gradient Banner */}
             <div className={`h-3 ${colors.banner}`} />
@@ -80,12 +81,12 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
             <div className={`p-6 ${colors.light} border-b ${colors.border}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <h2 className="text-2xl font-semibold text-gray-900">{item.shortTitle}</h2>
-                  <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.medium} ${colors.text}`}>
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-xl font-semibold text-gray-800">{item.shortTitle}</h2>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${colors.medium} ${colors.text}`}>
                       {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                     </span>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600">
+                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-700 shadow-sm border border-gray-300">
                       {item.category}
                     </span>
                   </div>
@@ -102,8 +103,22 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
             {!requestSent ? (
               <div className="p-6 space-y-6">
                 {/* Description */}
-                <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
-                
+                <div className="space-y-6">
+                  <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
+                  
+                  {/* Tags Section */}
+                  <div className="flex flex-wrap gap-2">
+                    {item.availableTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Materials Section */}
                 <div className={`rounded-xl p-6 ${colors.light}`}>
                   <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
@@ -131,23 +146,11 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                   </div>
                 </div>
 
-                {/* Tags Section */}
-                <div className="flex flex-wrap gap-2">
-                  {item.availableTags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
                 {/* Access Restricted Notice */}
                 <div className={`rounded-xl p-6 bg-amber-50/50 border border-amber-200/70 backdrop-blur-sm`}>
-                  <div className="flex items-start">
-                    <Lock className="w-5 h-5 text-amber-600 mt-1 mr-4 flex-shrink-0" />
-                    <div>
+                  <div className="flex items-start gap-4">
+                    <Lock className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
+                    <div className="flex-grow">
                       <h3 className="text-lg font-medium text-amber-800 mb-2">
                         Access Restricted
                       </h3>
@@ -158,7 +161,8 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                       </p>
                       <button
                         onClick={handleRequestAccess}
-                        className={`px-4 py-2 ${colors.button} text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center text-sm font-medium relative z-[52]`}
+                        className={`px-4 py-2 ${colors.button} text-white rounded-lg shadow-sm hover:shadow-md 
+                          transition-all duration-200 flex items-center text-sm font-medium relative z-[52]`}
                       >
                         Request Access
                       </button>
@@ -167,8 +171,28 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-end pt-4 border-t border-gray-100">
-                  <span className="text-sm text-gray-500">Last updated: {item.lastUpdated}</span>
+                <div className="mt-8 pt-6 border-t border-gray-100">
+                  <div className={`flex items-center gap-2 text-sm text-gray-500
+                    group cursor-default hover:text-gray-700 transition-colors duration-200`}>
+                    <svg 
+                      className="w-4 h-4 group-hover:text-gray-700 transition-colors duration-200" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={1.5} 
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
+                      />
+                    </svg>
+                    <span>Last updated {item.lastUpdated}</span>
+                    <div className={`ml-auto px-3 py-1 rounded-full text-xs font-medium
+                      bg-gray-50 text-gray-600 group-hover:bg-gray-100 transition-colors duration-200`}>
+                      Version {item.version}
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
