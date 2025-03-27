@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Download, Eye } from 'lucide-react';
+import { X, Download, Eye, FileText, Archive, Table, Presentation, Code, Globe } from 'lucide-react';
 
 interface ExpandedCardProps {
   item: {
@@ -26,182 +26,179 @@ interface ExpandedCardProps {
 
 const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Documentation' | 'Examples'>('Overview');
-  const [pdfViewer, setPdfViewer] = useState<{ isOpen: boolean; materialName: string | null }>({
-    isOpen: false,
-    materialName: null
-  });
+
+  const getThemeColors = (theme: string) => {
+    switch (theme) {
+      case 'Sales':
+        return {
+          light: 'bg-gradient-to-br from-emerald-50 to-teal-50',
+          medium: 'bg-emerald-100',
+          text: 'text-emerald-700',
+          border: 'border-emerald-200',
+          button: 'bg-emerald-600 hover:bg-emerald-700',
+          tab: 'bg-emerald-600',
+          success: 'bg-emerald-50',
+          banner: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-400'
+        };
+      case 'Delivery':
+        return {
+          light: 'bg-gradient-to-br from-blue-50 to-indigo-50',
+          medium: 'bg-blue-100',
+          text: 'text-blue-700',
+          border: 'border-blue-200',
+          button: 'bg-blue-600 hover:bg-blue-700',
+          tab: 'bg-blue-600',
+          success: 'bg-blue-50',
+          banner: 'bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-400'
+        };
+      default: // Quality Assurance
+        return {
+          light: 'bg-gradient-to-br from-purple-50 to-fuchsia-50',
+          medium: 'bg-purple-100',
+          text: 'text-purple-700',
+          border: 'border-purple-200',
+          button: 'bg-purple-600 hover:bg-purple-700',
+          tab: 'bg-purple-600',
+          success: 'bg-purple-50',
+          banner: 'bg-gradient-to-r from-purple-400 via-fuchsia-500 to-purple-400'
+        };
+    }
+  };
+
+  const colors = getThemeColors(item.theme);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 overflow-y-auto backdrop-blur-sm bg-black/30">
       <div className="min-h-screen px-4 text-center">
         <div className="fixed inset-0" onClick={onClose} />
-        <div className="inline-block w-full max-w-5xl my-8 text-left align-middle bg-white rounded-xl shadow-xl transition-all">
-          <div className="flex items-center justify-between p-4 border-b">
-            <div className="flex items-center space-x-3">
-              <h2 className="text-xl font-semibold text-gray-900">{item.shortTitle}</h2>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                item.theme === 'Sales' 
-                  ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20' 
-                  : item.theme === 'Delivery'
-                  ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
-                  : 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
-              }`}>
-                {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
-              </span>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          </div>
-
-          <div className="p-6">
-            <div className="flex space-x-4 border-b mb-6">
-              {['Overview', 'Documentation', 'Examples'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab as 'Overview' | 'Documentation' | 'Examples')}
-                  className={`pb-3 px-2 text-sm font-medium ${
-                    activeTab === tab
-                      ? 'text-emerald-600 border-b-2 border-emerald-600'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
-            <div className="space-y-6">
-              {activeTab === 'Overview' && (
-                <div className="space-y-6">
-                  <section>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Description</h3>
-                    <p className="text-gray-600 whitespace-pre-wrap">{item.longDescription}</p>
-                  </section>
-
-                  <section>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Business Value</h3>
-                    <p className="text-gray-600 whitespace-pre-wrap">{item.businessValue}</p>
-                  </section>
-
-                  <section>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Key Capabilities</h3>
-                    <p className="text-gray-600 whitespace-pre-wrap">{item.keyCapabilities}</p>
-                  </section>
-
-                  <div className="flex items-center justify-between pt-4 mt-6 border-t text-sm text-gray-500">
-                    <span>Last updated: {item.lastUpdated}</span>
+        <div className="inline-block w-full max-w-4xl my-8 text-left align-middle transition-all transform">
+          <div className={`rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/90 relative z-[51] border ${colors.border}`}>
+            {/* Gradient Banner */}
+            <div className={`h-3 ${colors.banner}`} />
+            
+            {/* Header */}
+            <div className={`p-6 ${colors.light} border-b ${colors.border}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <h2 className="text-2xl font-semibold text-gray-900">{item.shortTitle}</h2>
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.medium} ${colors.text}`}>
+                      {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
+                    </span>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600">
+                      {item.category}
+                    </span>
                   </div>
                 </div>
-              )}
-
-              {activeTab === 'Documentation' && (
-                <div className="space-y-8">
-                  <section className="bg-white rounded-xl p-8 border border-gray-100 shadow-sm">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-6">Available Documents</h3>
-                    <div className="divide-y divide-gray-100">
-                      {item.materials.map((material, index) => (
-                        <div key={index} className="py-4 first:pt-0 last:pb-0">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                              <div className={`p-2 rounded-lg ${
-                                item.theme === 'Sales' ? 'bg-emerald-50' 
-                                : item.theme === 'Delivery' ? 'bg-blue-50' 
-                                : 'bg-purple-50'
-                              }`}>
-                                {material.type === 'pdf' && <Eye className="w-5 h-5 text-gray-600" />}
-                              </div>
-                              <div>
-                                <h4 className="text-sm font-medium text-gray-900">{material.title}</h4>
-                                <p className="text-xs text-gray-500 mt-1">{material.type.toUpperCase()} Document</p>
-                              </div>
-                            </div>
-                            <div className="flex items-center space-x-3">
-                              <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                item.theme === 'Sales' ? 'bg-emerald-50 text-emerald-700'
-                                : item.theme === 'Delivery' ? 'bg-blue-50 text-blue-700'
-                                : 'bg-purple-50 text-purple-700'
-                              }`}>
-                                {material.type.toUpperCase()}
-                              </span>
-                              <div className="flex items-center space-x-2">
-                                {material.type === 'pdf' && (
-                                  <button
-                                    onClick={() => setPdfViewer({ isOpen: true, materialName: material.title })}
-                                    className={`inline-flex items-center px-3 py-1.5 border rounded-lg text-sm font-medium transition-colors ${
-                                      item.theme === 'Sales' ? 'text-emerald-600 border-emerald-200 hover:bg-emerald-50'
-                                      : item.theme === 'Delivery' ? 'text-blue-600 border-blue-200 hover:bg-blue-50'
-                                      : 'text-purple-600 border-purple-200 hover:bg-purple-50'
-                                    }`}
-                                  >
-                                    <Eye className="w-4 h-4 mr-2" />
-                                    View
-                                  </button>
-                                )}
-                                <a
-                                  href={material.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className={`inline-flex items-center px-3 py-1.5 border rounded-lg text-sm font-medium transition-colors ${
-                                    item.theme === 'Sales' ? 'text-emerald-600 border-emerald-200 hover:bg-emerald-50'
-                                    : item.theme === 'Delivery' ? 'text-blue-600 border-blue-200 hover:bg-blue-50'
-                                    : 'text-purple-600 border-purple-200 hover:bg-purple-50'
-                                  }`}
-                                >
-                                  <Download className="w-4 h-4 mr-2" />
-                                  Download
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                </div>
-              )}
-
-              {activeTab === 'Examples' && (
-                <div className="text-center py-12">
-                  <p className="text-gray-600">No examples available yet.</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* PDF Viewer Modal */}
-      {pdfViewer.isOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="min-h-screen px-4 text-center">
-            <div className="fixed inset-0" onClick={() => setPdfViewer({ isOpen: false, materialName: null })} />
-            <div className="inline-block w-full max-w-5xl my-8 text-left align-middle bg-white rounded-xl shadow-xl transition-all">
-              <div className="flex items-center justify-between p-4 border-b">
-                <h3 className="text-lg font-medium text-gray-900">
-                  {pdfViewer.materialName}
-                </h3>
                 <button
-                  onClick={() => setPdfViewer({ isOpen: false, materialName: null })}
-                  className="p-2 hover:bg-gray-100 rounded-full"
+                  onClick={onClose}
+                  className="p-2 hover:bg-black/5 rounded-full transition-colors"
                 >
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
-              <div className="h-[80vh] bg-gray-100">
-                <iframe
-                  src="/documents/10-page-sample.pdf"
-                  className="w-full h-full rounded-b-xl"
-                  title="PDF Viewer"
-                />
+
+              {/* Tabs */}
+              <div className="flex space-x-1 mt-6">
+                {(['Overview', 'Documentation', 'Examples'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      activeTab === tab
+                        ? `${colors.tab} text-white shadow-sm`
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {activeTab === 'Overview' && (
+                <>
+                  <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {item.availableTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'Documentation' && (
+                <div className="space-y-4">
+                  {/* Materials Section */}
+                  <div className={`rounded-xl p-6 ${colors.light}`}>
+                    <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
+                    <div className="space-y-3">
+                      {item.materials.map((material, index) => (
+                        <div 
+                          key={index} 
+                          className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-gray-100 hover:bg-white/95 transition-colors"
+                        >
+                          {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
+                          {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
+                          {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
+                          {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
+                          {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
+                          {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
+                          {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
+                          {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
+                          <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
+                          <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
+                            {material.type.toUpperCase()}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {material.type === 'pdf' && (
+                              <button
+                                onClick={() => onViewPdf(material.title, material.url)}
+                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                title="View PDF"
+                              >
+                                <Eye className="w-4 h-4 text-gray-500" />
+                              </button>
+                            )}
+                            <a
+                              href={material.url}
+                              download
+                              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                              title="Download"
+                            >
+                              <Download className="w-4 h-4 text-gray-500" />
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'Examples' && (
+                <div className="space-y-4">
+                  <p className="text-gray-600">Example content and use cases will be displayed here.</p>
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="flex items-center justify-end pt-4 border-t border-gray-100">
+                <span className="text-sm text-gray-500">Last updated: {item.lastUpdated}</span>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
