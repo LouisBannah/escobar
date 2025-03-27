@@ -7,7 +7,7 @@ import FeedbackModal from './FeedbackModal';
 interface ToolkitItemDetailProps {
   itemId: string;
   onBack: () => void;
-  onLogout: () => void;
+  onLogout?: () => void;
 }
 
 const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, onLogout }) => {
@@ -162,7 +162,7 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
                     </div>
                     <div className="border-t">
                       <button
-                        onClick={onLogout}
+                        onClick={() => onLogout?.()}
                         className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                       >
                         <LogOut className="w-4 h-4 mr-3" />

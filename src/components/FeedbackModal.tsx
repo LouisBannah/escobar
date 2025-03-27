@@ -4,10 +4,10 @@ import { X } from 'lucide-react';
 interface FeedbackModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, title }) => {
+const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, title = "Toolkit Feedback" }) => {
   const [feedback, setFeedback] = useState('');
 
   if (!isOpen) return null;

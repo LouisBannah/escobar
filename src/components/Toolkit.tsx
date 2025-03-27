@@ -1,16 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toolkitItems } from '../data/toolkitItems';
 import { VALID_CATEGORIES } from '../data/constants';
-import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye } from 'lucide-react';
+import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye, ChevronLeft, ChevronRight, Lock, CheckCircle } from 'lucide-react';
 import FeedbackModal from './FeedbackModal';
 import ExpandedCard from './ExpandedCard';
+import DetailedCard from './DetailedCard';
+import { useUser } from '../contexts/UserContext';
 
-interface ToolkitProps {
-  onItemSelect: (itemId: string) => void;
-  onLogout: () => void;
-}
-
-const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Element => {
+const Toolkit: React.FC = () => {
+  const { user, setUser } = useUser();
   const [activeTab, setActiveTab] = useState<'Sales' | 'Delivery' | 'Quality Assurance' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -26,7 +24,10 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
     materialName: null
   });
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [showPdfViewer, setShowPdfViewer] = useState(false);
+  const [pdfViewerContent, setPdfViewerContent] = useState<{ name: string; url: string } | null>(null);
+  const [accessRequests, setAccessRequests] = useState<string[]>([]);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Get unique categories and material types from our data
@@ -93,6 +94,27 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
     return true;
   });
 
+  const handleRequestAccess = (itemId: string) => {
+    setAccessRequests(prev => [...prev, itemId]);
+    // Here you would typically make an API call to submit the access request
+    console.log(`Access requested for item: ${itemId}`);
+    
+    // Auto-close the card after 2 seconds
+    setTimeout(() => {
+      handleCloseCard();
+    }, 2000);
+  };
+
+  const handleCardClick = (item: any) => {
+    setSelectedItem(item);
+  };
+
+  const handleCloseCard = () => {
+    setSelectedItem(null);
+    setShowPdfViewer(false);
+    setPdfViewerContent(null);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <header className="bg-white border-b">
@@ -150,7 +172,7 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
                       <div className="text-xs text-gray-500">joep.arends@deloitte.nl</div>
                       <div className="mt-2">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                          Level 2 Access
+                          Level {user?.accessLevel} Access
                         </span>
                       </div>
                     </div>
@@ -158,8 +180,13 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
                       <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={isAuthorized}
-                          onChange={(e) => setIsAuthorized(e.target.checked)}
+                          checked={user?.accessLevel === 2}
+                          onChange={(e) => {
+                            setUser({
+                              ...user,
+                              accessLevel: e.target.checked ? 2 : 1
+                            });
+                          }}
                           className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded mr-3"
                         />
                         Authorized
@@ -175,7 +202,9 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
                     </div>
                     <div className="border-t">
                       <button
-                        onClick={onLogout}
+                        onClick={() => {
+                          // Handle logout
+                        }}
                         className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                       >
                         <LogOut className="w-4 h-4 mr-3" />
@@ -328,7 +357,7 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
             {filteredItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setExpandedItem(item.id)}
+                onClick={() => setSelectedItem(item)}
                 className="text-left bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow flex flex-col relative"
               >
                 {/* Theme Badge */}
@@ -413,27 +442,45 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
         )}
       </main>
 
+      {/* Card Modal */}
+      {selectedItem && (
+        user?.accessLevel === 2 ? (
+          <ExpandedCard
+            item={selectedItem}
+            onClose={handleCloseCard}
+            onViewPdf={(name, url) => {
+              setPdfViewerContent({ name, url });
+              setShowPdfViewer(true);
+            }}
+          />
+        ) : (
+          <DetailedCard
+            item={selectedItem}
+            onClose={handleCloseCard}
+            onRequestAccess={handleRequestAccess}
+          />
+        )
+      )}
+
       {/* PDF Viewer Modal */}
-      {pdfViewer.isOpen && (
+      {showPdfViewer && pdfViewerContent && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="min-h-screen px-4 text-center">
-            <div className="fixed inset-0" onClick={() => setPdfViewer({ isOpen: false, materialName: null })} />
-            <div className="inline-block w-full max-w-5xl my-8 text-left align-middle bg-white rounded-xl shadow-xl transition-all">
+            <div className="fixed inset-0" onClick={() => setShowPdfViewer(false)} />
+            <div className="inline-block w-full max-w-4xl my-8 text-left align-middle bg-white rounded-xl shadow-xl transition-all">
               <div className="flex items-center justify-between p-4 border-b">
-                <h3 className="text-lg font-medium text-gray-900">
-                  {pdfViewer.materialName}
-                </h3>
+                <h2 className="text-xl font-semibold text-gray-900">{pdfViewerContent.name}</h2>
                 <button
-                  onClick={() => setPdfViewer({ isOpen: false, materialName: null })}
+                  onClick={() => setShowPdfViewer(false)}
                   className="p-2 hover:bg-gray-100 rounded-full"
                 >
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
-              <div className="h-[80vh] bg-gray-100">
+              <div className="p-4">
                 <iframe
-                  src="/documents/10-page-sample.pdf"
-                  className="w-full h-full rounded-b-xl"
+                  src={pdfViewerContent.url}
+                  className="w-full h-[80vh] rounded-lg"
                   title="PDF Viewer"
                 />
               </div>
@@ -442,18 +489,10 @@ const Toolkit: React.FC<ToolkitProps> = ({ onItemSelect, onLogout }): JSX.Elemen
         </div>
       )}
 
-      {expandedItem && (
-        <ExpandedCard
-          item={toolkitItems.find(item => item.id === expandedItem)!}
-          onClose={() => setExpandedItem(null)}
-          isAuthorized={isAuthorized}
-        />
-      )}
-
+      {/* Feedback Modal */}
       <FeedbackModal
         isOpen={showFeedback}
         onClose={() => setShowFeedback(false)}
-        title="Toolkit Feedback"
       />
     </div>
   );

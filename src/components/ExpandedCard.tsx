@@ -21,10 +21,10 @@ interface ExpandedCardProps {
     lastUpdated: string;
   };
   onClose: () => void;
-  isAuthorized: boolean;
+  onViewPdf: (name: string, url: string) => void;
 }
 
-const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, isAuthorized }) => {
+const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose, onViewPdf }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Documentation' | 'Examples'>('Overview');
   const [pdfViewer, setPdfViewer] = useState<{ isOpen: boolean; materialName: string | null }>({
     isOpen: false,
