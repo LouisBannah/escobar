@@ -21,6 +21,9 @@ export const Toolkit: React.FC = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showMaterialDropdown, setShowMaterialDropdown] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Filters>({
     category: [],
     materials: [],
@@ -250,73 +253,168 @@ export const Toolkit: React.FC = () => {
           {/* Filter Panel */}
           {showFilters && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
-              <div className="grid grid-cols-3 gap-6">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900 mb-3">Themes</h3>
-                  <div className="space-y-2">
-                    {['Sales', 'Delivery', 'Quality Assurance'].map(theme => (
-                      <label key={theme} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={activeFilters.theme.includes(theme)}
-                          onChange={() => handleFilterChange('theme', theme)}
-                          className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                          {theme}
-                          <span className="ml-1 text-gray-400">
-                            ({toolkitItems.filter(item => item.theme === theme).length})
-                          </span>
-                        </span>
-                      </label>
-                    ))}
+              <div className="flex flex-wrap gap-4">
+                {/* Theme Filter */}
+                <div className="flex-1 min-w-[200px]">
+                  <div className="relative">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setShowThemeDropdown(!showThemeDropdown)}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700">Themes</span>
+                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showThemeDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showThemeDropdown && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                          <div className="p-2">
+                            {['Sales', 'Delivery', 'Quality Assurance'].map(theme => (
+                              <label key={theme} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={activeFilters.theme.includes(theme)}
+                                  onChange={() => handleFilterChange('theme', theme)}
+                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                />
+                                <span className="ml-2 text-sm text-gray-700">
+                                  {theme}
+                                  <span className="ml-1 text-gray-400">
+                                    ({toolkitItems.filter(item => item.theme === theme).length})
+                                  </span>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900 mb-3">Categories</h3>
-                  <div className="space-y-2">
-                    {VALID_CATEGORIES.map(category => (
-                      <label key={category} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={activeFilters.category.includes(category)}
-                          onChange={() => handleFilterChange('category', category)}
-                          className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                          {category}
-                          <span className="ml-1 text-gray-400">
-                            ({toolkitItems.filter(item => item.category === category).length})
-                          </span>
-                        </span>
-                      </label>
-                    ))}
+
+                {/* Category Filter */}
+                <div className="flex-1 min-w-[200px]">
+                  <div className="relative">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700">Categories</span>
+                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showCategoryDropdown && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                          <div className="p-2">
+                            {VALID_CATEGORIES.map(category => (
+                              <label key={category} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={activeFilters.category.includes(category)}
+                                  onChange={() => handleFilterChange('category', category)}
+                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                />
+                                <span className="ml-2 text-sm text-gray-700">
+                                  {category}
+                                  <span className="ml-1 text-gray-400">
+                                    ({toolkitItems.filter(item => item.category === category).length})
+                                  </span>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900 mb-3">Material Types</h3>
-                  <div className="space-y-2">
-                    {materialTypes.map(type => (
-                      <label key={type} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={activeFilters.materials.includes(type)}
-                          onChange={() => handleFilterChange('materials', type)}
-                          className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                          {type.toUpperCase()}
-                          <span className="ml-1 text-gray-400">
-                            ({toolkitItems.filter(item => 
-                              item.materials.some(m => m.type === type)
-                            ).length})
-                          </span>
-                        </span>
-                      </label>
-                    ))}
+
+                {/* Material Types Filter */}
+                <div className="flex-1 min-w-[200px]">
+                  <div className="relative">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setShowMaterialDropdown(!showMaterialDropdown)}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700">Material Types</span>
+                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showMaterialDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showMaterialDropdown && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                          <div className="p-2">
+                            {materialTypes.map(type => (
+                              <label key={type} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={activeFilters.materials.includes(type)}
+                                  onChange={() => handleFilterChange('materials', type)}
+                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                />
+                                <span className="ml-2 text-sm text-gray-700">
+                                  {type.toUpperCase()}
+                                  <span className="ml-1 text-gray-400">
+                                    ({toolkitItems.filter(item => 
+                                      item.materials.some(m => m.type === type)
+                                    ).length})
+                                  </span>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Selected Filters Display */}
+              {(activeFilters.theme.length > 0 || activeFilters.category.length > 0 || activeFilters.materials.length > 0) && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {activeFilters.theme.map(theme => (
+                    <span key={theme} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                      {theme}
+                      <button
+                        onClick={() => handleFilterChange('theme', theme)}
+                        className="ml-1 text-emerald-600 hover:text-emerald-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  {activeFilters.category.map(category => (
+                    <span key={category} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                      {category}
+                      <button
+                        onClick={() => handleFilterChange('category', category)}
+                        className="ml-1 text-blue-600 hover:text-blue-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  {activeFilters.materials.map(type => (
+                    <span key={type} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                      {type.toUpperCase()}
+                      <button
+                        onClick={() => handleFilterChange('materials', type)}
+                        className="ml-1 text-purple-600 hover:text-purple-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
 
               {Object.values(activeFilters).some(arr => arr.length > 0) && (
                 <div className="mt-4 pt-4 border-t flex justify-end">

@@ -433,13 +433,18 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
             </div>
 
             {/* Footer */}
-            <div className={`px-6 py-3 border-t ${colors.border} flex justify-between items-center`}>
-              <span className="text-sm text-gray-500">
-                Last updated: {item.lastUpdated} • Version {item.version}
-              </span>
-              <button className="text-sm text-gray-500 hover:text-gray-700">
-                Share
-              </button>
+            <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
+              <div>
+                Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+                  day: '2-digit', 
+                  month: '2-digit', 
+                  year: 'numeric' 
+                })}</span>
+              </div>
+              <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
+                Version {item.version}
+              </div>
             </div>
           </div>
         </div>
