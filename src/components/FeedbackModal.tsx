@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Send, MessageSquare } from 'lucide-react';
-import { showFeedbackNotice } from './FeedbackNotice';
+import { X, Send } from 'lucide-react';
+import { showFeedbackNotice } from './FeedbackPopup';
 
 interface FeedbackModalProps {
   isOpen: boolean;
