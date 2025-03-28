@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toolkitItems } from '../data/toolkitItems';
 import { VALID_CATEGORIES } from '../data/constants';
-import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe } from 'lucide-react';
+import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe, Download, Lock } from 'lucide-react';
 import FeedbackModal from './FeedbackModal';
 import ExpandedCard from './ExpandedCard';
 import DetailedCard from './DetailedCard';
 import { useUser } from '../contexts/UserContext';
+import PDFViewer from './PDFViewer';
 
 interface Filters {
   category: string[];
@@ -30,6 +31,7 @@ export const Toolkit: React.FC = () => {
     theme: []
   });
   const [currentItemId, setCurrentItemId] = useState<string | null>(null);
+  const [selectedPDF, setSelectedPDF] = useState<{ url: string; title: string } | null>(null);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Get unique material types from our data
@@ -109,6 +111,18 @@ export const Toolkit: React.FC = () => {
 
   const handleCloseCard = () => {
     setCurrentItemId(null);
+  };
+
+  const handleViewPDF = (url: string, title: string) => {
+    setSelectedPDF({ url, title });
+  };
+
+  const handleClosePDF = () => {
+    setSelectedPDF(null);
+  };
+
+  const handleDownload = (url: string) => {
+    window.open(url, '_blank');
   };
 
   return (
@@ -554,6 +568,16 @@ export const Toolkit: React.FC = () => {
         isOpen={showFeedback}
         onClose={() => setShowFeedback(false)}
       />
+
+      {/* PDF Viewer Modal */}
+      {selectedPDF && (
+        <PDFViewer
+          url={selectedPDF.url}
+          title={selectedPDF.title}
+          onClose={handleClosePDF}
+          onDownload={() => handleDownload(selectedPDF.url)}
+        />
+      )}
     </div>
   );
 }; 

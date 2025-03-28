@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, FileText, Archive, Table, Presentation, Code, Globe, Download } from 'lucide-react';
+import { X, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye } from 'lucide-react';
 import StructuredContent from './StructuredContent';
 import { detailedDescriptionsMap } from '../data/content';
+import PDFViewer from './PDFViewer';
 
 interface ExpandedCardProps {
   item: {
@@ -28,6 +29,7 @@ interface ExpandedCardProps {
 
 const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Materials' | 'Code Examples' | 'Contact'>('Overview');
+  const [selectedPDF, setSelectedPDF] = useState<{ url: string; title: string } | null>(null);
 
   const getThemeColors = (theme: string) => {
     switch (theme) {
@@ -71,6 +73,14 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   
   // Get the detailed description for this item
   const detailedDescription = detailedDescriptionsMap[item.id];
+
+  const handleViewPDF = (url: string, title: string) => {
+    setSelectedPDF({ url, title });
+  };
+
+  const handleClosePDF = () => {
+    setSelectedPDF(null);
+  };
 
   const handleDownload = (url: string) => {
     // Implementation for downloading a file
@@ -379,12 +389,22 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                           <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
                             {material.type.toUpperCase()}
                           </span>
-                          <button 
-                            onClick={() => handleDownload(material.url)}
-                            className="text-gray-500 hover:text-blue-500 transition-colors"
-                          >
-                            <Download className="w-4 h-4" />
-                          </button>
+                          {material.type === 'pdf' && (
+                            <>
+                              <button 
+                                onClick={() => handleViewPDF('/documents/10-page-sample.pdf', material.title)}
+                                className="text-gray-500 hover:text-blue-500 transition-colors"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <button 
+                                onClick={() => handleDownload(material.url)}
+                                className="text-gray-500 hover:text-blue-500 transition-colors"
+                              >
+                                <Download className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -449,6 +469,16 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
           </div>
         </div>
       </div>
+
+      {/* PDF Viewer Modal */}
+      {selectedPDF && (
+        <PDFViewer
+          url={selectedPDF.url}
+          title={selectedPDF.title}
+          onClose={handleClosePDF}
+          onDownload={() => handleDownload(selectedPDF.url)}
+        />
+      )}
     </div>
   );
 };
