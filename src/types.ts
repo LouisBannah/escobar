@@ -18,4 +18,12 @@ export interface User {
   accessLevel: 1 | 2;
 }
 
+export interface CodeExample {
+  title: string;
+  description: string;
+  language: string;
+  filePath: string;
+  code: string;
+}
+
 export type Theme = 'light' | 'dark' | 'brand';

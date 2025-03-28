@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { X, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye, ChevronDown, ChevronUp } from 'lucide-react';
 import StructuredContent from './StructuredContent';
+import CodeExampleViewer from './CodeExampleViewer';
 import { detailedDescriptionsMap } from '../data/content';
+import { codeExamplesMap } from '../data/content/codeExamples';
 
 interface ExpandedCardProps {
   item: {
@@ -72,6 +74,9 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   
   // Get the detailed description for this item
   const detailedDescription = detailedDescriptionsMap[item.id];
+  
+  // Get the code examples for this item
+  const codeExamples = codeExamplesMap[item.id] || [];
 
   const handleDownload = (url: string) => {
     // Always use the sample PDF for downloads
@@ -431,17 +436,34 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               {/* Code Examples Tab */}
               {activeTab === 'Code Examples' && (
                 <div className="space-y-6">
-                  <p className="text-gray-600">Code examples and implementation guides.</p>
-                  
-                  <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
-                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
-                      Sample Usage
-                    </h3>
-                    <div className="prose prose-gray max-w-none">
-                      <p className="text-gray-700">{item.selectedTools}</p>
+                  {codeExamples.length > 0 ? (
+                    <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
+                      <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                        <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                        Code Examples
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4">
+                        Below are practical code examples related to this tool. Click on an example to expand it, view the full code, and copy it to your clipboard.
+                      </p>
+                      <div className="space-y-2">
+                        {codeExamples.map((example, index) => (
+                          <CodeExampleViewer 
+                            key={index} 
+                            example={example} 
+                            themeColors={colors} 
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
+                      <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                        <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                        Code Examples
+                      </h3>
+                      <p className="text-gray-700">No code examples are available for this tool.</p>
+                    </div>
+                  )}
                 </div>
               )}
 

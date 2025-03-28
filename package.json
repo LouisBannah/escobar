@@ -15,11 +15,13 @@
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "lucide-react": "^0.344.0",
+    "prismjs": "^1.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@types/prismjs": "^1.26.5",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.3.4",

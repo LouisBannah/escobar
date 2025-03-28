@@ -4,6 +4,7 @@ import { detailedDescriptions3 } from './detailedDescriptions3';
 import { detailedDescriptions4 } from './detailedDescriptions4';
 import { detailedDescriptions5 } from './detailedDescriptions5';
 import { idMappings } from './idMappings';
+import { codeExamplesMap } from './codeExamples';
 
 export const allDetailedDescriptions = [
   ...detailedDescriptions,
@@ -20,4 +21,5 @@ export const detailedDescriptionsMap = allDetailedDescriptions.reduce((acc, desc
   return acc;
 }, {} as Record<string, typeof allDetailedDescriptions[0]>);
 
-export type { ContentBlock, DetailedDescription } from './detailedDescriptions'; 
+export type { ContentBlock, DetailedDescription } from './detailedDescriptions';
+export { codeExamplesMap }; 
