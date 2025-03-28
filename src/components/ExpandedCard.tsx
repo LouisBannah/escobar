@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { X, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye } from 'lucide-react';
+import { X, FileText, Archive, Table, Presentation, Code, Globe, Download, Eye, ChevronDown, ChevronUp } from 'lucide-react';
 import StructuredContent from './StructuredContent';
 import { detailedDescriptionsMap } from '../data/content';
-import PDFViewer from './PDFViewer';
 
 interface ExpandedCardProps {
   item: {
@@ -29,7 +28,7 @@ interface ExpandedCardProps {
 
 const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Materials' | 'Code Examples' | 'Contact'>('Overview');
-  const [selectedPDF, setSelectedPDF] = useState<{ url: string; title: string } | null>(null);
+  const [expandedPDF, setExpandedPDF] = useState<{ url: string; title: string } | null>(null);
 
   const getThemeColors = (theme: string) => {
     switch (theme) {
@@ -74,18 +73,9 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   // Get the detailed description for this item
   const detailedDescription = detailedDescriptionsMap[item.id];
 
-  const handleViewPDF = (url: string, title: string) => {
-    setSelectedPDF({ url, title });
-  };
-
-  const handleClosePDF = () => {
-    setSelectedPDF(null);
-  };
-
   const handleDownload = (url: string) => {
-    // Implementation for downloading a file
-    console.log(`Downloading file from: ${url}`);
-    window.open(url, '_blank');
+    // Always use the sample PDF for downloads
+    window.open('/documents/10-page-sample.pdf', '_blank');
   };
 
   return (
@@ -364,8 +354,6 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               {/* Materials Tab */}
               {activeTab === 'Materials' && (
                 <div className="space-y-6">
-                  <p className="text-gray-600">All resources and materials available for this toolkit item.</p>
-                  
                   <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
                     <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
@@ -375,35 +363,63 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       {item.materials.map((material, index) => (
                         <div 
                           key={index} 
-                          className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-gray-100 hover:bg-white/95 transition-colors"
+                          className={`bg-white/80 rounded-lg border border-gray-100 transition-all duration-200 ${
+                            expandedPDF?.title === material.title ? 'shadow-md' : ''
+                          }`}
                         >
-                          {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
-                          {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
-                          {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
-                          {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
-                          {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
-                          {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
-                          {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
-                          {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
-                          <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
-                          <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
-                            {material.type.toUpperCase()}
-                          </span>
-                          {material.type === 'pdf' && (
-                            <>
-                              <button 
-                                onClick={() => handleViewPDF('/documents/10-page-sample.pdf', material.title)}
-                                className="text-gray-500 hover:text-blue-500 transition-colors"
-                              >
-                                <Eye className="w-4 h-4" />
-                              </button>
-                              <button 
-                                onClick={() => handleDownload(material.url)}
-                                className="text-gray-500 hover:text-blue-500 transition-colors"
-                              >
-                                <Download className="w-4 h-4" />
-                              </button>
-                            </>
+                          <div className="flex items-center gap-3 p-3 hover:bg-white/95 transition-colors">
+                            {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
+                            {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
+                            {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
+                            {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
+                            {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
+                            {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
+                            {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
+                            {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
+                            <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
+                            <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
+                              {material.type.toUpperCase()}
+                            </span>
+                            {material.type === 'pdf' && (
+                              <>
+                                <button 
+                                  onClick={() => {
+                                    if (expandedPDF?.title === material.title) {
+                                      setExpandedPDF(null);
+                                    } else {
+                                      setExpandedPDF({ 
+                                        url: 'http://localhost:5173/documents/10-page-sample.pdf',
+                                        title: material.title 
+                                      });
+                                    }
+                                  }}
+                                  className="text-gray-500 hover:text-blue-500 transition-colors"
+                                >
+                                  {expandedPDF?.title === material.title ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                  ) : (
+                                    <Eye className="w-4 h-4" />
+                                  )}
+                                </button>
+                                <button 
+                                  onClick={() => handleDownload(material.url)}
+                                  className="text-gray-500 hover:text-blue-500 transition-colors"
+                                >
+                                  <Download className="w-4 h-4" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                          {material.type === 'pdf' && expandedPDF?.title === material.title && (
+                            <div className="border-t border-gray-100">
+                              <div className="p-4">
+                                <iframe
+                                  src={`${expandedPDF.url}#toolbar=0`}
+                                  className="w-full h-[600px] rounded-md"
+                                  title={expandedPDF.title}
+                                />
+                              </div>
+                            </div>
                           )}
                         </div>
                       ))}
@@ -469,16 +485,6 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
           </div>
         </div>
       </div>
-
-      {/* PDF Viewer Modal */}
-      {selectedPDF && (
-        <PDFViewer
-          url={selectedPDF.url}
-          title={selectedPDF.title}
-          onClose={handleClosePDF}
-          onDownload={() => handleDownload(selectedPDF.url)}
-        />
-      )}
     </div>
   );
 };
