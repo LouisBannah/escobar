@@ -158,10 +158,10 @@ export const Toolkit: React.FC = () => {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setShowFeedback(true)}
-                className="flex items-center space-x-2 px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-emerald-600 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:border-emerald-200 hover:bg-emerald-50 rounded-md text-gray-600 hover:text-emerald-600 text-sm transition-colors"
                 title="Provide Feedback"
               >
-                <MessageSquare size={20} />
+                <MessageSquare size={14} className="flex-shrink-0" />
                 <span>Feedback</span>
               </button>
               <div className="relative" ref={profileMenuRef}>
