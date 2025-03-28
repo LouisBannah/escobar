@@ -17,7 +17,6 @@ interface Filters {
 
 export const Toolkit: React.FC = () => {
   const { user, setUser } = useUser();
-  const [activeTab, setActiveTab] = useState<'Sales' | 'Delivery' | 'Quality Assurance' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -62,18 +61,13 @@ export const Toolkit: React.FC = () => {
 
   const filteredItems = React.useMemo(() => {
     return toolkitItems.filter(item => {
-      // Filter by theme if active tab is set
-      if (activeTab && item.theme !== activeTab) {
+      // Apply theme filters
+      if (activeFilters.theme.length > 0 && !activeFilters.theme.includes(item.theme)) {
         return false;
       }
 
       // Apply category filters
       if (activeFilters.category.length > 0 && !activeFilters.category.includes(item.category)) {
-        return false;
-      }
-
-      // Apply theme filters
-      if (activeFilters.theme.length > 0 && !activeFilters.theme.includes(item.theme)) {
         return false;
       }
 
@@ -97,7 +91,7 @@ export const Toolkit: React.FC = () => {
 
       return true;
     });
-  }, [activeTab, activeFilters, searchQuery]);
+  }, [activeFilters, searchQuery]);
 
   const handleRequestAccess = (itemId: string) => {
     // Here you would typically make an API call to submit the access request
@@ -135,21 +129,21 @@ export const Toolkit: React.FC = () => {
                 Converge™ <span className="text-gray-700">Toolkit</span>
               </div>
               <nav className="flex space-x-4">
-                {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((tab) => (
+                {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => (
                   <button
-                    key={tab}
-                    onClick={() => setActiveTab(activeTab === tab ? null : tab)}
+                    key={theme}
+                    onClick={() => handleFilterChange('theme', theme)}
                     className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
-                      activeTab === tab
-                        ? tab === 'Sales'
+                      activeFilters.theme.includes(theme)
+                        ? theme === 'Sales'
                           ? 'bg-emerald-50 border border-emerald-200 text-gray-900 shadow-sm'
-                          : tab === 'Delivery'
+                          : theme === 'Delivery'
                           ? 'bg-blue-50 border border-blue-200 text-gray-900 shadow-sm'
                           : 'bg-purple-50 border border-purple-200 text-gray-900 shadow-sm'
-                        : 'text-gray-700 hover:bg-gray-50'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }`}
                   >
-                    {tab}
+                    {theme}
                   </button>
                 ))}
               </nav>
