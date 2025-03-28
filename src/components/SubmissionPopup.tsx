@@ -32,18 +32,16 @@ export function showSubmissionNotice(theme: Theme): Promise<void> {
     };
     
     // Render the notification in the portal using the modern API
-    root.render(<SubmissionPopup theme={theme} />);
+    root.render(<SubmissionPopup />);
     
     // Set a timeout to automatically close after 5 seconds
     setTimeout(cleanUp, 5000);
   });
 }
 
-interface SubmissionPopupProps {
-  theme: Theme;
-}
+interface SubmissionPopupProps {}
 
-function SubmissionPopup({ theme }: SubmissionPopupProps) {
+function SubmissionPopup({}: SubmissionPopupProps) {
   const [countdown, setCountdown] = useState(5);
   const [isExiting, setIsExiting] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -81,81 +79,50 @@ function SubmissionPopup({ theme }: SubmissionPopupProps) {
     }
   }, [countdown]);
 
-  const getThemeColors = (theme: Theme): ThemeColors => {
-    switch (theme) {
-      case 'Sales':
-        return {
-          lighter: 'bg-gradient-to-r from-emerald-50/40 to-teal-50/40 backdrop-blur-sm',
-          text: 'text-emerald-800',
-          border: 'border-emerald-200',
-          button: 'bg-emerald-600'
-        };
-      case 'Delivery':
-        return {
-          lighter: 'bg-gradient-to-r from-blue-50/40 to-indigo-50/40 backdrop-blur-sm',
-          text: 'text-blue-800',
-          border: 'border-blue-200',
-          button: 'bg-blue-600'
-        };
-      default: // Quality Assurance
-        return {
-          lighter: 'bg-gradient-to-r from-purple-50/40 to-fuchsia-50/40 backdrop-blur-sm',
-          text: 'text-purple-800',
-          border: 'border-purple-200',
-          button: 'bg-purple-600'
-        };
-    }
-  };
-
-  const colors = getThemeColors(theme);
-
   return (
-    <div className="fixed inset-0 z-[999] overflow-y-auto backdrop-blur-sm bg-black/30 flex items-center justify-center"
-         style={{ 
-           animation: isExiting ? 'fadeOut 0.5s forwards' : 'fadeIn 0.3s forwards',
-         }}>
+    <div 
+      className="fixed inset-0 z-[999] overflow-y-auto backdrop-blur-sm bg-black/30 flex items-center justify-center"
+      style={{ animation: isExiting ? 'fadeOut 0.5s forwards' : 'fadeIn 0.3s forwards' }}
+    >
       <div className="max-w-md w-full mx-auto">
-        <div className={`rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/90 relative z-[1000] border ${colors.border}`}
-             style={{ 
-               animation: isExiting ? 'scaleOut 0.5s forwards' : 'scaleIn 0.3s forwards',
-             }}>
-          {/* Request Submitted Notice */}
-          <div className={`p-6 ${colors.lighter} relative overflow-hidden`}>
+        <div 
+          className="rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white relative z-[1000] border border-gray-100 shadow-[0_0_20px_rgba(0,0,0,0.08)]"
+          style={{ animation: isExiting ? 'scaleOut 0.5s forwards' : 'scaleIn 0.3s forwards' }}
+        >
+          <div className="flex flex-col items-center p-6">
+            {/* Success animation at the top with proper spacing */}
+            <div className="mb-5">
+              <div className="success-circle">
+                <div className="success-check"></div>
+              </div>
+            </div>
+            
+            {/* Content with proper spacing */}
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Request Submitted
+              </h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Your request for Level 2 access has been submitted. You will be notified once your request has been reviewed.
+              </p>
+              <p className="text-sm text-gray-500">
+                This window will close automatically in {Math.max(countdown, 0)} second{countdown !== 1 ? 's' : ''}
+              </p>
+            </div>
+            
             {/* Progress bar */}
             <div 
-              className={`absolute bottom-0 left-0 h-1 ${colors.button}`}
+              className="absolute bottom-0 left-0 h-1 bg-green-500"
               style={{ 
                 width: `${progress}%`,
                 transition: 'width 50ms linear'
               }} 
             />
-            
-            <div className="relative flex items-start gap-4">
-              <CheckCircle className={`w-5 h-5 ${colors.text} mt-1 flex-shrink-0`} />
-              <div className="flex-grow">
-                <h3 className={`text-lg font-medium ${colors.text} mb-2`}>
-                  Request Submitted
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Your request for Level 2 access has been submitted. You will be notified once your request has been reviewed.
-                </p>
-                <p className="text-sm text-gray-500">
-                  This window will close automatically in {Math.max(countdown, 0)} second{countdown !== 1 ? 's' : ''}...
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
-
-interface ThemeColors {
-  lighter: string;
-  text: string;
-  border: string;
-  button: string;
 }
 
 // Add CSS animations
@@ -180,6 +147,43 @@ if (typeof document !== 'undefined') {
     @keyframes scaleOut {
       from { transform: scale(1); opacity: 1; }
       to { transform: scale(0.95); opacity: 0; }
+    }
+
+    /* Success animation */
+    .success-circle {
+      width: 60px;
+      height: 60px;
+      background-color: #10B981;
+      border-radius: 50%;
+      position: relative;
+      transform: scale(0);
+      animation: success-circle-animation 0.5s ease-in-out forwards;
+    }
+    
+    @keyframes success-circle-animation {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      60% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    
+    .success-check {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 30px;
+      height: 15px;
+      border-bottom: 4px solid white;
+      border-left: 4px solid white;
+      transform-origin: center;
+      transform: translate(-50%, -70%) rotate(-45deg) scale(0);
+      animation: success-check-animation 0.5s ease-in-out 0.3s forwards;
+    }
+    
+    @keyframes success-check-animation {
+      0% { transform: translate(-50%, -70%) rotate(-45deg) scale(0); }
+      100% { transform: translate(-50%, -70%) rotate(-45deg) scale(1); }
     }
   `;
   document.head.appendChild(style);
