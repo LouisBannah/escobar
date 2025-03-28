@@ -31,12 +31,12 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
     console.log(`Access requested for item: ${item.id}`);
     onRequestAccess(item.id);
     
+    // Close the detailed card immediately
+    onClose();
+    
     // Show the submission notice using the portal
     try {
-      // We need to keep the detailed card open while the popup is showing
       await showSubmissionNotice(item.theme);
-      // After the popup is done, we can close the detailed card
-      onClose();
     } catch (error) {
       console.error('Error showing submission notice:', error);
     }
