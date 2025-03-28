@@ -36,6 +36,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #111827; /* dark background color */
+  background-image: url('/documents/background2.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Reset for the toolkit content area */
+.toolkit-content {
+  background-color: rgba(249, 250, 251, 0.70);
+  min-height: 100vh;
+  backdrop-filter: blur(1px);
 }
 
 /* Add the animation for the progress bar in the submission notice */

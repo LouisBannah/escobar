@@ -26,8 +26,20 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="relative w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
+      {/* Background image */}
+      <div 
+        className="absolute inset-0 w-full h-full z-0" 
+        style={{
+          backgroundImage: "url('/documents/background.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.8
+        }}
+      ></div>
+      
+      <div className="relative w-full max-w-md z-10">
         {/* Decorative elements */}
         <div className="absolute -top-14 -left-14 w-40 h-40 bg-emerald-400 rounded-full opacity-10 blur-2xl"></div>
         <div className="absolute -bottom-14 -right-14 w-40 h-40 bg-blue-400 rounded-full opacity-10 blur-2xl"></div>

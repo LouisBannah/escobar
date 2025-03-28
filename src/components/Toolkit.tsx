@@ -120,458 +120,472 @@ export const Toolkit: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-2">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-8">
-              <div className="text-emerald-600 font-semibold">
-                Converge™ <span className="text-gray-700">Toolkit</span>
+    <div className="flex flex-col min-h-screen relative">
+      {/* Background image - absolute positioned */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: "url('/documents/background3.png')",
+          backgroundSize: "auto 100%", 
+          backgroundPosition: "right bottom",
+          backgroundRepeat: "no-repeat"
+        }}
+      ></div>
+      
+      {/* Content overlay */}
+      <div className="relative z-10 min-h-screen bg-black/10">
+        <header className="relative bg-white/95 border-b shadow-sm backdrop-blur-sm z-30">
+          <div className="container mx-auto px-4 py-2">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-8">
+                <div className="text-emerald-600 font-semibold">
+                  Converge™ <span className="text-gray-700">Toolkit</span>
+                </div>
+                <nav className="flex space-x-4">
+                  {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => (
+                    <button
+                      key={theme}
+                      onClick={() => handleFilterChange('theme', theme)}
+                      className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
+                        activeFilters.theme.includes(theme)
+                          ? theme === 'Sales'
+                            ? 'bg-emerald-50 border border-emerald-200 text-gray-900 shadow-sm'
+                            : theme === 'Delivery'
+                            ? 'bg-blue-50 border border-blue-200 text-gray-900 shadow-sm'
+                            : 'bg-purple-50 border border-purple-200 text-gray-900 shadow-sm'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      }`}
+                    >
+                      {theme}
+                    </button>
+                  ))}
+                </nav>
               </div>
-              <nav className="flex space-x-4">
-                {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => (
+
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setShowFeedback(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:border-emerald-200 hover:bg-emerald-50 rounded-md text-gray-600 hover:text-emerald-600 text-sm transition-colors"
+                  title="Provide Feedback"
+                >
+                  <MessageSquare size={14} className="flex-shrink-0" />
+                  <span>Feedback</span>
+                </button>
+                <div className="relative" ref={profileMenuRef}>
                   <button
-                    key={theme}
-                    onClick={() => handleFilterChange('theme', theme)}
-                    className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
-                      activeFilters.theme.includes(theme)
-                        ? theme === 'Sales'
-                          ? 'bg-emerald-50 border border-emerald-200 text-gray-900 shadow-sm'
-                          : theme === 'Delivery'
-                          ? 'bg-blue-50 border border-blue-200 text-gray-900 shadow-sm'
-                          : 'bg-purple-50 border border-purple-200 text-gray-900 shadow-sm'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    className="p-2 hover:bg-gray-100 rounded-full relative"
+                    onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  >
+                    <img
+                      src="/documents/pic.png"
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  </button>
+                  {showProfileMenu && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-1 border z-[200]">
+                      <div className="px-4 py-3 border-b">
+                        <div className="text-sm font-medium text-gray-900">Joep Arends</div>
+                        <div className="text-xs text-gray-500">{user?.email || 'joep.arends@deloitte.nl'}</div>
+                        <div className="mt-2">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                            Level {user?.accessLevel} Access
+                          </span>
+                        </div>
+                      </div>
+                      <div className="py-1">
+                        <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={user?.accessLevel === 2}
+                            onChange={(e) => {
+                              if (user) {
+                                setUser({
+                                  ...user,
+                                  accessLevel: e.target.checked ? 2 : 1
+                                });
+                              }
+                            }}
+                            className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded mr-3"
+                          />
+                          Authorized
+                        </label>
+                        <button className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <User className="w-4 h-4 mr-3" />
+                          Your Profile
+                        </button>
+                        <button className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <Settings className="w-4 h-4 mr-3" />
+                          Settings
+                        </button>
+                      </div>
+                      <div className="border-t">
+                        <button
+                          onClick={() => logout()}
+                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          <LogOut className="w-4 h-4 mr-3" />
+                          Sign out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center space-x-4 flex-1">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search by title, category, tags, or available materials..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-gray-400" />
+                  </div>
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  )}
+                </div>
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className={`flex items-center px-4 py-2 rounded-lg border ${
+                      showFilters || Object.values(activeFilters).some(arr => arr.length > 0)
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    {theme}
+                    <Filter className="h-5 w-5 mr-2" />
+                    Filters
+                    {Object.values(activeFilters).some(arr => arr.length > 0) && (
+                      <span className="ml-2 bg-emerald-100 text-emerald-600 rounded-full px-2 py-0.5 text-xs font-medium">
+                        {Object.values(activeFilters).reduce((acc, curr) => acc + curr.length, 0)}
+                      </span>
+                    )}
                   </button>
-                ))}
-              </nav>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setShowFeedback(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:border-emerald-200 hover:bg-emerald-50 rounded-md text-gray-600 hover:text-emerald-600 text-sm transition-colors"
-                title="Provide Feedback"
-              >
-                <MessageSquare size={14} className="flex-shrink-0" />
-                <span>Feedback</span>
-              </button>
-              <div className="relative" ref={profileMenuRef}>
-                <button
-                  className="p-2 hover:bg-gray-100 rounded-full relative"
-                  onClick={() => setShowProfileMenu(!showProfileMenu)}
-                >
-                  <img
-                    src="/documents/pic.png"
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                </button>
-                {showProfileMenu && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-1 border z-50">
-                    <div className="px-4 py-3 border-b">
-                      <div className="text-sm font-medium text-gray-900">Joep Arends</div>
-                      <div className="text-xs text-gray-500">{user?.email || 'joep.arends@deloitte.nl'}</div>
-                      <div className="mt-2">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                          Level {user?.accessLevel} Access
-                        </span>
-                      </div>
+                  {filteredItems.length > 0 && (
+                    <div className="text-sm text-gray-500">
+                      {filteredItems.length} {filteredItems.length === 1 ? 'tool' : 'tools'} found
                     </div>
-                    <div className="py-1">
-                      <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={user?.accessLevel === 2}
-                          onChange={(e) => {
-                            if (user) {
-                              setUser({
-                                ...user,
-                                accessLevel: e.target.checked ? 2 : 1
-                              });
-                            }
-                          }}
-                          className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded mr-3"
-                        />
-                        Authorized
-                      </label>
-                      <button className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <User className="w-4 h-4 mr-3" />
-                        Your Profile
-                      </button>
-                      <button className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <Settings className="w-4 h-4 mr-3" />
-                        Settings
-                      </button>
-                    </div>
-                    <div className="border-t">
-                      <button
-                        onClick={() => logout()}
-                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                      >
-                        <LogOut className="w-4 h-4 mr-3" />
-                        Sign out
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center space-x-4 flex-1">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  placeholder="Search by title, category, tags, or available materials..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
-                </div>
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center px-4 py-2 rounded-lg border ${
-                    showFilters || Object.values(activeFilters).some(arr => arr.length > 0)
-                      ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                      : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <Filter className="h-5 w-5 mr-2" />
-                  Filters
-                  {Object.values(activeFilters).some(arr => arr.length > 0) && (
-                    <span className="ml-2 bg-emerald-100 text-emerald-600 rounded-full px-2 py-0.5 text-xs font-medium">
-                      {Object.values(activeFilters).reduce((acc, curr) => acc + curr.length, 0)}
-                    </span>
                   )}
-                </button>
-                {filteredItems.length > 0 && (
-                  <div className="text-sm text-gray-500">
-                    {filteredItems.length} {filteredItems.length === 1 ? 'tool' : 'tools'} found
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Filter Panel */}
-          {showFilters && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
-              <div className="flex flex-wrap gap-4">
-                {/* Theme Filter */}
-                <div className="flex-1 min-w-[200px]">
-                  <div className="relative">
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setShowThemeDropdown(!showThemeDropdown)}
-                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">Themes</span>
-                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showThemeDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {showThemeDropdown && (
-                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-                          <div className="p-2">
-                            {['Sales', 'Delivery', 'Quality Assurance'].map(theme => (
-                              <label key={theme} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={activeFilters.theme.includes(theme)}
-                                  onChange={() => handleFilterChange('theme', theme)}
-                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                                />
-                                <span className="ml-2 text-sm text-gray-700">
-                                  {theme}
-                                  <span className="ml-1 text-gray-400">
-                                    ({toolkitItems.filter(item => item.theme === theme).length})
-                                  </span>
-                                </span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Category Filter */}
-                <div className="flex-1 min-w-[200px]">
-                  <div className="relative">
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">Categories</span>
-                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {showCategoryDropdown && (
-                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-                          <div className="p-2">
-                            {VALID_CATEGORIES.map(category => (
-                              <label key={category} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={activeFilters.category.includes(category)}
-                                  onChange={() => handleFilterChange('category', category)}
-                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                                />
-                                <span className="ml-2 text-sm text-gray-700">
-                                  {category}
-                                  <span className="ml-1 text-gray-400">
-                                    ({toolkitItems.filter(item => item.category === category).length})
-                                  </span>
-                                </span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Material Types Filter */}
-                <div className="flex-1 min-w-[200px]">
-                  <div className="relative">
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setShowMaterialDropdown(!showMaterialDropdown)}
-                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">Material Types</span>
-                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showMaterialDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {showMaterialDropdown && (
-                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-                          <div className="p-2">
-                            {materialTypes.map(type => (
-                              <label key={type} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={activeFilters.materials.includes(type)}
-                                  onChange={() => handleFilterChange('materials', type)}
-                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                                />
-                                <span className="ml-2 text-sm text-gray-700">
-                                  {type.toUpperCase()}
-                                  <span className="ml-1 text-gray-400">
-                                    ({toolkitItems.filter(item => 
-                                      item.materials.some(m => m.type === type)
-                                    ).length})
-                                  </span>
-                                </span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
-
-              {/* Selected Filters Display */}
-              {(activeFilters.theme.length > 0 || activeFilters.category.length > 0 || activeFilters.materials.length > 0) && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {activeFilters.theme.map(theme => (
-                    <span key={theme} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                      {theme}
-                      <button
-                        onClick={() => handleFilterChange('theme', theme)}
-                        className="ml-1 text-emerald-600 hover:text-emerald-800"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                  {activeFilters.category.map(category => (
-                    <span key={category} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                      {category}
-                      <button
-                        onClick={() => handleFilterChange('category', category)}
-                        className="ml-1 text-blue-600 hover:text-blue-800"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                  {activeFilters.materials.map(type => (
-                    <span key={type} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                      {type.toUpperCase()}
-                      <button
-                        onClick={() => handleFilterChange('materials', type)}
-                        className="ml-1 text-purple-600 hover:text-purple-800"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {Object.values(activeFilters).some(arr => arr.length > 0) && (
-                <div className="mt-4 pt-4 border-t flex justify-end">
-                  <button
-                    onClick={() => setActiveFilters({ category: [], materials: [], theme: [] })}
-                    className="text-sm text-gray-600 hover:text-gray-900"
-                  >
-                    Clear all filters
-                  </button>
-                </div>
-              )}
             </div>
-          )}
-        </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-8">
-        {filteredItems.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setCurrentItemId(item.id)}
-                className="text-left bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow flex flex-col relative"
-              >
-                {/* Theme Badge */}
-                <div className="absolute top-4 right-4">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    item.theme === 'Sales' 
-                      ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20' 
-                      : item.theme === 'Delivery'
-                      ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
-                      : 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
-                  }`}>
-                    {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
-                  </span>
-                </div>
-
-                {/* Category Label */}
-                <div className="mb-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800 ring-1 ring-gray-200/50">
-                    {item.category}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 pr-24">
-                  {item.shortTitle}
-                </h3>
-                
-                {/* Description */}
-                <p className="text-gray-600 mb-4">
-                  {item.shortDescription}
-                </p>
-
-                {/* Materials Section */}
-                <div className="mt-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">Available Materials:</div>
-                  <div className="space-y-2">
-                    {item.materials.map((material, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        {material.type === 'pdf' && <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'zip' && <Archive className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'xls' && <Table className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'docx' && <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'ppt' && <Presentation className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'yaml' && <Code className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'json' && <Code className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        {material.type === 'html' && <Globe className="w-4 h-4 text-gray-600 flex-shrink-0" />}
-                        <span className="text-sm text-gray-900 flex-grow">{material.title}</span>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 flex-shrink-0">
-                          {material.type.toUpperCase()}
-                        </span>
+            {/* Filter Panel */}
+            {showFilters && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg border relative z-40">
+                <div className="flex flex-wrap gap-4">
+                  {/* Theme Filter */}
+                  <div className="flex-1 min-w-[200px]">
+                    <div className="relative z-40">
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowThemeDropdown(!showThemeDropdown)}
+                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
+                        >
+                          <span className="text-sm text-gray-700">Themes</span>
+                          <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showThemeDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        {showThemeDropdown && (
+                          <div className="absolute z-[200] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <div className="p-2">
+                              {['Sales', 'Delivery', 'Quality Assurance'].map(theme => (
+                                <label key={theme} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={activeFilters.theme.includes(theme)}
+                                    onChange={() => handleFilterChange('theme', theme)}
+                                    className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                  />
+                                  <span className="ml-2 text-sm text-gray-700">
+                                    {theme}
+                                    <span className="ml-1 text-gray-400">
+                                      ({toolkitItems.filter(item => item.theme === theme).length})
+                                    </span>
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Category Filter */}
+                  <div className="flex-1 min-w-[200px]">
+                    <div className="relative z-40">
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
+                        >
+                          <span className="text-sm text-gray-700">Categories</span>
+                          <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        {showCategoryDropdown && (
+                          <div className="absolute z-[200] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <div className="p-2">
+                              {VALID_CATEGORIES.map(category => (
+                                <label key={category} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={activeFilters.category.includes(category)}
+                                    onChange={() => handleFilterChange('category', category)}
+                                    className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                  />
+                                  <span className="ml-2 text-sm text-gray-700">
+                                    {category}
+                                    <span className="ml-1 text-gray-400">
+                                      ({toolkitItems.filter(item => item.category === category).length})
+                                    </span>
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Material Types Filter */}
+                  <div className="flex-1 min-w-[200px]">
+                    <div className="relative z-40">
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowMaterialDropdown(!showMaterialDropdown)}
+                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent flex items-center justify-between"
+                        >
+                          <span className="text-sm text-gray-700">Material Types</span>
+                          <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showMaterialDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        {showMaterialDropdown && (
+                          <div className="absolute z-[200] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <div className="p-2">
+                              {materialTypes.map(type => (
+                                <label key={type} className="flex items-center px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={activeFilters.materials.includes(type)}
+                                    onChange={() => handleFilterChange('materials', type)}
+                                    className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                  />
+                                  <span className="ml-2 text-sm text-gray-700">
+                                    {type.toUpperCase()}
+                                    <span className="ml-1 text-gray-400">
+                                      ({toolkitItems.filter(item => 
+                                        item.materials.some(m => m.type === type)
+                                      ).length})
+                                    </span>
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Selected Filters Display */}
+                {(activeFilters.theme.length > 0 || activeFilters.category.length > 0 || activeFilters.materials.length > 0) && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {activeFilters.theme.map(theme => (
+                      <span key={theme} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                        {theme}
+                        <button
+                          onClick={() => handleFilterChange('theme', theme)}
+                          className="ml-1 text-emerald-600 hover:text-emerald-800"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                    {activeFilters.category.map(category => (
+                      <span key={category} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                        {category}
+                        <button
+                          onClick={() => handleFilterChange('category', category)}
+                          className="ml-1 text-blue-600 hover:text-blue-800"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                    {activeFilters.materials.map(type => (
+                      <span key={type} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                        {type.toUpperCase()}
+                        <button
+                          onClick={() => handleFilterChange('materials', type)}
+                          className="ml-1 text-purple-600 hover:text-purple-800"
+                        >
+                          ×
+                        </button>
+                      </span>
                     ))}
                   </div>
-                </div>
+                )}
 
-                {/* Tags Section */}
-                <div className="flex flex-wrap gap-2 pt-4 mt-auto border-t">
-                  {item.availableTags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700"
+                {Object.values(activeFilters).some(arr => arr.length > 0) && (
+                  <div className="mt-4 pt-4 border-t flex justify-end">
+                    <button
+                      onClick={() => setActiveFilters({ category: [], materials: [], theme: [] })}
+                      className="text-sm text-gray-600 hover:text-gray-900"
                     >
-                      {tag}
+                      Clear all filters
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </header>
+
+        <main className="container mx-auto px-4 py-8 relative z-10">
+          {filteredItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentItemId(item.id)}
+                  className="text-left bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow flex flex-col relative z-20"
+                >
+                  {/* Theme Badge */}
+                  <div className="absolute top-4 right-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      item.theme === 'Sales' 
+                        ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20' 
+                        : item.theme === 'Delivery'
+                        ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
+                        : 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
+                    }`}>
+                      {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                     </span>
-                  ))}
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <Search className="h-12 w-12 mx-auto" />
+                  </div>
+
+                  {/* Category Label */}
+                  <div className="mb-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800 ring-1 ring-gray-200/50">
+                      {item.category}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 pr-24">
+                    {item.shortTitle}
+                  </h3>
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 mb-4">
+                    {item.shortDescription}
+                  </p>
+
+                  {/* Materials Section */}
+                  <div className="mt-4 mb-6">
+                    <div className="text-sm text-gray-500 mb-2">Available Materials:</div>
+                    <div className="space-y-2">
+                      {item.materials.map((material, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          {material.type === 'pdf' && <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'zip' && <Archive className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'xls' && <Table className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'docx' && <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'ppt' && <Presentation className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'yaml' && <Code className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'json' && <Code className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          {material.type === 'html' && <Globe className="w-4 h-4 text-gray-600 flex-shrink-0" />}
+                          <span className="text-sm text-gray-900 flex-grow">{material.title}</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 flex-shrink-0">
+                            {material.type.toUpperCase()}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tags Section */}
+                  <div className="flex flex-wrap gap-2 pt-4 mt-auto border-t">
+                    {item.availableTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              ))}
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No tools found
-            </h3>
-            <p className="text-gray-600">
-              Try adjusting your search or filters to find what you're looking for.
-            </p>
-          </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <Search className="h-12 w-12 mx-auto" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No tools found
+              </h3>
+              <p className="text-gray-600">
+                Try adjusting your search or filters to find what you're looking for.
+              </p>
+            </div>
+          )}
+        </main>
+
+        {/* Card Modal */}
+        {currentItemId && (
+          user?.accessLevel === 2 ? (
+            <ExpandedCard
+              item={toolkitItems.find(item => item.id === currentItemId)!}
+              onClose={handleCloseCard}
+            />
+          ) : (
+            <DetailedCard
+              item={toolkitItems.find(item => item.id === currentItemId)!}
+              onClose={handleCloseCard}
+              onRequestAccess={handleRequestAccess}
+            />
+          )
         )}
-      </main>
 
-      {/* Card Modal */}
-      {currentItemId && (
-        user?.accessLevel === 2 ? (
-          <ExpandedCard
-            item={toolkitItems.find(item => item.id === currentItemId)!}
-            onClose={handleCloseCard}
-          />
-        ) : (
-          <DetailedCard
-            item={toolkitItems.find(item => item.id === currentItemId)!}
-            onClose={handleCloseCard}
-            onRequestAccess={handleRequestAccess}
-          />
-        )
-      )}
-
-      {/* Feedback Modal */}
-      <FeedbackModal
-        isOpen={showFeedback}
-        onClose={() => setShowFeedback(false)}
-      />
-
-      {/* PDF Viewer Modal */}
-      {selectedPDF && (
-        <PDFViewer
-          url={selectedPDF.url}
-          title={selectedPDF.title}
-          onClose={handleClosePDF}
-          onDownload={() => handleDownload(selectedPDF.url)}
+        {/* Feedback Modal */}
+        <FeedbackModal
+          isOpen={showFeedback}
+          onClose={() => setShowFeedback(false)}
         />
-      )}
+
+        {/* PDF Viewer Modal */}
+        {selectedPDF && (
+          <PDFViewer
+            url={selectedPDF.url}
+            title={selectedPDF.title}
+            onClose={handleClosePDF}
+            onDownload={() => handleDownload(selectedPDF.url)}
+          />
+        )}
+      </div>
     </div>
   );
 }; 
