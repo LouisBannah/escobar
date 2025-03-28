@@ -82,9 +82,20 @@ export const Toolkit: React.FC = () => {
         return activeFilters.materials.some(type => materialTypes.includes(type));
       }
 
+      // Apply search query filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        return (
+          item.shortTitle.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query) ||
+          item.availableTags.some(tag => tag.toLowerCase().includes(query)) ||
+          item.materials.some(material => material.type.toLowerCase().includes(query))
+        );
+      }
+
       return true;
     });
-  }, [activeTab, activeFilters]);
+  }, [activeTab, activeFilters, searchQuery]);
 
   const handleRequestAccess = (itemId: string) => {
     // Here you would typically make an API call to submit the access request
