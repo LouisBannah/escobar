@@ -16,7 +16,7 @@ interface Filters {
 }
 
 export const Toolkit: React.FC = () => {
-  const { user, setUser } = useUser();
+  const { user, setUser, logout } = useUser();
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -173,7 +173,7 @@ export const Toolkit: React.FC = () => {
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-1 border z-50">
                     <div className="px-4 py-3 border-b">
                       <div className="text-sm font-medium text-gray-900">Joep Arends</div>
-                      <div className="text-xs text-gray-500">joep.arends@deloitte.nl</div>
+                      <div className="text-xs text-gray-500">{user?.email || 'joep.arends@deloitte.nl'}</div>
                       <div className="mt-2">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                           Level {user?.accessLevel} Access
@@ -186,10 +186,12 @@ export const Toolkit: React.FC = () => {
                           type="checkbox"
                           checked={user?.accessLevel === 2}
                           onChange={(e) => {
-                            setUser({
-                              ...user,
-                              accessLevel: e.target.checked ? 2 : 1
-                            });
+                            if (user) {
+                              setUser({
+                                ...user,
+                                accessLevel: e.target.checked ? 2 : 1
+                              });
+                            }
                           }}
                           className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded mr-3"
                         />
@@ -206,9 +208,7 @@ export const Toolkit: React.FC = () => {
                     </div>
                     <div className="border-t">
                       <button
-                        onClick={() => {
-                          // Handle logout
-                        }}
+                        onClick={() => logout()}
                         className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                       >
                         <LogOut className="w-4 h-4 mr-3" />
