@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toolkitItems } from '../data/toolkitItems';
 import { VALID_CATEGORIES } from '../data/constants';
-import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe, Download, Lock } from 'lucide-react';
+import { Search, Filter, X, MessageSquare, User, Settings, LogOut, FileText, Archive, Table, Presentation, Code, Globe } from 'lucide-react';
 import FeedbackModal from './FeedbackModal';
 import ExpandedCard from './ExpandedCard';
 import DetailedCard from './DetailedCard';
@@ -107,10 +107,6 @@ export const Toolkit: React.FC = () => {
     setCurrentItemId(null);
   };
 
-  const handleViewPDF = (url: string, title: string) => {
-    setSelectedPDF({ url, title });
-  };
-
   const handleClosePDF = () => {
     setSelectedPDF(null);
   };
@@ -134,33 +130,55 @@ export const Toolkit: React.FC = () => {
       
       {/* Content overlay */}
       <div className="relative z-10 min-h-screen bg-black/10">
-        <header className="relative bg-white/95 border-b shadow-sm backdrop-blur-sm z-30">
-          <div className="container mx-auto px-4 py-2">
+        <header className="sticky top-0 bg-white/95 border-b shadow-sm backdrop-blur-sm z-30">
+          <div className="container mx-auto px-4 pt-6 pb-4">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-8">
-                <div className="text-emerald-600 font-semibold">
-                  Converge™ <span className="text-gray-700">Toolkit</span>
-                </div>
-                <nav className="flex space-x-4">
-                  {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => (
-                    <button
-                      key={theme}
-                      onClick={() => handleFilterChange('theme', theme)}
-                      className={`px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
-                        activeFilters.theme.includes(theme)
-                          ? theme === 'Sales'
-                            ? 'bg-emerald-50 border border-emerald-200 text-gray-900 shadow-sm'
-                            : theme === 'Delivery'
-                            ? 'bg-blue-50 border border-blue-200 text-gray-900 shadow-sm'
-                            : 'bg-purple-50 border border-purple-200 text-gray-900 shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                      }`}
-                    >
-                      {theme}
-                    </button>
-                  ))}
-                </nav>
+              <div className="flex items-center">
+                <h1 className="text-2xl tracking-tight font-['Open_Sans']">
+                  <span className="font-bold bg-gradient-to-r from-[#079669] to-[#0fb37f] text-transparent bg-clip-text">Converge</span>
+                  <span className="font-light text-gray-800">Toolkit</span>
+                </h1>
               </div>
+              
+              <nav className="flex space-x-4 absolute left-1/2 transform -translate-x-1/2">
+                {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => (
+                  <button
+                    key={theme}
+                    onClick={() => handleFilterChange('theme', theme)}
+                    className={`px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden ${
+                      activeFilters.theme.includes(theme)
+                        ? 'text-white shadow-lg border-none transform scale-105' 
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 shadow-sm hover:shadow-inner border border-gray-200 hover:border-gray-300'
+                    }`}
+                    style={
+                      activeFilters.theme.includes(theme)
+                        ? theme === 'Sales'
+                          ? { 
+                              background: 'linear-gradient(135deg, #05ED04, #24920D)',
+                              boxShadow: '0 8px 16px -2px rgba(5, 237, 4, 0.15), 0 3px 6px -2px rgba(36, 146, 13, 0.1)',
+                            }
+                          : theme === 'Delivery'
+                          ? { 
+                              background: 'linear-gradient(135deg, #36DAB3, #00A0DE)',
+                              boxShadow: '0 8px 16px -2px rgba(54, 218, 179, 0.15), 0 3px 6px -2px rgba(0, 160, 222, 0.1)',
+                            }
+                          : { 
+                              background: 'linear-gradient(135deg, #D41EDE, #B38EEF)',
+                              boxShadow: '0 8px 16px -2px rgba(212, 30, 222, 0.15), 0 3px 6px -2px rgba(179, 142, 239, 0.1)',
+                            }
+                        : {}
+                    }
+                  >
+                    {activeFilters.theme.includes(theme) && (
+                      <>
+                        <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
+                        <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
+                      </>
+                    )}
+                    <span className="relative z-10 font-semibold">{theme}</span>
+                  </button>
+                ))}
+              </nav>
 
               <div className="flex items-center space-x-2">
                 <button
@@ -234,8 +252,8 @@ export const Toolkit: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between mt-4">
-              <div className="flex items-center space-x-4 flex-1">
+            <div className="flex items-center justify-between mt-4 mb-4">
+              <div className="flex items-center flex-1">
                 <div className="relative flex-1">
                   <input
                     type="text"
@@ -256,23 +274,25 @@ export const Toolkit: React.FC = () => {
                     </button>
                   )}
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="pl-4">
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className={`flex items-center px-4 py-2 rounded-lg border ${
+                    className={`flex items-center px-3 py-2 rounded-lg border ${
                       showFilters || Object.values(activeFilters).some(arr => arr.length > 0)
                         ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
                         : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    <Filter className="h-5 w-5 mr-2" />
-                    Filters
+                    <Filter className="h-5 w-5 mr-1.5" />
+                    <span>Filters</span>
                     {Object.values(activeFilters).some(arr => arr.length > 0) && (
-                      <span className="ml-2 bg-emerald-100 text-emerald-600 rounded-full px-2 py-0.5 text-xs font-medium">
+                      <span className="ml-1.5 bg-emerald-100 text-emerald-600 rounded-full px-1.5 py-0.5 text-xs font-medium">
                         {Object.values(activeFilters).reduce((acc, curr) => acc + curr.length, 0)}
                       </span>
                     )}
                   </button>
+                </div>
+                <div className="pl-4">
                   {filteredItems.length > 0 && (
                     <div className="text-sm text-gray-500">
                       {filteredItems.length} {filteredItems.length === 1 ? 'tool' : 'tools'} found
@@ -474,13 +494,28 @@ export const Toolkit: React.FC = () => {
                 >
                   {/* Theme Badge */}
                   <div className="absolute top-4 right-4">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      item.theme === 'Sales' 
-                        ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20' 
-                        : item.theme === 'Delivery'
-                        ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
-                        : 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
-                    }`}>
+                    <span 
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border`}
+                      style={
+                        item.theme === 'Sales'
+                          ? { 
+                              background: 'linear-gradient(135deg, rgba(5, 237, 4, 0.1), rgba(36, 146, 13, 0.15))',
+                              color: '#1A7309',
+                              borderColor: 'rgba(36, 146, 13, 0.2)'
+                            }
+                          : item.theme === 'Delivery'
+                          ? { 
+                              background: 'linear-gradient(135deg, rgba(54, 218, 179, 0.1), rgba(0, 160, 222, 0.15))',
+                              color: '#0078A8',
+                              borderColor: 'rgba(0, 160, 222, 0.2)'
+                            }
+                          : { 
+                              background: 'linear-gradient(135deg, rgba(212, 30, 222, 0.1), rgba(179, 142, 239, 0.15))',
+                              color: '#9061E5',
+                              borderColor: 'rgba(179, 142, 239, 0.2)'
+                            }
+                      }
+                    >
                       {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                     </span>
                   </div>

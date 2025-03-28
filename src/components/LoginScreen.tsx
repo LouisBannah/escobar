@@ -46,11 +46,16 @@ const LoginScreen: React.FC = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-400 rounded-full opacity-5 blur-3xl"></div>
         
         <div className="relative z-10 bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-gray-100">
-          <div className="mb-8 text-center">
-            <div className="text-emerald-600 font-semibold text-2xl mb-3">
-              Converge™ <span className="text-gray-700">Toolkit</span>
+          <div className="mb-10 text-center">
+            <div className="mb-6 flex justify-center">
+              <div className="inline-block">
+                <h1 className="text-5xl tracking-tight font-['Open_Sans']">
+                  <span className="font-bold text-[#079669]">Converge</span>
+                  <span className="font-light text-gray-800">Toolkit</span>
+                </h1>
+              </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-emerald-600 via-blue-500 to-purple-600 text-transparent bg-clip-text">Welcome Back</h1>
+            <h1 className="text-2xl font-bold mb-2 bg-gradient-to-r from-emerald-600 via-blue-500 to-purple-600 text-transparent bg-clip-text">Welcome Back</h1>
             <p className="text-gray-600">Sign in to access the toolkit</p>
           </div>
           
