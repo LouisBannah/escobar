@@ -193,19 +193,14 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
             ) : (
               <div className="p-6 space-y-6">
                 {/* Access Granted Notice */}
-                <div className={`rounded-xl p-6 ${colors.light} border ${colors.border} relative overflow-hidden group hover:shadow-md transition-all duration-300`}>
-                  <div className={`absolute inset-x-0 top-0 h-1 ${colors.banner} rounded-t-xl`} />
-                  {/* Decorative Elements */}
-                  <div className={`absolute top-0 right-0 w-64 h-64 -mr-32 -mt-32 rounded-full ${colors.medium} opacity-20 blur-3xl`} />
-                  <div className={`absolute bottom-0 left-0 w-48 h-48 -ml-24 -mb-24 rounded-full ${colors.medium} opacity-20 blur-3xl`} />
-                  
+                <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border} relative overflow-hidden group hover:shadow-md transition-all duration-300`}>
                   <div className="relative flex items-start gap-4">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
+                    <CheckCircle className={`w-5 h-5 ${colors.text} mt-1 flex-shrink-0`} />
                     <div className="flex-grow">
-                      <h3 className="text-lg font-medium text-emerald-800 mb-2">
+                      <h3 className={`text-lg font-medium ${colors.text} mb-2`}>
                         Access Granted
                       </h3>
-                      <p className="text-emerald-700 mb-4">
+                      <p className="text-gray-700 mb-4">
                         You now have Level 2 access. You can view comprehensive details,
                         documentation, and download materials.
                       </p>
