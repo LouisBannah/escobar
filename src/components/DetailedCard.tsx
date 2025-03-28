@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, FileText, Archive, Table, Presentation, Code, Globe, Lock, CheckCircle } from 'lucide-react';
+import { X, FileText, Archive, Table, Presentation, Code, Globe, Lock } from 'lucide-react';
+import { showSubmissionNotice } from './SubmissionPopup';
 
 interface DetailedCardProps {
   item: {
@@ -22,13 +23,23 @@ interface DetailedCardProps {
 }
 
 const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAccess }) => {
-  const [requestSent, setRequestSent] = useState(false);
-
-  const handleRequestAccess = (e: React.MouseEvent) => {
+  const handleRequestAccess = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setRequestSent(true);
+    
+    // Log the request and call the onRequestAccess handler
+    console.log(`Access requested for item: ${item.id}`);
     onRequestAccess(item.id);
+    
+    // Show the submission notice using the portal
+    try {
+      // We need to keep the detailed card open while the popup is showing
+      await showSubmissionNotice(item.theme);
+      // After the popup is done, we can close the detailed card
+      onClose();
+    } catch (error) {
+      console.error('Error showing submission notice:', error);
+    }
   };
 
   const getThemeColors = (theme: string) => {
@@ -105,125 +116,90 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
               </div>
             </div>
 
-            {!requestSent ? (
-              <div className="p-6 space-y-6">
-                {/* Description */}
-                <div className="space-y-6">
-                  <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
-                  
-                  {/* Tags Section */}
-                  <div className="flex flex-wrap gap-2">
-                    {item.availableTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
-                      >
-                        {tag}
+            <div className="p-6 space-y-6">
+              {/* Description */}
+              <div className="space-y-6">
+                <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
+                
+                {/* Tags Section */}
+                <div className="flex flex-wrap gap-2">
+                  {item.availableTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Materials Section */}
+              <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
+                <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
+                <div className="space-y-3">
+                  {item.materials.map((material, index) => (
+                    <div 
+                      key={index} 
+                      className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-gray-100 hover:bg-white/95 transition-colors"
+                    >
+                      {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
+                      {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
+                      {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
+                      {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
+                      {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
+                      {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
+                      {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
+                      {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
+                      <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
+                      <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
+                        {material.type.toUpperCase()}
                       </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Materials Section */}
-                <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                  <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
-                  <div className="space-y-3">
-                    {item.materials.map((material, index) => (
-                      <div 
-                        key={index} 
-                        className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-gray-100 hover:bg-white/95 transition-colors"
-                      >
-                        {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
-                        {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
-                        {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
-                        {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
-                        {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
-                        {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
-                        {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
-                        {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
-                        <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
-                        <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
-                          {material.type.toUpperCase()}
-                        </span>
-                        <Lock className="w-4 h-4 text-gray-400" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Access Restricted Notice */}
-                <div className="rounded-xl p-6 bg-amber-50/50 border border-amber-200/70 backdrop-blur-sm relative overflow-hidden group hover:shadow-md transition-all duration-300">
-                  <div className="relative flex items-start gap-4">
-                    <Lock className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-medium text-amber-800 mb-2">
-                        Access Restricted
-                      </h3>
-                      <p className="text-amber-700 mb-4">
-                        You currently have Level 1 access which provides limited information.
-                        To view comprehensive details, documentation, and download materials,
-                        please request Level 2 access.
-                      </p>
-                      <button
-                        onClick={handleRequestAccess}
-                        className={`px-4 py-2 ${colors.button} text-white rounded-lg shadow-sm hover:shadow-md 
-                          transition-all duration-200 flex items-center text-sm font-medium relative z-[52]`}
-                      >
-                        Request Access
-                      </button>
+                      <Lock className="w-4 h-4 text-gray-400" />
                     </div>
-                  </div>
+                  ))}
                 </div>
-                
-                {/* Footer with Last Updated and Version Information */}
-                <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
-                  <div>
-                    Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
-                      day: '2-digit', 
-                      month: '2-digit', 
-                      year: 'numeric' 
-                    })}</span>
-                  </div>
-                  <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                    bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
-                    Version {item.version}
+              </div>
+
+              {/* Access Restricted Notice */}
+              <div className="rounded-xl p-6 bg-amber-50/50 border border-amber-200/70 backdrop-blur-sm relative overflow-hidden group hover:shadow-md transition-all duration-300">
+                <div className="relative flex items-start gap-4">
+                  <Lock className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-medium text-amber-800 mb-2">
+                      Access Restricted
+                    </h3>
+                    <p className="text-amber-700 mb-4">
+                      You currently have Level 1 access which provides limited information.
+                      To view comprehensive details, documentation, and download materials,
+                      please request Level 2 access.
+                    </p>
+                    <button
+                      onClick={handleRequestAccess}
+                      className={`px-4 py-2 ${colors.button} text-white rounded-lg shadow-sm hover:shadow-md 
+                        transition-all duration-200 flex items-center text-sm font-medium relative z-[52]`}
+                    >
+                      Request Access
+                    </button>
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="p-6 space-y-6">
-                {/* Access Granted Notice */}
-                <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border} relative overflow-hidden group hover:shadow-md transition-all duration-300`}>
-                  <div className="relative flex items-start gap-4">
-                    <CheckCircle className={`w-5 h-5 ${colors.text} mt-1 flex-shrink-0`} />
-                    <div className="flex-grow">
-                      <h3 className={`text-lg font-medium ${colors.text} mb-2`}>
-                        Access Granted
-                      </h3>
-                      <p className="text-gray-700 mb-4">
-                        You now have Level 2 access. You can view comprehensive details,
-                        documentation, and download materials.
-                      </p>
-                    </div>
-                  </div>
+              
+              {/* Footer with Last Updated and Version Information */}
+              <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
+                <div>
+                  Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: 'numeric' 
+                  })}</span>
                 </div>
-                
-                {/* Footer with Last Updated and Version Information */}
-                <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
-                  <div>
-                    Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
-                      day: '2-digit', 
-                      month: '2-digit', 
-                      year: 'numeric' 
-                    })}</span>
-                  </div>
-                  <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                    bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
-                    Version {item.version}
-                  </div>
+                <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                  bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
+                  Version {item.version}
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
