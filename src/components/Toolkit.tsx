@@ -24,7 +24,7 @@ export const Toolkit: React.FC = () => {
     categories: [],
     materialTypes: []
   });
-  const [availableFilters, setAvailableFilters] = useState<Filters>({
+  const [availableFilters] = useState<Filters>({
     themes: ['Sales', 'Delivery', 'Quality Assurance'],
     categories: ['Client Success', 'API', 'Integration', 'Monitoring', 'Deployment', 'Documentation'],
     materialTypes: ['pdf', 'docx', 'ppt', 'xls', 'zip']
