@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DetailedCard from './DetailedCard';
 import ExpandedCard from './ExpandedCard';
-import FeedbackModal from './FeedbackModal';
+import FeedbackCard from './FeedbackCard';
 import PDFViewer from './PDFViewer';
 import ToolkitHeader from './ToolkitHeader';
 import FilterBar from './FilterBar';
@@ -183,8 +183,8 @@ export const Toolkit: React.FC = () => {
           )
         )}
 
-        {/* Feedback Modal */}
-        <FeedbackModal
+        {/* Feedback Card */}
+        <FeedbackCard
           isOpen={showFeedback}
           onClose={() => setShowFeedback(false)}
         />

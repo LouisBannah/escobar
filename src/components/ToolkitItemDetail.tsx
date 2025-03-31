@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { ChevronLeft, Copy, Download, ExternalLink, User, Settings, LogOut, MessageSquare, Lock } from 'lucide-react';
 import { toolkitItems } from '../data/toolkitItems';
 import AccessChallenge from './AccessChallenge';
-import FeedbackModal from './FeedbackModal';
+import FeedbackCard from './FeedbackCard';
 
 interface ToolkitItemDetailProps {
   itemId: string;
@@ -106,7 +106,7 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
           />
         )}
 
-        <FeedbackModal 
+        <FeedbackCard 
           isOpen={showFeedback}
           onClose={() => setShowFeedback(false)}
           title="Tool Feedback"
@@ -294,7 +294,7 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
         </div>
       </div>
 
-      <FeedbackModal 
+      <FeedbackCard 
         isOpen={showFeedback}
         onClose={() => setShowFeedback(false)}
         title="Tool Feedback"
