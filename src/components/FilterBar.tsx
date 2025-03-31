@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, X } from 'lucide-react';
+import { X, Filter, Search } from 'lucide-react';
 
 interface Filters {
   themes: string[];
@@ -13,6 +13,9 @@ interface FilterBarProps {
   activeFiltersCount: number;
   onFilterChange: (filterType: keyof Filters, value: string) => void;
   onClearFilters: () => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  totalToolsCount: number;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -20,157 +23,153 @@ const FilterBar: React.FC<FilterBarProps> = ({
   selectedFilters,
   activeFiltersCount,
   onFilterChange,
-  onClearFilters
+  onClearFilters,
+  searchQuery,
+  onSearchChange,
+  totalToolsCount
 }) => {
-  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [showMaterialDropdown, setShowMaterialDropdown] = useState(false);
+  const [showFiltersPanel, setShowFiltersPanel] = useState(false);
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm mb-4 border-b border-gray-200 dark:border-gray-700 sticky top-[4.5rem] z-20">
-      <div className="container mx-auto px-4 py-2">
-        <div className="flex flex-wrap items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white py-2">
-            All Resources
-          </h2>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Theme Filter Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => {
-                  setShowThemeDropdown(!showThemeDropdown);
-                  setShowCategoryDropdown(false);
-                  setShowMaterialDropdown(false);
-                }}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none"
-              >
-                Theme
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </button>
-              {showThemeDropdown && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-10">
-                  <div className="py-1" role="menu" aria-orientation="vertical">
-                    {filters.themes.map((theme) => (
-                      <div
-                        key={theme}
-                        className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-                        onClick={() => {
-                          onFilterChange('themes', theme);
-                          setShowThemeDropdown(false);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked={selectedFilters.themes.includes(theme)}
-                          readOnly
-                        />
-                        <span className={`${selectedFilters.themes.includes(theme) ? 'font-medium text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
-                          {theme}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+      <div className="w-full max-w-screen-xl mx-auto px-6">
+        {/* Main filter bar with search and filter button */}
+        <div className="flex items-center gap-4 py-3">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
             </div>
-
-            {/* Category Filter Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => {
-                  setShowCategoryDropdown(!showCategoryDropdown);
-                  setShowThemeDropdown(false);
-                  setShowMaterialDropdown(false);
-                }}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none"
-              >
-                Category
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </button>
-              {showCategoryDropdown && (
-                <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-10">
-                  <div className="py-1" role="menu" aria-orientation="vertical">
-                    {filters.categories.map((category) => (
-                      <div
-                        key={category}
-                        className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-                        onClick={() => {
-                          onFilterChange('categories', category);
-                          setShowCategoryDropdown(false);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked={selectedFilters.categories.includes(category)}
-                          readOnly
-                        />
-                        <span className={`${selectedFilters.categories.includes(category) ? 'font-medium text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
-                          {category}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Material Type Filter Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => {
-                  setShowMaterialDropdown(!showMaterialDropdown);
-                  setShowThemeDropdown(false);
-                  setShowCategoryDropdown(false);
-                }}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none"
-              >
-                Material Type
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </button>
-              {showMaterialDropdown && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-10">
-                  <div className="py-1" role="menu" aria-orientation="vertical">
-                    {filters.materialTypes.map((type) => (
-                      <div
-                        key={type}
-                        className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-                        onClick={() => {
-                          onFilterChange('materialTypes', type);
-                          setShowMaterialDropdown(false);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked={selectedFilters.materialTypes.includes(type)}
-                          readOnly
-                        />
-                        <span className={`${selectedFilters.materialTypes.includes(type) ? 'font-medium text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
-                          {type.toUpperCase()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Clear Filters Button - Only show if there are active filters */}
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 sm:text-sm text-gray-900 dark:text-gray-100"
+              placeholder="Search for tools, resources, materials..."
+            />
+          </div>
+          
+          {/* Filter Button */}
+          <button
+            onClick={() => setShowFiltersPanel(!showFiltersPanel)}
+            className={`inline-flex items-center px-4 py-2 border ${activeFiltersCount > 0 ? 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:border-indigo-400 dark:bg-indigo-900 dark:bg-opacity-20 dark:text-indigo-300' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200'} rounded-md shadow-sm text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none whitespace-nowrap`}
+          >
+            <Filter className="mr-2 h-4 w-4" />
+            Filter
             {activeFiltersCount > 0 && (
-              <button
-                onClick={onClearFilters}
-                className="inline-flex items-center px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none"
-              >
-                Clear All
-                <X className="ml-2 h-4 w-4" />
-              </button>
+              <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-indigo-100 bg-indigo-600 dark:bg-indigo-500 rounded-full">
+                {activeFiltersCount}
+              </span>
             )}
+          </button>
+        
+          {/* Tools count */}
+          <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+            {totalToolsCount} {totalToolsCount === 1 ? 'tool' : 'tools'} found
           </div>
         </div>
-
+        
+        {/* Expandable Filters Panel */}
+        {showFiltersPanel && (
+          <div className="mt-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter By</h3>
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={onClearFilters}
+                  className="text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 flex items-center"
+                >
+                  Clear All
+                  <X className="ml-1 h-3 w-3" />
+                </button>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Theme Filter Section */}
+              <div>
+                <h4 className="font-medium text-xs uppercase text-gray-500 dark:text-gray-400 mb-2">Themes</h4>
+                <div className="space-y-1">
+                  {filters.themes.map((theme) => (
+                    <div
+                      key={theme}
+                      className="flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                        id={`theme-${theme}`}
+                        checked={selectedFilters.themes.includes(theme)}
+                        onChange={() => onFilterChange('themes', theme)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label 
+                        htmlFor={`theme-${theme}`}
+                        className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                      >
+                        {theme}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Category Filter Section */}
+              <div>
+                <h4 className="font-medium text-xs uppercase text-gray-500 dark:text-gray-400 mb-2">Categories</h4>
+                <div className="space-y-1">
+                  {filters.categories.map((category) => (
+                    <div
+                      key={category}
+                      className="flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                        id={`category-${category}`}
+                        checked={selectedFilters.categories.includes(category)}
+                        onChange={() => onFilterChange('categories', category)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label 
+                        htmlFor={`category-${category}`}
+                        className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                      >
+                        {category}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Material Type Filter Section */}
+              <div>
+                <h4 className="font-medium text-xs uppercase text-gray-500 dark:text-gray-400 mb-2">Material Types</h4>
+                <div className="space-y-1">
+                  {filters.materialTypes.map((type) => (
+                    <div
+                      key={type}
+                      className="flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                        id={`material-${type}`}
+                        checked={selectedFilters.materialTypes.includes(type)}
+                        onChange={() => onFilterChange('materialTypes', type)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label 
+                        htmlFor={`material-${type}`}
+                        className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                      >
+                        {type.toUpperCase()}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Active Filters Display */}
         {activeFiltersCount > 0 && (
           <div className="flex flex-wrap gap-2 mt-2 pb-2">
@@ -223,4 +222,4 @@ const FilterBar: React.FC<FilterBarProps> = ({
   );
 };
 
-export default FilterBar; 
+export default FilterBar;

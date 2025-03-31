@@ -1,67 +1,41 @@
 import React, { useState } from 'react';
-import { Search, ChevronDown, Bell, LogOut } from 'lucide-react';
+import { ChevronDown, LogOut } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { User } from '../types';
 
 interface ToolkitHeaderProps {
   user: User | null;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
   onLogout: () => void;
 }
 
 const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
   user,
-  searchQuery,
-  onSearchChange,
   onLogout
 }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30">
-      <div className="container mx-auto px-4 py-2">
+      <div className="w-full max-w-screen-xl mx-auto px-6 py-2">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <img
-              className="h-8 w-auto"
-              src="/documents/logo_inverted.png"
-              alt="Toolkit"
-            />
-            <span className="ml-4 text-xl font-semibold text-gray-900 dark:text-white">
-              Converge Toolkit
-            </span>
+            <h1 className="text-3xl tracking-tight font-['Open_Sans']">
+              <span className="font-bold text-[#079669]">Converge</span>
+              <span className="font-light text-gray-800 dark:text-gray-200">Toolkit</span>
+            </h1>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-xl px-4">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 sm:text-sm text-gray-900 dark:text-gray-100"
-                placeholder="Search for tools, resources, materials..."
-              />
-            </div>
-          </div>
+          {/* Center space (previously search) */}
+          <div className="flex-1"></div>
 
           {/* Right side navigation items */}
           <div className="flex items-center gap-4">
             <ThemeToggle />
 
-            {/* Notification Button */}
-            <button className="rounded-full p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none">
-              <Bell className="h-6 w-6" />
-            </button>
-
             {/* Profile dropdown */}
             {user && (
-              <div className="ml-3 relative">
+              <div className="relative">
                 <div>
                   <button
                     onClick={() => setShowProfileMenu(!showProfileMenu)}

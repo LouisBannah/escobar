@@ -128,21 +128,22 @@ export const Toolkit: React.FC = () => {
       <div className="absolute inset-0 bg-pattern opacity-5 dark:opacity-10 z-0"></div>
 
       <div className="relative z-10">
-        {/* Header with search and profile */}
+        {/* Header with profile */}
         <ToolkitHeader 
           user={user}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
           onLogout={handleLogout}
         />
 
-        {/* Filter bar */}
+        {/* Filter bar with search */}
         <FilterBar 
           filters={availableFilters}
           selectedFilters={filters}
           activeFiltersCount={activeFiltersCount}
           onFilterChange={handleFilterChange}
           onClearFilters={handleClearFilters}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          totalToolsCount={filteredItems.length}
         />
 
         {/* Main grid of cards */}
