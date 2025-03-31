@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Search, X, FileText, Archive, Table, Presentation, Code, Globe, ChevronDown, Bell, LogOut } from 'lucide-react';
+import React, { useState } from 'react';
 import DetailedCard from './DetailedCard';
 import ExpandedCard from './ExpandedCard';
 import FeedbackModal from './FeedbackModal';
 import PDFViewer from './PDFViewer';
-import ThemeToggle from './ThemeToggle';
-import BaseCard from './BaseCard';
 import ToolkitHeader from './ToolkitHeader';
 import FilterBar from './FilterBar';
 import CardGrid from './CardGrid';
@@ -17,8 +14,8 @@ export const Toolkit: React.FC = () => {
   // Use the User context
   const { user, logout } = useUser();
 
-  // Toolkit items
-  const [toolkitItems, setToolkitItems] = useState<ToolkitItem[]>(importedToolkitItems || []);
+  // Toolkit items - we keep setToolkitItems for future use even though it's not currently used
+  const [toolkitItems] = useState<ToolkitItem[]>(importedToolkitItems || []);
 
   // State for search and filtering
   const [searchQuery, setSearchQuery] = useState('');
@@ -107,11 +104,6 @@ export const Toolkit: React.FC = () => {
   const handleRequestAccess = (itemId: string) => {
     // Logic for access request
     console.log('Access requested for', itemId);
-  };
-
-  // Handle PDF viewer
-  const handleViewPDF = (url: string, title: string) => {
-    setSelectedPDF({ url, title });
   };
 
   // Handle PDF close
