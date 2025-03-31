@@ -1,10 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-
-interface User {
-  accessLevel: 1 | 2;
-  email: string;
-  isAuthenticated: boolean;
-}
+import { User } from '../types';
 
 interface UserContextType {
   user: User | null;
@@ -22,7 +17,8 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     setUser({
       accessLevel: 1,
       email,
-      isAuthenticated: true
+      isAuthenticated: true,
+      name: email.split('@')[0] // Extract name from email
     });
   };
 
