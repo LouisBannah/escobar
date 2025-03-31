@@ -103,27 +103,31 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
 
               {/* Materials Section */}
               <div className={`rounded-xl p-6 ${colors.contentBox} border ${colors.border}`}>
-                <h3 className={`${colors.boxTitle} font-medium mb-4`}>Available Materials</h3>
+                <h3 className={`${colors.boxTitle} text-lg font-semibold mb-5 flex items-center`}>
+                  <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                  Available Materials
+                </h3>
                 <div className="space-y-3">
                   {item.materials.map((material, index) => (
                     <div 
                       key={index} 
-                      className={`flex items-center gap-3 p-3 ${colors.materialBoxBackground} rounded-lg border ${colors.materialBoxBorder} 
-                        hover:opacity-90 transition-colors`}
+                      className={`${colors.materialBoxBackground} rounded-lg border ${colors.materialBoxBorder} transition-all duration-200`}
                     >
-                      {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
-                      {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
-                      {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
-                      {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
-                      {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
-                      {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
-                      {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
-                      {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
-                      <span className={`text-sm ${colors.materialBoxText} font-medium flex-grow`}>{material.title}</span>
-                      <span className={`text-xs px-2 py-1 rounded-md ${colors.materialBoxBackground} ${colors.materialBoxText} border ${colors.materialBoxBorder}`}>
-                        {material.type.toUpperCase()}
-                      </span>
-                      <Lock className={`w-4 h-4 ${colors.materialBoxText} opacity-50`} />
+                      <div className={`flex items-center gap-3 p-3 hover:opacity-90 transition-colors`}>
+                        {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
+                        {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
+                        {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
+                        {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
+                        {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
+                        {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
+                        {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
+                        {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
+                        <span className={`text-sm ${colors.materialBoxText} font-medium flex-grow`}>{material.title}</span>
+                        <span className={`text-xs px-2 py-1 rounded-md ${colors.materialBoxBackground} ${colors.materialBoxText} border ${colors.materialBoxBorder}`}>
+                          {material.type.toUpperCase()}
+                        </span>
+                        <Lock className={`w-4 h-4 ${colors.materialBoxText} opacity-50`} />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -134,7 +138,7 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                 <div className="relative flex items-start gap-4">
                   <Lock className={`w-5 h-5 ${colors.text} mt-1 flex-shrink-0 opacity-80`} />
                   <div className="flex-grow">
-                    <h3 className={`text-lg font-medium ${colors.text} mb-2`}>
+                    <h3 className={`text-lg font-semibold ${colors.text} mb-2`}>
                       Access Restricted
                     </h3>
                     <p className={`${colors.text} opacity-80 mb-4`}>
