@@ -32,7 +32,7 @@ export const getThemeColors = (theme: 'Sales' | 'Delivery' | 'Quality Assurance'
           border: 'border-emerald-800',
           tabButton: 'bg-emerald-600 hover:bg-emerald-700',
           success: 'bg-emerald-50',
-          tabText: 'text-graredy-900',
+          tabText: 'text-emerald-900',
           titleText: 'text-emerald-900',
           themeLabel: 'bg-emerald-200 text-emerald-800 border-emerald-200',
           boxTitle: 'text-emerald-900',
