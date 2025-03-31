@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DetailedCard from './DetailedCard';
 import ExpandedCard from './ExpandedCard';
 import FeedbackCard from './FeedbackCard';
@@ -11,6 +11,13 @@ import { useUser } from '../contexts/UserContext';
 import { ToolkitItem, DetailedCardItem, ExpandedCardItem, Filters } from '../types';
 
 export const Toolkit: React.FC = () => {
+  // Add debugging
+  useEffect(() => {
+    console.log('Toolkit component mounted');
+    // Check if toolkitItems is loaded
+    console.log('Toolkit items count:', importedToolkitItems?.length || 'no items found');
+  }, []);
+
   // Use the User context
   const { user, logout } = useUser();
 
@@ -135,10 +142,19 @@ export const Toolkit: React.FC = () => {
     logout();
   };
 
+  // Get the structure style with fixed background image
+  const bgStyle = {
+    backgroundImage: "url('/documents/background.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+    backgroundRepeat: "no-repeat"
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
-      {/* Background pattern or image */}
-      <div className="absolute inset-0 bg-pattern opacity-5 dark:opacity-10 z-0"></div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative" style={bgStyle}>
+      {/* Background pattern or image - using opacity for subtle effect */}
+      <div className="absolute inset-0 bg-black opacity-5 dark:opacity-10 z-0"></div>
 
       <div className="relative z-10">
         {/* Header with profile and theme buttons */}
@@ -184,10 +200,17 @@ export const Toolkit: React.FC = () => {
         )}
 
         {/* Feedback Card */}
-        <FeedbackCard
-          isOpen={showFeedback}
-          onClose={() => setShowFeedback(false)}
-        />
+        {showFeedback && (
+          <FeedbackCard
+            item={toolkitItems.length > 0 ? toolkitItems[0] : {
+              id: 'feedback',
+              theme: 'Delivery',
+              category: 'General',
+              shortTitle: 'Toolkit Feedback'
+            }}
+            onClose={() => setShowFeedback(false)}
+          />
+        )}
 
         {/* PDF Viewer Modal */}
         {selectedPDF && (

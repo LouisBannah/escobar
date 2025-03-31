@@ -211,10 +211,17 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
       </div>
       
       {/* Feedback Modal */}
-      <FeedbackCard 
-        isOpen={showFeedback} 
-        onClose={() => setShowFeedback(false)} 
-      />
+      {showFeedback && (
+        <FeedbackCard 
+          item={{
+            id: 'feedback',
+            theme: 'Delivery',
+            category: 'General',
+            shortTitle: 'Toolkit Feedback'
+          }}
+          onClose={() => setShowFeedback(false)} 
+        />
+      )}
     </header>
   );
 };

@@ -106,11 +106,17 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
           />
         )}
 
-        <FeedbackCard 
-          isOpen={showFeedback}
-          onClose={() => setShowFeedback(false)}
-          title="Tool Feedback"
-        />
+        {showFeedback && (
+          <FeedbackCard 
+            item={{
+              id: 'feedback',
+              theme: 'Delivery',
+              category: 'General',
+              shortTitle: 'Tool Feedback'
+            }}
+            onClose={() => setShowFeedback(false)}
+          />
+        )}
       </div>
     );
   }
@@ -294,11 +300,17 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
         </div>
       </div>
 
-      <FeedbackCard 
-        isOpen={showFeedback}
-        onClose={() => setShowFeedback(false)}
-        title="Tool Feedback"
-      />
+      {showFeedback && (
+        <FeedbackCard 
+          item={{
+            id: 'feedback',
+            theme: 'Delivery',
+            category: 'General',
+            shortTitle: 'Tool Feedback'
+          }}
+          onClose={() => setShowFeedback(false)}
+        />
+      )}
     </div>
   );
 };
