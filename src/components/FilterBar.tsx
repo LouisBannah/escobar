@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Filter, Search, ChevronDown } from 'lucide-react';
+import { X, Filter, Search } from 'lucide-react';
+import { toolkitItems } from '../data/toolkitItems';
 
 interface Filters {
   themes: string[];
@@ -29,17 +30,56 @@ const FilterBar: React.FC<FilterBarProps> = ({
   totalToolsCount
 }) => {
   const [showFiltersPanel, setShowFiltersPanel] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<keyof Filters | null>(null);
+  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showMaterialDropdown, setShowMaterialDropdown] = useState(false);
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const toggleDropdown = (dropdown: keyof Filters) => {
-    setOpenDropdown(openDropdown === dropdown ? null : dropdown);
-  };
+  const themeDropdownRef = useRef<HTMLDivElement>(null);
+  const categoryDropdownRef = useRef<HTMLDivElement>(null);
+  const materialDropdownRef = useRef<HTMLDivElement>(null);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setOpenDropdown(null);
+      // Don't close filter panel if the click was on the filter button
+      if (filterButtonRef.current && filterButtonRef.current.contains(event.target as Node)) {
+        return;
+      }
+      
+      // Close theme dropdown if clicked outside
+      if (
+        themeDropdownRef.current && 
+        !themeDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowThemeDropdown(false);
+      }
+      
+      // Close category dropdown if clicked outside
+      if (
+        categoryDropdownRef.current && 
+        !categoryDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowCategoryDropdown(false);
+      }
+      
+      // Close material dropdown if clicked outside
+      if (
+        materialDropdownRef.current && 
+        !materialDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowMaterialDropdown(false);
+      }
+      
+      // Close filters panel if clicked outside
+      if (
+        dropdownRef.current && 
+        !dropdownRef.current.contains(event.target as Node) &&
+        !themeDropdownRef.current?.contains(event.target as Node) &&
+        !categoryDropdownRef.current?.contains(event.target as Node) &&
+        !materialDropdownRef.current?.contains(event.target as Node)
+      ) {
+        setShowFiltersPanel(false);
       }
     };
 
@@ -48,6 +88,34 @@ const FilterBar: React.FC<FilterBarProps> = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Dynamic counts for filter options based on actual data
+  const getFilterCounts = (filterType: string, value: string): number => {
+    if (filterType === 'themes') {
+      return toolkitItems.filter(item => item.theme === value).length;
+    } else if (filterType === 'categories') {
+      return toolkitItems.filter(item => item.category === value).length;
+    } else if (filterType === 'materialTypes') {
+      return toolkitItems.filter(item => 
+        item.materials.some(material => material.type.toLowerCase() === value.toLowerCase())
+      ).length;
+    }
+    return 0;
+  };
+
+  // Simple toggle function for filter panel
+  const handleFilterButtonClick = () => {
+    // Toggle the filter panel state
+    setShowFiltersPanel(prev => {
+      // If we're closing the panel, also close all dropdowns
+      if (prev) {
+        setShowThemeDropdown(false);
+        setShowCategoryDropdown(false);
+        setShowMaterialDropdown(false);
+      }
+      return !prev;
+    });
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm mb-4 border-b border-gray-200 dark:border-gray-700 sticky top-[4.5rem] z-20">
@@ -63,20 +131,33 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 sm:text-sm text-gray-900 dark:text-gray-100"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 sm:text-sm text-gray-900 dark:text-gray-100"
               placeholder="Search for tools, resources, materials..."
             />
+            {searchQuery && (
+              <button
+                onClick={() => onSearchChange('')}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
           </div>
           
-          {/* Filter Button */}
+          {/* Filter Button - Simple button with standard click handler */}
           <button
-            onClick={() => setShowFiltersPanel(!showFiltersPanel)}
-            className={`inline-flex items-center px-4 py-2 border ${activeFiltersCount > 0 ? 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:border-indigo-400 dark:bg-indigo-900 dark:bg-opacity-20 dark:text-indigo-300' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200'} rounded-md shadow-sm text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none whitespace-nowrap`}
+            ref={filterButtonRef}
+            onClick={handleFilterButtonClick}
+            className={`inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium focus:outline-none ${
+              showFiltersPanel || activeFiltersCount > 0
+                ? 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-900 dark:bg-opacity-20 dark:text-emerald-300 dark:border-emerald-800'
+                : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
+            } whitespace-nowrap`}
           >
             <Filter className="mr-2 h-4 w-4" />
-            Filter
+            Filters
             {activeFiltersCount > 0 && (
-              <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-indigo-100 bg-indigo-600 dark:bg-indigo-500 rounded-full">
+              <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-emerald-100 bg-emerald-600 dark:bg-emerald-500 rounded-full">
                 {activeFiltersCount}
               </span>
             )}
@@ -88,180 +169,191 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </div>
         </div>
         
-        {/* Compact Filter Panel */}
+        {/* Enhanced Filter Panel */}
         {showFiltersPanel && (
-          <div className="py-2 mb-2 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2 flex-wrap" ref={dropdownRef}>
-                  {/* Theme Picklist */}
-                  <div className="relative">
-                    <button
-                      className="inline-flex items-center px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-                      onClick={() => toggleDropdown('themes')}
-                    >
-                      Themes
-                      {selectedFilters.themes.length > 0 && (
-                        <span className="ml-1 bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-100 px-1.5 py-0.5 rounded-full text-xs font-medium">
-                          {selectedFilters.themes.length}
-                        </span>
-                      )}
-                      <ChevronDown className="ml-2 h-3.5 w-3.5" />
-                    </button>
-                    
-                    {openDropdown === 'themes' && (
-                      <div className="absolute left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-30 border border-gray-200 dark:border-gray-700">
-                        <div className="p-2 max-h-48 overflow-y-auto">
-                          {filters.themes.map((theme) => (
-                            <div key={theme} className="flex items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer" onClick={() => onFilterChange('themes', theme)}>
-                              <input
-                                type="checkbox"
-                                id={`theme-${theme}`}
-                                checked={selectedFilters.themes.includes(theme)}
-                                onChange={() => {}}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                              />
-                              <label htmlFor={`theme-${theme}`} className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
-                                {theme}
+          <div className="py-3 mb-2" ref={dropdownRef}>
+            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 relative z-40">
+              <div className="flex flex-wrap gap-4">
+                {/* Theme Filter */}
+                <div className="flex-1 min-w-[200px]" ref={themeDropdownRef}>
+                  <div className="relative z-40">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowThemeDropdown(!showThemeDropdown);
+                          setShowCategoryDropdown(false);
+                          setShowMaterialDropdown(false);
+                        }}
+                        className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700 dark:text-gray-200">Themes</span>
+                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showThemeDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showThemeDropdown && (
+                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+                          <div className="p-2">
+                            {filters.themes.map(theme => (
+                              <label key={theme} className="flex items-center px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedFilters.themes.includes(theme)}
+                                  onChange={() => onFilterChange('themes', theme)}
+                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                />
+                                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                  {theme}
+                                  <span className="ml-1 text-gray-400 dark:text-gray-500">
+                                    ({getFilterCounts('themes', theme)})
+                                  </span>
+                                </span>
                               </label>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Category Picklist */}
-                  <div className="relative">
-                    <button
-                      className="inline-flex items-center px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-                      onClick={() => toggleDropdown('categories')}
-                    >
-                      Categories
-                      {selectedFilters.categories.length > 0 && (
-                        <span className="ml-1 bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100 px-1.5 py-0.5 rounded-full text-xs font-medium">
-                          {selectedFilters.categories.length}
-                        </span>
                       )}
-                      <ChevronDown className="ml-2 h-3.5 w-3.5" />
-                    </button>
-                    
-                    {openDropdown === 'categories' && (
-                      <div className="absolute left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-30 border border-gray-200 dark:border-gray-700">
-                        <div className="p-2 max-h-48 overflow-y-auto">
-                          {filters.categories.map((category) => (
-                            <div key={category} className="flex items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer" onClick={() => onFilterChange('categories', category)}>
-                              <input
-                                type="checkbox"
-                                id={`category-${category}`}
-                                checked={selectedFilters.categories.includes(category)}
-                                onChange={() => {}}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                              />
-                              <label htmlFor={`category-${category}`} className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
-                                {category}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </div>
-                  
-                  {/* Material Type Picklist */}
-                  <div className="relative">
-                    <button
-                      className="inline-flex items-center px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-                      onClick={() => toggleDropdown('materialTypes')}
-                    >
-                      Material Types
-                      {selectedFilters.materialTypes.length > 0 && (
-                        <span className="ml-1 bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 px-1.5 py-0.5 rounded-full text-xs font-medium">
-                          {selectedFilters.materialTypes.length}
-                        </span>
+                </div>
+
+                {/* Category Filter */}
+                <div className="flex-1 min-w-[200px]" ref={categoryDropdownRef}>
+                  <div className="relative z-40">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowCategoryDropdown(!showCategoryDropdown);
+                          setShowThemeDropdown(false);
+                          setShowMaterialDropdown(false);
+                        }}
+                        className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700 dark:text-gray-200">Categories</span>
+                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showCategoryDropdown && (
+                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+                          <div className="p-2">
+                            {filters.categories.map(category => (
+                              <label key={category} className="flex items-center px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedFilters.categories.includes(category)}
+                                  onChange={() => onFilterChange('categories', category)}
+                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                />
+                                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                  {category}
+                                  <span className="ml-1 text-gray-400 dark:text-gray-500">
+                                    ({getFilterCounts('categories', category)})
+                                  </span>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
                       )}
-                      <ChevronDown className="ml-2 h-3.5 w-3.5" />
-                    </button>
-                    
-                    {openDropdown === 'materialTypes' && (
-                      <div className="absolute left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-30 border border-gray-200 dark:border-gray-700">
-                        <div className="p-2 max-h-48 overflow-y-auto">
-                          {filters.materialTypes.map((type) => (
-                            <div key={type} className="flex items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer" onClick={() => onFilterChange('materialTypes', type)}>
-                              <input
-                                type="checkbox"
-                                id={`material-${type}`}
-                                checked={selectedFilters.materialTypes.includes(type)}
-                                onChange={() => {}}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                              />
-                              <label htmlFor={`material-${type}`} className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
-                                {type.toUpperCase()}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </div>
-                  
-                  {activeFiltersCount > 0 && (
-                    <button
-                      onClick={onClearFilters}
-                      className="text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 flex items-center"
-                    >
-                      Clear All
-                      <X className="ml-1 h-3 w-3" />
-                    </button>
-                  )}
+                </div>
+
+                {/* Material Types Filter */}
+                <div className="flex-1 min-w-[200px]" ref={materialDropdownRef}>
+                  <div className="relative z-40">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowMaterialDropdown(!showMaterialDropdown);
+                          setShowThemeDropdown(false);
+                          setShowCategoryDropdown(false);
+                        }}
+                        className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700 dark:text-gray-200">Material Types</span>
+                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showMaterialDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showMaterialDropdown && (
+                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+                          <div className="p-2">
+                            {filters.materialTypes.map(type => (
+                              <label key={type} className="flex items-center px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedFilters.materialTypes.includes(type)}
+                                  onChange={() => onFilterChange('materialTypes', type)}
+                                  className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+                                />
+                                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                  {type.toUpperCase()}
+                                  <span className="ml-1 text-gray-400 dark:text-gray-500">
+                                    ({getFilterCounts('materialTypes', type)})
+                                  </span>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Active Filters Display */}
+              {/* Selected Filters Display */}
               {activeFiltersCount > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {selectedFilters.themes.map((theme) => (
-                    <div
-                      key={theme}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100"
-                    >
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {selectedFilters.themes.map(theme => (
+                    <span key={theme} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:bg-opacity-40 dark:text-emerald-300">
                       {theme}
                       <button
                         onClick={() => onFilterChange('themes', theme)}
-                        className="ml-1 h-3.5 w-3.5 rounded-full flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-700"
+                        className="ml-1 text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200"
                       >
-                        <X className="h-2.5 w-2.5" />
+                        <X className="h-3 w-3" />
                       </button>
-                    </div>
+                    </span>
                   ))}
-                  {selectedFilters.categories.map((category) => (
-                    <div
-                      key={category}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100"
-                    >
+                  {selectedFilters.categories.map(category => (
+                    <span key={category} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:bg-opacity-40 dark:text-blue-300">
                       {category}
                       <button
                         onClick={() => onFilterChange('categories', category)}
-                        className="ml-1 h-3.5 w-3.5 rounded-full flex items-center justify-center hover:bg-purple-200 dark:hover:bg-purple-700"
+                        className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
                       >
-                        <X className="h-2.5 w-2.5" />
+                        <X className="h-3 w-3" />
                       </button>
-                    </div>
+                    </span>
                   ))}
-                  {selectedFilters.materialTypes.map((type) => (
-                    <div
-                      key={type}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100"
-                    >
+                  {selectedFilters.materialTypes.map(type => (
+                    <span key={type} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900 dark:bg-opacity-40 dark:text-purple-300">
                       {type.toUpperCase()}
                       <button
                         onClick={() => onFilterChange('materialTypes', type)}
-                        className="ml-1 h-3.5 w-3.5 rounded-full flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-700"
+                        className="ml-1 text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-200"
                       >
-                        <X className="h-2.5 w-2.5" />
+                        <X className="h-3 w-3" />
                       </button>
-                    </div>
+                    </span>
                   ))}
+                </div>
+              )}
+
+              {activeFiltersCount > 0 && (
+                <div className="mt-4 pt-4 border-t flex justify-end">
+                  <button
+                    onClick={onClearFilters}
+                    className="text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                  >
+                    Clear all filters
+                  </button>
                 </div>
               )}
             </div>

@@ -17,6 +17,14 @@ export const Toolkit: React.FC = () => {
   // Toolkit items - we keep setToolkitItems for future use even though it's not currently used
   const [toolkitItems] = useState<ToolkitItem[]>(importedToolkitItems || []);
 
+  // Get unique categories and material types from the data
+  const uniqueCategories = [...new Set(importedToolkitItems.map(item => item.category))];
+  const uniqueMaterialTypes = [...new Set(
+    importedToolkitItems.flatMap(item => 
+      item.materials.map(material => material.type.toLowerCase())
+    )
+  )];
+
   // State for search and filtering
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState<Filters>({
@@ -26,8 +34,8 @@ export const Toolkit: React.FC = () => {
   });
   const [availableFilters] = useState<Filters>({
     themes: ['Sales', 'Delivery', 'Quality Assurance'],
-    categories: ['Client Success', 'API', 'Integration', 'Monitoring', 'Deployment', 'Documentation'],
-    materialTypes: ['pdf', 'docx', 'ppt', 'xls', 'zip']
+    categories: uniqueCategories,
+    materialTypes: uniqueMaterialTypes
   });
 
   // UI state
@@ -86,6 +94,11 @@ export const Toolkit: React.FC = () => {
     });
   };
 
+  // Handle theme filter change
+  const handleThemeFilterChange = (theme: string) => {
+    handleFilterChange('themes', theme);
+  };
+
   // Clear all filters
   const handleClearFilters = () => {
     setFilters({
@@ -128,10 +141,12 @@ export const Toolkit: React.FC = () => {
       <div className="absolute inset-0 bg-pattern opacity-5 dark:opacity-10 z-0"></div>
 
       <div className="relative z-10">
-        {/* Header with profile */}
+        {/* Header with profile and theme buttons */}
         <ToolkitHeader 
           user={user}
           onLogout={handleLogout}
+          activeThemeFilters={filters.themes}
+          onThemeFilterChange={handleThemeFilterChange}
         />
 
         {/* Filter bar with search */}
