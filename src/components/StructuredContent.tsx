@@ -4,14 +4,16 @@ import { ContentBlock } from '../data/content';
 interface StructuredContentProps {
   blocks: ContentBlock[];
   themeColors: {
-    light: string;
-    lighter: string;
     medium: string;
     text: string;
     border: string;
     button: string;
     success: string;
     banner: string;
+    numberBackground: string;
+    numberText: string;
+    contentText: string;
+    bulletBackground: string;
   };
 }
 
@@ -54,10 +56,10 @@ const StructuredContent: React.FC<StructuredContentProps> = ({ blocks, themeColo
                 {block.items?.map((item, itemIndex) => (
                   <div key={itemIndex} className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${themeColors.button} flex items-center justify-center shadow-sm`}>
-                        <span className="text-sm font-bold text-white">{itemIndex + 1}</span>
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${themeColors.numberBackground} flex items-center justify-center shadow-sm`}>
+                        <span className={`text-sm font-bold ${themeColors.numberText}`}>{itemIndex + 1}</span>
                       </div>
-                      <div className="text-gray-700 flex-1 pt-1.5 font-medium">
+                      <div className={`${themeColors.contentText} flex-1 pt-1.5 font-medium`}>
                         {item.content}
                       </div>
                     </div>
@@ -66,10 +68,10 @@ const StructuredContent: React.FC<StructuredContentProps> = ({ blocks, themeColo
                       <div className="ml-11 space-y-2">
                         {item.sub_bullets.map((subItem, subIndex) => (
                           <div key={subIndex} className="flex items-start gap-3">
-                            <div className={`flex-shrink-0 w-4 h-4 rounded-full ${themeColors.medium} flex items-center justify-center mt-0.5`}>
-                              <div className={`w-1 h-1 rounded-full ${themeColors.button}`}></div>
+                            <div className={`flex-shrink-0 w-4 h-4 rounded-full ${themeColors.bulletBackground} flex items-center justify-center mt-0.5`}>
+                              <div className={`w-1 h-1 rounded-full ${themeColors.numberBackground}`}></div>
                             </div>
-                            <span className="text-gray-600 flex-1">{subItem}</span>
+                            <span className={`${themeColors.contentText} flex-1`}>{subItem}</span>
                           </div>
                         ))}
                       </div>

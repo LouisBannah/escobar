@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { UserProvider, useUser } from './contexts/UserContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { Toolkit } from './components/Toolkit';
 import ToolkitItemDetail from './components/ToolkitItemDetail';
 import LoginScreen from './components/LoginScreen';
+import ThemeToggle from './components/ThemeToggle';
 
 const AppContent: React.FC = () => {
   const { user } = useUser();
@@ -13,7 +15,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {selectedItemId ? (
         <ToolkitItemDetail
           itemId={selectedItemId}
@@ -28,9 +30,11 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <UserProvider>
-      <AppContent />
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
+    </ThemeProvider>
   );
 };
 

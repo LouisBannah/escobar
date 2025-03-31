@@ -4,6 +4,8 @@ import StructuredContent from './StructuredContent';
 import CodeExampleViewer from './CodeExampleViewer';
 import { detailedDescriptionsMap } from '../data/content';
 import { codeExamplesMap } from '../data/content/codeExamples';
+import { getThemeColors } from '../utils/themeUtils';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface ExpandedCardProps {
   item: {
@@ -31,46 +33,10 @@ interface ExpandedCardProps {
 const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Materials' | 'Code Examples' | 'Contact'>('Overview');
   const [expandedPDF, setExpandedPDF] = useState<{ url: string; title: string } | null>(null);
+  const { isDarkMode } = useTheme();
 
-  const getThemeColors = (theme: string) => {
-    switch (theme) {
-      case 'Sales':
-        return {
-          light: 'bg-gradient-to-r from-emerald-100/70 to-teal-200/70 backdrop-blur-sm',
-          lighter: 'bg-gradient-to-r from-emerald-50/40 to-teal-50/40 backdrop-blur-sm',
-          medium: 'bg-emerald-200',
-          text: 'text-emerald-800',
-          border: 'border-emerald-200',
-          button: 'bg-emerald-600 hover:bg-emerald-700',
-          success: 'bg-emerald-50',
-          banner: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-400'
-        };
-      case 'Delivery':
-        return {
-          light: 'bg-gradient-to-r from-blue-100/70 to-indigo-200/70 backdrop-blur-sm',
-          lighter: 'bg-gradient-to-r from-blue-50/40 to-indigo-50/40 backdrop-blur-sm',
-          medium: 'bg-blue-200',
-          text: 'text-blue-800',
-          border: 'border-blue-200',
-          button: 'bg-blue-600 hover:bg-blue-700',
-          success: 'bg-blue-50',
-          banner: 'bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-400'
-        };
-      default: // Quality Assurance
-        return {
-          light: 'bg-gradient-to-r from-purple-100/70 to-fuchsia-200/70 backdrop-blur-sm',
-          lighter: 'bg-gradient-to-r from-purple-50/40 to-fuchsia-50/40 backdrop-blur-sm',
-          medium: 'bg-purple-200',
-          text: 'text-purple-800',
-          border: 'border-purple-200',
-          button: 'bg-purple-600 hover:bg-purple-700',
-          success: 'bg-purple-50',
-          banner: 'bg-gradient-to-r from-purple-400 via-fuchsia-500 to-purple-400'
-        };
-    }
-  };
-
-  const colors = getThemeColors(item.theme);
+  // Use the centralized theme utility
+  const colors = getThemeColors(item.theme, isDarkMode);
   
   // Get the detailed description for this item
   const detailedDescription = detailedDescriptionsMap[item.id];
@@ -88,29 +54,28 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
       <div className="min-h-screen px-4 text-center">
         <div className="fixed inset-0" onClick={onClose} />
         <div className="inline-block w-full max-w-3xl my-8 text-left align-middle transition-all transform">
-          <div className={`rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/90 relative z-[51] border ${colors.border}`}>
+          <div className="card rounded-2xl shadow-2xl overflow-hidden relative z-[51] border">
             {/* Gradient Banner */}
             <div className={`h-4 ${colors.banner}`} />
             
             {/* Header */}
-            <div className={`p-6 ${colors.light} border-b ${colors.border}`}>
+            <div className={`p-6 ${colors.header} border-b ${colors.border}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-semibold text-gray-900">{item.shortTitle}</h2>
+                  <h2 className={`text-xl font-semibold ${colors.titleText}`}>{item.shortTitle}</h2>
                   <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                      ${colors.medium} ${colors.text}`}>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.themeLabel}`}>
                       {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                     </span>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                      bg-gray-100 text-gray-700 shadow-sm border border-gray-200">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                      ${colors.tagBackground} ${colors.tagText} border ${colors.tagBorder}`}>
                       {item.category}
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+                  className={`${colors.tabText} hover:opacity-80 transition-colors duration-200`}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -125,7 +90,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                       activeTab === tab
                         ? `${colors.button} text-white shadow-sm`
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+                        : `${colors.cardText} hover:opacity-80`
                     }`}
                   >
                     {tab}
@@ -140,14 +105,15 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 <div className="space-y-6">
                   {/* Description */}
                   <div className="space-y-6">
-                    <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
+                    <p className={`${colors.contentText} text-lg leading-relaxed opacity-80`}>{item.shortDescription}</p>
                     
                     {/* Tags Section */}
                     <div className="flex flex-wrap gap-2">
                       {item.availableTags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                            ${colors.tagBackground} ${colors.tagText} border ${colors.tagBorder} hover:opacity-80 transition-colors`}
                         >
                           {tag}
                         </span>
@@ -156,8 +122,8 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                   </div>
 
                   {/* Long Description Section */}
-                  <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                  <div className={`rounded-xl p-6 ${colors.contentBox} border ${colors.border}`}>
+                    <h3 className={`${colors.boxTitle} text-lg font-semibold mb-5 flex items-center`}>
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
                       Detailed Description
                     </h3>
@@ -168,15 +134,15 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       <div className="prose prose-gray max-w-none">
                         {/* Fallback to original rendering if no structured content is available */}
                         {item.longDescription.split('\n\n').map((paragraph, index) => (
-                          <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+                          <p key={index} className={`mb-4 ${colors.cardText} opacity-80`}>{paragraph}</p>
                         ))}
                       </div>
                     )}
                   </div>
                   
                   {/* Business Value Section */}
-                  <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                  <div className={`rounded-xl p-6 ${colors.contentBox} border ${colors.border}`}>
+                    <h3 className={`${colors.boxTitle} text-lg font-semibold mb-5 flex items-center`}>
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
                       Business Value
                     </h3>
@@ -185,7 +151,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                         // Check if this paragraph is a header (ends with ":")
                         if (paragraph.trim().endsWith(':')) {
                           return (
-                            <p key={index} className={`font-medium ${colors.text} mb-3`}>
+                            <p key={index} className={`font-medium ${colors.cardText} mb-3`}>
                               {paragraph.trim()}
                             </p>
                           );
@@ -219,15 +185,15 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                           return (
                             <div key={index} className="mb-6">
                               {headerPart && (
-                                <p className="mb-3 text-gray-700">{headerPart}</p>
+                                <p className={`mb-3 ${colors.contentText} opacity-80`}>{headerPart}</p>
                               )}
                               <ul className="space-y-2 pl-2">
                                 {bulletPoints.map((point, idx) => (
                                   <li key={idx} className="flex items-start gap-3 group">
-                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
-                                      <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bulletBackground} flex items-center justify-center mt-0.5`}>
+                                      <div className={`w-1.5 h-1.5 rounded-full ${colors.numberBackground}`}></div>
                                     </div>
-                                    <span className="text-gray-700 flex-1">{point}</span>
+                                    <span className={`${colors.contentText} opacity-80 flex-1`}>{point}</span>
                                   </li>
                                 ))}
                               </ul>
@@ -245,10 +211,10 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                           return (
                             <div key={index} className="mb-3">
                               <div className="flex items-start gap-3">
-                                <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
-                                  <span className="text-sm font-bold text-white">{number}</span>
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.numberBackground} flex items-center justify-center shadow-sm`}>
+                                  <span className={`text-sm font-bold ${colors.numberText}`}>{number}</span>
                                 </div>
-                                <div className="text-gray-700 flex-1 pt-1.5 font-medium">
+                                <div className={`${colors.contentText} opacity-80 flex-1 pt-1.5`}>
                                   {content}
                                 </div>
                               </div>
@@ -263,8 +229,8 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                           
                           if (isPrevNumbered && !paragraph.trim().match(/^(\d+)\.\s+/) && !paragraph.trim().endsWith(':')) {
                             return (
-                              <div key={index} className="mb-4 ml-11 pl-0 border-l-2 border-gray-200">
-                                <p className="text-gray-600 pl-4 py-1">{paragraph}</p>
+                              <div key={index} className={`mb-4 ml-11 pl-0 border-l-2 ${colors.border}`}>
+                                <p className={`${colors.contentText} opacity-80 pl-4 py-1`}>{paragraph}</p>
                               </div>
                             );
                           }
@@ -272,15 +238,15 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
 
                         // Regular paragraph
                         return (
-                          <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+                          <p key={index} className={`mb-4 ${colors.cardText} opacity-80`}>{paragraph}</p>
                         );
                       })}
                     </div>
                   </div>
                   
                   {/* Key Capabilities Section */}
-                  <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                  <div className={`rounded-xl p-6 ${colors.contentBox} border ${colors.border}`}>
+                    <h3 className={`${colors.boxTitle} text-lg font-semibold mb-5 flex items-center`}>
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
                       Key Capabilities
                     </h3>
@@ -290,7 +256,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                         <div>
                           {/* Extract any header/intro text before bullet points */}
                           {item.keyCapabilities.includes(':') && (
-                            <p className={`font-medium ${colors.text} mb-4`}>
+                            <p className={`font-medium ${colors.cardText} mb-4`}>
                               {item.keyCapabilities.split(':')[0]}:
                             </p>
                           )}
@@ -307,10 +273,10 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                     <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
                                       <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
                                     </div>
-                                    <span className="text-gray-700 flex-1">{point.trim()}</span>
+                                    <span className={`${colors.cardText} opacity-80 flex-1`}>{point.trim()}</span>
                                   </li>
                                 ))
-                              : 
+                              :
                               // Handle multi-line format
                               item.keyCapabilities.split('\n')
                                 .filter(line => line.trim() && !line.includes(':'))
@@ -326,7 +292,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                         <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
                                           <span className="text-sm font-bold text-white">{number}</span>
                                         </div>
-                                        <div className="text-gray-700 flex-1 pt-1.5">
+                                        <div className={`${colors.cardText} opacity-80 flex-1 pt-1.5`}>
                                           {content}
                                         </div>
                                       </li>
@@ -340,7 +306,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                       <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
                                         <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
                                       </div>
-                                      <span className="text-gray-700 flex-1">{content}</span>
+                                      <span className={`${colors.cardText} opacity-80 flex-1`}>{content}</span>
                                     </li>
                                   );
                                 })
@@ -349,7 +315,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                         </div>
                       ) : (
                         // If it's just a single paragraph without bullet points
-                        <p className="text-gray-700">{item.keyCapabilities}</p>
+                        <p className={`${colors.cardText} opacity-80`}>{item.keyCapabilities}</p>
                       )}
                     </div>
                   </div>
@@ -359,8 +325,8 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               {/* Materials Tab */}
               {activeTab === 'Materials' && (
                 <div className="space-y-6">
-                  <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
+                  <div className={`rounded-xl p-6 ${colors.contentBox} border ${colors.border}`}>
+                    <h3 className={`${colors.boxTitle} text-lg font-semibold mb-5 flex items-center`}>
                       <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
                       Available Materials
                     </h3>
@@ -368,11 +334,11 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       {item.materials.map((material, index) => (
                         <div 
                           key={index} 
-                          className={`bg-white/80 rounded-lg border border-gray-100 transition-all duration-200 ${
+                          className={`${colors.materialBoxBackground} rounded-lg border ${colors.materialBoxBorder} transition-all duration-200 ${
                             expandedPDF?.title === material.title ? 'shadow-md' : ''
                           }`}
                         >
-                          <div className="flex items-center gap-3 p-3 hover:bg-white/95 transition-colors">
+                          <div className={`flex items-center gap-3 p-3 hover:opacity-90 transition-colors`}>
                             {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
                             {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
                             {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
@@ -381,51 +347,12 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                             {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
                             {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
                             {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
-                            <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
-                            <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
+                            <span className={`text-sm ${colors.materialBoxText} font-medium flex-grow`}>{material.title}</span>
+                            <span className={`text-xs px-2 py-1 rounded-md ${colors.materialBoxBackground} ${colors.materialBoxText} border ${colors.materialBoxBorder}`}>
                               {material.type.toUpperCase()}
                             </span>
-                            {material.type === 'pdf' && (
-                              <>
-                                <button 
-                                  onClick={() => {
-                                    if (expandedPDF?.title === material.title) {
-                                      setExpandedPDF(null);
-                                    } else {
-                                      setExpandedPDF({ 
-                                        url: 'http://localhost:5173/documents/10-page-sample.pdf',
-                                        title: material.title 
-                                      });
-                                    }
-                                  }}
-                                  className="text-gray-500 hover:text-blue-500 transition-colors"
-                                >
-                                  {expandedPDF?.title === material.title ? (
-                                    <ChevronUp className="w-4 h-4" />
-                                  ) : (
-                                    <Eye className="w-4 h-4" />
-                                  )}
-                                </button>
-                                <button 
-                                  onClick={() => handleDownload(material.url)}
-                                  className="text-gray-500 hover:text-blue-500 transition-colors"
-                                >
-                                  <Download className="w-4 h-4" />
-                                </button>
-                              </>
-                            )}
+                            <Download className={`w-4 h-4 ${colors.materialBoxText} opacity-50`} />
                           </div>
-                          {material.type === 'pdf' && expandedPDF?.title === material.title && (
-                            <div className="border-t border-gray-100">
-                              <div className="p-4">
-                                <iframe
-                                  src={`${expandedPDF.url}#toolbar=0`}
-                                  className="w-full h-[600px] rounded-md"
-                                  title={expandedPDF.title}
-                                />
-                              </div>
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>
@@ -436,73 +363,31 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               {/* Code Examples Tab */}
               {activeTab === 'Code Examples' && (
                 <div className="space-y-6">
-                  {codeExamples.length > 0 ? (
-                    <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                      <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
-                        <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
-                        Code Examples
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-4">
-                        Below are practical code examples related to this tool. Click on an example to expand it, view the full code, and copy it to your clipboard.
-                      </p>
-                      <div className="space-y-2">
-                        {codeExamples.map((example, index) => (
-                          <CodeExampleViewer 
-                            key={index} 
-                            example={example} 
-                            themeColors={colors} 
-                          />
-                        ))}
-                      </div>
+                  <div className={`rounded-xl p-6 ${colors.contentBox} border ${colors.border}`}>
+                    <h3 className={`${colors.boxTitle} text-lg font-semibold mb-5 flex items-center`}>
+                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      Code Examples
+                    </h3>
+                    <div className="space-y-6">
+                      {codeExamples.map((example, index) => (
+                        <CodeExampleViewer key={index} example={example} themeColors={colors} />
+                      ))}
                     </div>
-                  ) : (
-                    <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                      <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
-                        <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
-                        Code Examples
-                      </h3>
-                      <p className="text-gray-700">No code examples are available for this tool.</p>
-                    </div>
-                  )}
+                  </div>
                 </div>
               )}
 
               {/* Contact Tab */}
               {activeTab === 'Contact' && (
                 <div className="space-y-6">
-                  <p className="text-gray-600">Get in touch for more information about this toolkit item.</p>
-                  
-                  <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                    <h3 className="text-gray-900 text-lg font-semibold mb-5 flex items-center">
-                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
-                      Contact Information
-                    </h3>
-                    <div className="space-y-3">
-                      <p className="text-gray-700">For more information about this toolkit item, please contact the responsible team.</p>
-                      <div className="mt-4">
-                        <button className={`px-4 py-2 rounded-lg text-white ${colors.button} transition-all duration-200 shadow-sm hover:shadow-md`}>
-                          Request Information
-                        </button>
-                      </div>
-                    </div>
+                  {/* Contact Information */}
+                  <div className="space-y-6">
+                    <p className={`${colors.cardText} text-lg leading-relaxed opacity-80`}>
+                      {/* Contact information placeholder */}
+                    </p>
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Footer */}
-            <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
-              <div>
-                Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
-                  day: '2-digit', 
-                  month: '2-digit', 
-                  year: 'numeric' 
-                })}</span>
-              </div>
-              <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
-                Version {item.version}
-              </div>
             </div>
           </div>
         </div>

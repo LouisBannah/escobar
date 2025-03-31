@@ -12,8 +12,6 @@ declare global {
 interface CodeExampleViewerProps {
   example: CodeExample;
   themeColors: {
-    light: string;
-    lighter: string;
     medium: string;
     text: string;
     border: string;

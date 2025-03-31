@@ -7,6 +7,7 @@ import ExpandedCard from './ExpandedCard';
 import DetailedCard from './DetailedCard';
 import { useUser } from '../contexts/UserContext';
 import PDFViewer from './PDFViewer';
+import ThemeToggle from './ThemeToggle';
 
 interface Filters {
   category: string[];
@@ -117,19 +118,8 @@ export const Toolkit: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      {/* Background image - absolute positioned */}
-      <div 
-        className="fixed inset-0 z-0"
-        style={{
-          backgroundImage: "url('/documents/background3.png')",
-          backgroundSize: "auto 100%", 
-          backgroundPosition: "right bottom",
-          backgroundRepeat: "no-repeat"
-        }}
-      ></div>
-      
       {/* Content overlay */}
-      <div className="relative z-10 min-h-screen bg-black/10">
+      <div className="relative z-10 min-h-screen">
         <header className="sticky top-0 bg-white/95 border-b shadow-sm backdrop-blur-sm z-30">
           <div className="container mx-auto px-4 pt-6 pb-4">
             <div className="flex items-center justify-between mb-4">
@@ -181,6 +171,7 @@ export const Toolkit: React.FC = () => {
               </nav>
 
               <div className="flex items-center space-x-2">
+                <ThemeToggle />
                 <button
                   onClick={() => setShowFeedback(true)}
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:border-emerald-200 hover:bg-emerald-50 rounded-md text-gray-600 hover:text-emerald-600 text-sm transition-colors"
@@ -490,7 +481,7 @@ export const Toolkit: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => setCurrentItemId(item.id)}
-                  className="text-left bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow flex flex-col relative z-20"
+                  className="text-left card rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow flex flex-col relative z-20"
                 >
                   {/* Theme Badge */}
                   <div className="absolute top-4 right-4">

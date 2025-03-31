@@ -1,0 +1,103 @@
+/* Light mode variables (default) - Using current styling */
+:root {
+  /* Background colors */
+  --background-primary: #F1F1F1;
+  --background-secondary: #f9fafb;
+  --background-tertiary: #f3f4f6;
+  
+  /* Text colors */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  
+  /* Border colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  
+  /* Card colors */
+  --card-background: #ffffff;
+  --card-border: #e5e7eb;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  
+  /* Brand colors */
+  --brand-primary: #079669;
+  --brand-secondary: #0fb37f;
+  
+  /* Accent colors */
+  --accent-success: #059669;
+  --accent-warning: #fbbf24;
+  --accent-error: #ef4444;
+  
+  /* Overlay colors */
+  --overlay-light: rgba(255, 255, 255, 0.8);
+  --overlay-dark: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode variables */
+.dark {
+  /* Background colors */
+  --background-primary: #1e1e1e;
+  --background-secondary: #1f2937;
+  --background-tertiary: #374151;
+  
+  /* Text colors */
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-tertiary: #d1d5db;
+  
+  /* Border colors */
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+  
+  /* Card colors */
+  --card-background: rgb(55, 55, 55);
+  --card-border: #374151;
+  --card-shadow: rgba(0, 0, 0, 0.25);
+  
+  /* Brand colors - slightly adjusted for dark mode */
+  --brand-primary: #34d399;
+  --brand-secondary: #10b981;
+  
+  /* Accent colors - adjusted for dark mode */
+  --accent-success: #34d399;
+  --accent-warning: #fbbf24;
+  --accent-error: #f87171;
+  
+  /* Overlay colors */
+  --overlay-light: rgba(255, 255, 255, 0.1);
+  --overlay-dark: rgba(0, 0, 0, 0.5);
+}
+
+/* Apply background color */
+body {
+  background-color: var(--background-primary);
+  transition: background-color 0.3s ease;
+}
+
+body.dark {
+  background-image: url('/documents/background4.png');
+}
+
+/* Card styles */
+.card {
+  background-color: var(--card-background);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 3px var(--card-shadow);
+  backdrop-filter: blur(8px);
+}
+
+/* Text styles */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+/* Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+} 

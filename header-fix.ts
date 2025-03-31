@@ -28,17 +28,17 @@
     return (
       <div key={`bullet-section-${index}`} className="mt-4 mb-6">
         {headerPart && (
-          <p className={`font-medium ${colors.text} mb-4`}>
+          <p className={`font-medium ${colors.boxSubHeader} mb-4`}>
             {headerPart}:
           </p>
         )}
         <div className="space-y-3">
           {bulletPoints.map((point, idx) => (
             <div key={idx} className="flex items-start gap-3">
-              <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.medium} flex items-center justify-center mt-0.5`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+              <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bulletBackground} flex items-center justify-center mt-0.5`}>
+                <div className={`w-1.5 h-1.5 rounded-full ${colors.numberBackground}`}></div>
               </div>
-              <span className="text-gray-700 flex-1">{point}</span>
+              <span className={`${colors.contentText} flex-1`}>{point}</span>
             </div>
           ))}
         </div>
