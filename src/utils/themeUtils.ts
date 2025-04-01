@@ -5,7 +5,7 @@
 import { shared, lightThemes, darkThemes } from './themes';
 import get from 'lodash.get';
 
-export type ThemeType = 'Sales' | 'Delivery' | 'Quality Assurance';
+export type ThemeType = 'Sales' | 'Delivery' | 'Quality Assurance' | 'Neutral';
 
 /**
  * Theme colors interface for backward compatibility

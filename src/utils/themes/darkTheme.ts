@@ -57,6 +57,17 @@ const darkBase = {
           bg: '#6b21a8',
           text: '#c084fc',
         }
+      },
+      neutral: {
+        primary: '#64748b',       // Slate
+        secondary: '#94a3b8',     // Light slate
+        gradient: 'linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)',
+        light: '#94a3b8',
+        dark: '#475569',
+        label: {
+          bg: '#1e293b',
+          text: '#94a3b8',
+        }
       }
     }
   },
@@ -827,9 +838,202 @@ const qaDark = {
   },
 };
 
+// Neutral theme (slate/gray) - Dark mode
+const neutralDark = {
+  ...darkBase,
+  name: 'neutral',
+  colors: {
+    ...darkBase.colors,
+    primary: {
+      main: '#64748b',
+      light: '#94a3b8',
+      dark: '#475569',
+      contrast: '#f1f5f9',
+    },
+    secondary: {
+      main: '#94a3b8',
+      light: '#cbd5e1',
+      dark: '#64748b',
+      contrast: '#f1f5f9',
+    },
+    accent: '#334155',
+    
+    gradients: {
+      banner: 'linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)',
+      header: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+      button: 'linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)',
+      buttonHover: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)',
+    },
+  },
+  
+  components: {
+    // Toolkit header (neutral themed)
+    header: {
+      background: '#0f172a',
+      borderColor: '#334155',
+      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
+      themeButton: {
+        selected: {
+          bg: '#1e293b',
+          text: '#94a3b8',
+          border: '#334155',
+        },
+        normal: {
+          bg: 'transparent',
+          text: '#cbd5e1',
+          border: 'transparent',
+        },
+        hover: {
+          bg: '#0f172a',
+          text: '#94a3b8',
+          border: '#1e293b',
+        },
+      },
+      feedbackButton: {
+        bg: '#1e293b',
+        bgHover: '#334155',
+        border: '#334155',
+        borderHover: '#475569',
+        text: '#cbd5e1',
+        textHover: '#94a3b8',
+        icon: '#cbd5e1',
+        iconHover: '#94a3b8',
+      },
+      profileMenu: {
+        bg: '#0f172a',
+        border: '#334155',
+        divider: '#1e293b',
+        text: '#cbd5e1',
+        hoverBg: '#1e293b',
+        shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1)',
+      },
+    },
+    
+    // Filter and search (neutral themed)
+    filter: {
+      background: '#0f172a',
+      border: '#334155',
+      inputBg: '#1e293b',
+      inputText: '#f1f5f9',
+      inputPlaceholder: '#64748b',
+      iconColor: '#94a3b8',
+      button: {
+        bg: '#1e293b',
+        bgHover: '#334155',
+        border: '#334155',
+        borderHover: '#475569',
+        text: '#cbd5e1',
+        textHover: '#94a3b8',
+      },
+      dropdown: {
+        bg: '#0f172a',
+        border: '#334155',
+        shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1)',
+        itemHover: '#1e293b',
+        text: '#cbd5e1',
+      },
+    },
+    
+    // Base card (neutral themed)
+    baseCard: {
+      background: '#0f172a',
+      border: '#334155',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
+      themeLabel: {
+        bg: '#1e293b',
+        text: '#94a3b8',
+      },
+      categoryLabel: {
+        bg: '#1e293b',
+        text: '#cbd5e1',
+      },
+      tags: {
+        bg: '#1e293b',
+        text: '#94a3b8',
+        border: '#334155',
+      },
+    },
+    
+    // Shared card components (neutral themed)
+    cardComponents: {
+      gradientBanner: {
+        height: '0.25rem',
+        gradient: 'linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)',
+      },
+      header: {
+        bg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+        text: '#f1f5f9',
+        closeButtonBg: 'transparent',
+        closeButtonBgHover: '#1e293b',
+        closeButtonColor: '#94a3b8',
+        closeButtonColorHover: '#cbd5e1',
+      },
+      footer: {
+        bg: '#0f172a',
+        border: '#334155',
+        text: '#94a3b8',
+        versionBg: '#1e293b',
+        versionBorder: '#334155',
+        versionText: '#cbd5e1',
+      },
+      materialsSection: {
+        containerBg: '#0f172a',
+        containerBorder: '#334155',
+        headerText: '#f1f5f9',
+        itemBg: '#1e293b',
+        itemBorder: '#334155',
+        itemHoverBg: '#334155',
+        icons: {
+          pdf: '#f87171',
+          zip: '#facc15',
+          xls: '#4ade80',
+          docx: '#60a5fa',
+          ppt: '#fb923c',
+          yaml: '#94a3b8',
+          json: '#94a3b8',
+          default: '#94a3b8',
+        },
+        text: '#f1f5f9',
+        badgeBg: '#1e293b',
+        badgeText: '#cbd5e1',
+      },
+      scrollableContent: {
+        thumbColor: '#475569',
+        thumbHoverColor: '#64748b',
+        trackColor: '#1e293b',
+      },
+    },
+    
+    // Feedback card (neutral themed)
+    feedbackCard: {
+      form: {
+        fieldBg: '#1e293b',
+        fieldBorder: '#334155',
+        fieldText: '#f1f5f9',
+        labelText: '#cbd5e1',
+      },
+      starRating: {
+        emptyColor: '#475569',
+        filledColor: '#f59e0b',
+        hoverColor: '#eab308',
+        size: '1.5rem',
+      },
+      submitButton: {
+        bg: 'linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)',
+        bgHover: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)',
+        text: '#f1f5f9',
+        disabledBg: '#334155',
+        disabledText: '#64748b',
+      },
+    },
+  },
+};
+
 // Export dark themes
 export const darkThemes = {
   sales: salesDark,
   delivery: deliveryDark,
   qualityAssurance: qaDark,
+  neutral: neutralDark
 }; 
