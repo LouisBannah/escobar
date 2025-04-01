@@ -28,7 +28,7 @@ const darkBase = {
       sales: {
         primary: '#10b981',       // Emerald
         secondary: '#14b8a6',     // Teal
-        gradient: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
+        gradient: 'linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%)',
         light: '#34d399',
         dark: '#059669',
         label: {
@@ -39,7 +39,7 @@ const darkBase = {
       delivery: {
         primary: '#3b82f6',       // Blue
         secondary: '#60a5fa',     // Light blue
-        gradient: 'linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)',
+        gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%)',
         light: '#60a5fa',
         dark: '#2563eb',
         label: {
@@ -50,7 +50,7 @@ const darkBase = {
       qa: {
         primary: '#a855f7',       // Purple
         secondary: '#c084fc',     // Light purple
-        gradient: 'linear-gradient(90deg, #a855f7 0%, #c084fc 100%)',
+        gradient: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 50%, #c084fc 100%)',
         light: '#c084fc',
         dark: '#9333ea',
         label: {
@@ -83,10 +83,10 @@ const salesDark = {
     accent: '#047857',
     
     gradients: {
-      banner: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
-      header: 'linear-gradient(90deg, #064e3b 0%, #0f766e 100%)',
-      button: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
-      buttonHover: 'linear-gradient(90deg, #059669 0%, #0d9488 100%)',
+      banner: 'linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%)',
+      header: 'linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%)',
+      button: 'linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%)',
+      buttonHover: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #10b981 100%)',
     },
   },
   
@@ -195,10 +195,10 @@ const salesDark = {
     cardComponents: {
       gradientBanner: {
         height: '0.25rem',
-        gradient: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
+        gradient: 'linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%)',
       },
       header: {
-        bg: 'linear-gradient(90deg, #064e3b 0%, #0f766e 100%)',
+        bg: 'linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%)',
         text: '#f1f5f9',
         closeButtonBg: 'transparent',
         closeButtonBgHover: '#1e293b',
@@ -256,8 +256,8 @@ const salesDark = {
         size: '1.5rem',
       },
       submitButton: {
-        bg: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
-        bgHover: 'linear-gradient(90deg, #059669 0%, #0d9488 100%)',
+        bg: 'linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%)',
+        bgHover: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #10b981 100%)',
         text: '#f1f5f9',
         disabledBg: '#334155',
         disabledText: '#64748b',
@@ -338,10 +338,10 @@ const deliveryDark = {
     accent: '#1d4ed8',
     
     gradients: {
-      banner: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
-      header: 'linear-gradient(90deg, #1e3a8a 0%, #312e81 100%)',
-      button: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
-      buttonHover: 'linear-gradient(90deg, #2563eb 0%, #4f46e5 100%)',
+      banner: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%)',
+      header: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%)',
+      button: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%)',
+      buttonHover: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)',
     },
   },
   
@@ -450,10 +450,10 @@ const deliveryDark = {
     cardComponents: {
       gradientBanner: {
         height: '0.25rem',
-        gradient: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
+        gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%)',
       },
       header: {
-        bg: 'linear-gradient(90deg, #1e3a8a 0%, #312e81 100%)',
+        bg: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%)',
         text: '#f1f5f9',
         closeButtonBg: 'transparent',
         closeButtonBgHover: '#1e293b',
@@ -511,8 +511,8 @@ const deliveryDark = {
         size: '1.5rem',
       },
       submitButton: {
-        bg: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
-        bgHover: 'linear-gradient(90deg, #2563eb 0%, #4f46e5 100%)',
+        bg: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%)',
+        bgHover: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)',
         text: '#f1f5f9',
         disabledBg: '#334155',
         disabledText: '#64748b',
@@ -593,10 +593,10 @@ const qaDark = {
     accent: '#7e22ce',
     
     gradients: {
-      banner: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
-      header: 'linear-gradient(90deg, #581c87 0%, #86198f 100%)',
-      button: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
-      buttonHover: 'linear-gradient(90deg, #9333ea 0%, #c026d3 100%)',
+      banner: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 50%, #c084fc 100%)',
+      header: 'linear-gradient(135deg, #581c87 0%, #6b21a8 50%, #7e22ce 100%)',
+      button: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 50%, #c084fc 100%)',
+      buttonHover: 'linear-gradient(135deg, #4c1d95 0%, #6b21a8 50%, #9333ea 100%)',
     },
   },
   
@@ -705,10 +705,10 @@ const qaDark = {
     cardComponents: {
       gradientBanner: {
         height: '0.25rem',
-        gradient: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
+        gradient: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 50%, #c084fc 100%)',
       },
       header: {
-        bg: 'linear-gradient(90deg, #581c87 0%, #86198f 100%)',
+        bg: 'linear-gradient(135deg, #581c87 0%, #6b21a8 50%, #7e22ce 100%)',
         text: '#f1f5f9',
         closeButtonBg: 'transparent',
         closeButtonBgHover: '#1e293b',
@@ -766,8 +766,8 @@ const qaDark = {
         size: '1.5rem',
       },
       submitButton: {
-        bg: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
-        bgHover: 'linear-gradient(90deg, #9333ea 0%, #c026d3 100%)',
+        bg: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 50%, #c084fc 100%)',
+        bgHover: 'linear-gradient(135deg, #4c1d95 0%, #6b21a8 50%, #9333ea 100%)',
         text: '#f1f5f9',
         disabledBg: '#334155',
         disabledText: '#64748b',

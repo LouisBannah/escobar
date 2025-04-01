@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { FileText, Archive, Table, Presentation, Code, Globe } from 'lucide-react';
+import React from 'react';
+import { FileText, Archive, Table, Presentation, Code } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 // Define the material interface
@@ -26,13 +26,7 @@ interface BaseCardProps {
 }
 
 const BaseCard: React.FC<BaseCardProps> = ({ item, onClick }) => {
-  const { getThemeValue, setThemeCategory } = useTheme();
-  
-  // Set the theme category when this card is rendered
-  useEffect(() => {
-    // We don't want to change the global theme when just displaying cards
-    // The theme will be properly set when a card is clicked and expanded
-  }, []);
+  const { getThemeValue, getThemeSpecificValue } = useTheme();
   
   // Helper function to determine the icon based on format
   const getIconForFormat = (format: string) => {
@@ -49,25 +43,30 @@ const BaseCard: React.FC<BaseCardProps> = ({ item, onClick }) => {
 
   // Helper function to get theme-specific styles based on the item's theme
   const getThemeStyles = () => {
-    // Temporarily set theme category to get correct theme values
-    setThemeCategory(item.theme);
+    // Get theme-specific values without changing global context
+    let themeKey;
+    if (item.theme === 'Quality Assurance') {
+      themeKey = 'qa';
+    } else {
+      themeKey = item.theme.toLowerCase();
+    }
     
     const styles = {
       background: getThemeValue('components.baseCard.background'),
       border: `1px solid ${getThemeValue('components.baseCard.border')}`,
       boxShadow: getThemeValue('components.baseCard.shadow'),
       themeLabel: {
-        background: getThemeValue('components.baseCard.themeLabel.bg'),
-        color: getThemeValue('components.baseCard.themeLabel.text'),
+        background: getThemeSpecificValue(item.theme, `colors.themeSpecific.${themeKey}.label.bg`),
+        color: getThemeSpecificValue(item.theme, `colors.themeSpecific.${themeKey}.label.text`),
       },
       categoryLabel: {
         background: getThemeValue('components.baseCard.categoryLabel.bg'),
         color: getThemeValue('components.baseCard.categoryLabel.text'),
       },
       tags: {
-        background: getThemeValue('components.baseCard.tags.bg'),
-        color: getThemeValue('components.baseCard.tags.text'),
-        border: getThemeValue('components.baseCard.tags.border'),
+        background: getThemeValue('components.baseCard.categoryLabel.bg'),
+        color: getThemeValue('components.baseCard.categoryLabel.text'),
+        border: getThemeValue('colors.border'),
       }
     };
     

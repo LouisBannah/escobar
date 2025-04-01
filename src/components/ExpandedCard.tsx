@@ -57,7 +57,12 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
 
   // Set the theme category based on the item's theme
   useEffect(() => {
-    setThemeCategory(item.theme);
+    // For QA theme, we need to map "Quality Assurance" to "qualityAssurance"
+    if (item.theme === 'Quality Assurance') {
+      setThemeCategory('Quality Assurance');
+    } else {
+      setThemeCategory(item.theme);
+    }
   }, [item.theme, setThemeCategory]);
 
   // Prevent scrolling of the background when modal is open

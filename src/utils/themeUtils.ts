@@ -61,8 +61,15 @@ export interface ThemeColors {
  */
 export const getTheme = (mode: 'light' | 'dark', themeName: string, path?: string) => {
   const themes = mode === 'light' ? lightThemes : darkThemes;
-  // Normalize theme name to match object keys
-  const normalizedThemeName = themeName.toLowerCase().replace(/\s+/g, '');
+  
+  // Special handling for Quality Assurance theme
+  let normalizedThemeName;
+  if (themeName === 'Quality Assurance') {
+    normalizedThemeName = 'qualityAssurance';
+  } else {
+    // Normalize theme name to match object keys
+    normalizedThemeName = themeName.toLowerCase().replace(/\s+/g, '');
+  }
   
   // Get the full theme object
   const themeObj = {
@@ -255,8 +262,15 @@ export const applyCSSVariables = (mode: 'light' | 'dark', themeName: string) => 
  */
 export const getThemeSpecificValue = (mode: 'light' | 'dark', themeName: string, path: string) => {
   const themes = mode === 'light' ? lightThemes : darkThemes;
-  // Normalize theme name to match object keys
-  const normalizedThemeName = themeName.toLowerCase().replace(/\s+/g, '');
+  
+  // Special handling for Quality Assurance theme
+  let normalizedThemeName;
+  if (themeName === 'Quality Assurance') {
+    normalizedThemeName = 'qualityAssurance';
+  } else {
+    // Normalize theme name to match object keys
+    normalizedThemeName = themeName.toLowerCase().replace(/\s+/g, '');
+  }
   
   // Get the full theme object
   const themeObj = {

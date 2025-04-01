@@ -48,7 +48,12 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
 
   // Set the theme category based on the item's theme
   useEffect(() => {
-    setThemeCategory(item.theme);
+    // For QA theme, we need to map "Quality Assurance" to "qualityAssurance"
+    if (item.theme === 'Quality Assurance') {
+      setThemeCategory('Quality Assurance');
+    } else {
+      setThemeCategory(item.theme);
+    }
   }, [item.theme, setThemeCategory]);
 
   // Prevent scrolling of the background when modal is open
@@ -252,9 +257,9 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
               >
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: getThemeValue('components.detailedCard.accessSection.iconBg') }}
+                    style={{ background: getThemeValue('colors.gradients.button') }}
                   >
-                    <Shield className="w-5 h-5" style={{ color: getThemeValue('components.detailedCard.accessSection.iconColor') }} />
+                    <Shield className="w-5 h-5" style={{ color: getThemeValue('colors.primary.contrast') }} />
                   </div>
                   <div className="flex-grow">
                     <h3 className="text-lg font-semibold mb-2" 
@@ -271,14 +276,14 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                       onClick={handleRequestAccess}
                       className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
                       style={{ 
-                        background: getThemeValue('components.detailedCard.accessSection.buttonBg'),
-                        color: getThemeValue('components.detailedCard.accessSection.buttonText'),
+                        background: getThemeValue('colors.gradients.button'),
+                        color: getThemeValue('colors.primary.contrast'),
                       }}
                       onMouseOver={(e) => {
-                        e.currentTarget.style.background = getThemeValue('components.detailedCard.accessSection.buttonHoverBg');
+                        e.currentTarget.style.background = getThemeValue('colors.gradients.buttonHover');
                       }}
                       onMouseOut={(e) => {
-                        e.currentTarget.style.background = getThemeValue('components.detailedCard.accessSection.buttonBg');
+                        e.currentTarget.style.background = getThemeValue('colors.gradients.button');
                       }}
                     >
                       Request Access

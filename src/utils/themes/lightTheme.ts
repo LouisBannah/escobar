@@ -28,7 +28,7 @@ const lightBase = {
       sales: {
         primary: '#10b981',       // Emerald
         secondary: '#14b8a6',     // Teal
-        gradient: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
+        gradient: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)',
         light: '#5eead4',
         dark: '#047857',
         label: {
@@ -39,7 +39,7 @@ const lightBase = {
       delivery: {
         primary: '#3b82f6',       // Blue
         secondary: '#60a5fa',     // Light blue
-        gradient: 'linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)',
+        gradient: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%)',
         light: '#93c5fd',
         dark: '#1d4ed8',
         label: {
@@ -50,7 +50,7 @@ const lightBase = {
       qa: {
         primary: '#a855f7',       // Purple
         secondary: '#c084fc',     // Light purple
-        gradient: 'linear-gradient(90deg, #a855f7 0%, #c084fc 100%)',
+        gradient: 'linear-gradient(135deg, #7e22ce 0%, #a855f7 50%, #d8b4fe 100%)',
         light: '#d8b4fe',
         dark: '#7e22ce',
         label: {
@@ -83,10 +83,10 @@ const salesLight = {
     accent: '#059669',
     
     gradients: {
-      banner: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
-      header: 'linear-gradient(90deg, #ecfdf5 0%, #ccfbf1 100%)',
-      button: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
-      buttonHover: 'linear-gradient(90deg, #059669 0%, #0d9488 100%)',
+      banner: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)',
+      header: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)',
+      button: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)',
+      buttonHover: 'linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%)',
     },
   },
   
@@ -338,10 +338,10 @@ const deliveryLight = {
     accent: '#2563eb',
     
     gradients: {
-      banner: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
-      header: 'linear-gradient(90deg, #eff6ff 0%, #eef2ff 100%)',
-      button: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
-      buttonHover: 'linear-gradient(90deg, #2563eb 0%, #4f46e5 100%)',
+      banner: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%)',
+      header: 'linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%)',
+      button: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%)',
+      buttonHover: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
     },
   },
   
@@ -450,10 +450,10 @@ const deliveryLight = {
     cardComponents: {
       gradientBanner: {
         height: '0.25rem',
-        gradient: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
+        gradient: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%)',
       },
       header: {
-        bg: 'linear-gradient(90deg, #eff6ff 0%, #eef2ff 100%)',
+        bg: 'linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%)',
         text: '#111827',
         closeButtonBg: 'transparent',
         closeButtonBgHover: '#f3f4f6',
@@ -511,8 +511,8 @@ const deliveryLight = {
         size: '1.5rem',
       },
       submitButton: {
-        bg: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
-        bgHover: 'linear-gradient(90deg, #2563eb 0%, #4f46e5 100%)',
+        bg: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%)',
+        bgHover: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
         text: '#ffffff',
         disabledBg: '#e5e7eb',
         disabledText: '#9ca3af',
@@ -593,10 +593,10 @@ const qaLight = {
     accent: '#9333ea',
     
     gradients: {
-      banner: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
-      header: 'linear-gradient(90deg, #faf5ff 0%, #fdf4ff 100%)',
-      button: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
-      buttonHover: 'linear-gradient(90deg, #9333ea 0%, #c026d3 100%)',
+      banner: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)',
+      header: 'linear-gradient(135deg, #faf5ff 0%, #fdf4ff 100%)',
+      button: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)',
+      buttonHover: 'linear-gradient(135deg, #9333ea 0%, #c026d3 100%)',
     },
   },
   
@@ -705,10 +705,10 @@ const qaLight = {
     cardComponents: {
       gradientBanner: {
         height: '0.25rem',
-        gradient: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
+        gradient: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)',
       },
       header: {
-        bg: 'linear-gradient(90deg, #faf5ff 0%, #fdf4ff 100%)',
+        bg: 'linear-gradient(135deg, #faf5ff 0%, #fdf4ff 100%)',
         text: '#111827',
         closeButtonBg: 'transparent',
         closeButtonBgHover: '#f3f4f6',
@@ -766,8 +766,8 @@ const qaLight = {
         size: '1.5rem',
       },
       submitButton: {
-        bg: 'linear-gradient(90deg, #a855f7 0%, #d946ef 100%)',
-        bgHover: 'linear-gradient(90deg, #9333ea 0%, #c026d3 100%)',
+        bg: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)',
+        bgHover: 'linear-gradient(135deg, #9333ea 0%, #c026d3 100%)',
         text: '#ffffff',
         disabledBg: '#e5e7eb',
         disabledText: '#9ca3af',
