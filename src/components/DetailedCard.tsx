@@ -188,10 +188,10 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
 
             {/* Access Restricted Notice */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-sm relative">
-              <div className={`absolute inset-0 ${colors.lightBg} opacity-40 backdrop-blur-sm`}></div>
-              <div className="relative p-6 border border-gray-200">
+              <div className={`absolute inset-0 ${colors.lightBg} opacity-40 backdrop-blur-sm rounded-xl`}></div>
+              <div className="relative p-6 border border-gray-200 rounded-xl">
                 <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${colors.button}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${colors.button} flex-shrink-0`}>
                     <Shield className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-grow">
