@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, FileText, Archive, Table, Presentation, Code, Globe, Lock, Shield } from 'lucide-react';
 import { showSubmissionNotice } from './SubmissionPopup';
-import { getThemeColors } from '../utils/themeUtils';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface DetailedCardProps {
@@ -25,7 +24,7 @@ interface DetailedCardProps {
 }
 
 const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAccess }) => {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, getThemeValue, setThemeCategory } = useTheme();
   
   // Refs for header height calculation
   const headerRef = useRef<HTMLDivElement>(null);
@@ -46,6 +45,11 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
     window.addEventListener('resize', updateHeaderHeight);
     return () => window.removeEventListener('resize', updateHeaderHeight);
   }, []);
+
+  // Set the theme category based on the item's theme
+  useEffect(() => {
+    setThemeCategory(item.theme);
+  }, [item.theme, setThemeCategory]);
 
   // Prevent scrolling of the background when modal is open
   useEffect(() => {
@@ -74,9 +78,6 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
     }
   };
 
-  // Use the centralized theme utility - focus on light mode for redesign
-  const colors = getThemeColors(item.theme, false);
-
   return (
     <div className="fixed inset-0 z-50 backdrop-blur-md bg-black/30 flex items-center justify-center">
       <div className="relative w-full max-w-3xl max-h-[calc(100vh-40px)] flex flex-col bg-white rounded-xl shadow-2xl overflow-hidden">
@@ -87,25 +88,46 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
           style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
         >
           {/* Gradient Banner */}
-          <div className={`h-2 ${colors.banner}`} />
+          <div className="h-2" style={{ background: getThemeValue('colors.gradients.banner') }} />
           
           {/* Main Header */}
-          <div className={`${colors.header} p-6`}>
+          <div className="p-6" style={{ background: getThemeValue('colors.gradients.header') }}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-xl font-semibold text-gray-800">{item.shortTitle}</h2>
+                <h2 className="text-xl font-semibold" style={{ color: getThemeValue('colors.text.primary') }}>{item.shortTitle}</h2>
                 <div className="flex items-center gap-2">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.themeLabel}`}>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" 
+                    style={{ 
+                      background: getThemeValue('components.baseCard.themeLabel.bg'),
+                      color: getThemeValue('components.baseCard.themeLabel.text')
+                    }}>
                     {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                   </span>
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.tagBackground} ${colors.tagText} border ${colors.tagBorder}`}>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border" 
+                    style={{ 
+                      background: getThemeValue('components.baseCard.categoryLabel.bg'),
+                      color: getThemeValue('components.baseCard.categoryLabel.text'),
+                      borderColor: getThemeValue('colors.border')
+                    }}>
                     {item.category}
                   </span>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 transition-colors duration-200 rounded-full p-1 hover:bg-gray-100"
+                className="transition-colors duration-200 rounded-full p-1"
+                style={{ 
+                  color: getThemeValue('components.cardComponents.header.closeButtonColor'),
+                  background: getThemeValue('components.cardComponents.header.closeButtonBg'),
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.color = getThemeValue('components.cardComponents.header.closeButtonColorHover');
+                  e.currentTarget.style.background = getThemeValue('components.cardComponents.header.closeButtonBgHover');
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.color = getThemeValue('components.cardComponents.header.closeButtonColor');
+                  e.currentTarget.style.background = getThemeValue('components.cardComponents.header.closeButtonBg');
+                }}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -119,20 +141,29 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
           style={{ 
             height: `calc(100vh - 40px - ${headerHeight}px - 56px)`, // 56px is the footer height
             scrollbarGutter: 'stable',
-            scrollbarWidth: 'thin'
+            scrollbarWidth: 'thin',
+            background: getThemeValue('colors.surface'),
+            color: getThemeValue('colors.text.primary'),
           }}
         >
           <div className="p-6" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
             {/* Description */}
             <div className="space-y-6">
-              <p className="text-gray-700 text-lg leading-relaxed">{item.shortDescription}</p>
+              <p className="text-lg leading-relaxed" style={{ color: getThemeValue('colors.text.secondary') }}>
+                {item.shortDescription}
+              </p>
               
               {/* Tags Section */}
               <div className="flex flex-wrap gap-2">
                 {item.availableTags.map((tag) => (
                   <span
                     key={tag}
-                    className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium ${colors.tagBackground} ${colors.tagText} border ${colors.tagBorder} hover:opacity-90 transition-colors`}
+                    className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium border hover:opacity-90 transition-colors"
+                    style={{ 
+                      background: getThemeValue('components.baseCard.tags.bg'),
+                      color: getThemeValue('components.baseCard.tags.text'),
+                      borderColor: getThemeValue('components.baseCard.tags.border')
+                    }}
                   >
                     {tag}
                   </span>
@@ -141,9 +172,18 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
             </div>
 
             {/* Materials Section */}
-            <div className="mt-6 rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-              <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+            <div className="mt-6 rounded-xl p-6 shadow-sm"
+              style={{ 
+                background: getThemeValue('colors.background'),
+                borderColor: getThemeValue('colors.border')
+              }}
+            >
+              <h3 className="text-lg font-semibold mb-5 flex items-center"
+                style={{ color: getThemeValue('colors.text.primary') }}
+              >
+                <div className="w-1 h-5 rounded-full mr-2"
+                  style={{ background: getThemeValue('colors.primary.main') }}
+                ></div>
                 Available Materials
               </h3>
               <div className="space-y-3">
@@ -161,24 +201,30 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                   return (
                     <div 
                       key={index} 
-                      className="bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200"
+                      className="rounded-lg border shadow-sm transition-all duration-200"
+                      style={{
+                        background: getThemeValue('colors.background'),
+                        borderColor: getThemeValue('colors.border'),
+                      }}
                     >
-                      <div className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
-                        <Icon className={`w-5 h-5 ${
-                          material.type === 'pdf' ? 'text-red-500' :
-                          material.type === 'zip' ? 'text-yellow-500' :
-                          material.type === 'xls' ? 'text-green-500' :
-                          material.type === 'docx' ? 'text-blue-500' :
-                          material.type === 'ppt' ? 'text-orange-500' :
-                          material.type === 'yaml' ? 'text-purple-500' :
-                          material.type === 'json' ? 'text-gray-500' :
-                          'text-blue-400'
-                        }`} />
-                        <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
-                        <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
+                      <div className="flex items-center gap-3 p-3 transition-colors hover:bg-gray-50">
+                        <Icon className="w-5 h-5" style={{ 
+                          color: material.type in getThemeValue('components.cardComponents.materialsSection.icons') 
+                            ? getThemeValue(`components.cardComponents.materialsSection.icons.${material.type}`) 
+                            : getThemeValue('components.cardComponents.materialsSection.icons.default')
+                        }} />
+                        <span className="text-sm font-medium flex-grow" 
+                          style={{ color: getThemeValue('colors.text.primary') }}
+                        >{material.title}</span>
+                        <span className="text-xs px-2 py-1 rounded-md"
+                          style={{ 
+                            background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
+                            color: getThemeValue('components.cardComponents.materialsSection.badgeText')
+                          }}
+                        >
                           {material.type.toUpperCase()}
                         </span>
-                        <Lock className="w-4 h-4 text-gray-400" />
+                        <Lock className="w-4 h-4" style={{ color: getThemeValue('colors.text.tertiary') }} />
                       </div>
                     </div>
                   );
@@ -188,27 +234,46 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
 
             {/* Access Restricted Notice */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-sm relative">
-              <div className={`absolute inset-0 ${colors.lightBg} opacity-40 backdrop-blur-sm rounded-xl`}></div>
-              <div className="relative p-6 border border-gray-200 rounded-xl">
+              <div className="absolute inset-0 backdrop-blur-sm rounded-xl" 
+                style={{ 
+                  background: `${getThemeValue('colors.primary.light')}40`,
+                  opacity: 0.4
+                }}
+              ></div>
+              <div className="relative p-6 border rounded-xl"
+                style={{ borderColor: getThemeValue('colors.border') }}
+              >
                 <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${colors.button} flex-shrink-0`}>
-                    <Shield className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{ background: getThemeValue('components.detailedCard.accessSection.iconBg') }}
+                  >
+                    <Shield className="w-5 h-5" style={{ color: getThemeValue('components.detailedCard.accessSection.iconColor') }} />
                   </div>
                   <div className="flex-grow">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    <h3 className="text-lg font-semibold mb-2" 
+                      style={{ color: getThemeValue('components.detailedCard.accessSection.headingText') }}
+                    >
                       Access Restricted
                     </h3>
-                    <p className="text-gray-600 mb-4">
-                      You currently have Level 1 access which provides limited information.
-                      To view comprehensive details, documentation, and download materials,
-                      please request Level 2 access.
+                    <p className="text-gray-600 mb-4" 
+                      style={{ color: getThemeValue('components.detailedCard.accessSection.bodyText') }}
+                    >
+                      This content is restricted. Please request access to view the full details and download materials.
                     </p>
                     <button
                       onClick={handleRequestAccess}
-                      className={`px-4 py-2 ${colors.button} text-white rounded-lg shadow-sm hover:shadow-md 
-                        transition-all duration-200 flex items-center text-sm font-medium`}
+                      className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
+                      style={{ 
+                        background: getThemeValue('components.detailedCard.accessSection.buttonBg'),
+                        color: getThemeValue('components.detailedCard.accessSection.buttonText'),
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = getThemeValue('components.detailedCard.accessSection.buttonHoverBg');
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = getThemeValue('components.detailedCard.accessSection.buttonBg');
+                      }}
                     >
-                      <Lock className="w-4 h-4 mr-2" />
                       Request Access
                     </button>
                   </div>
@@ -219,18 +284,21 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         </div>
         
         {/* Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500 h-[56px]">
-          <div>
-            Last updated: <span className="font-medium">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
-              day: '2-digit', 
-              month: '2-digit', 
-              year: 'numeric' 
-            })}</span>
-          </div>
-          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-            bg-white shadow-sm border border-gray-200 text-gray-700">
-            Version {item.version}
-          </div>
+        <div className="px-6 py-3 border-t text-sm flex justify-between items-center"
+          style={{ 
+            background: getThemeValue('components.cardComponents.footer.bg'),
+            borderColor: getThemeValue('components.cardComponents.footer.border'),
+            color: getThemeValue('components.cardComponents.footer.text')
+          }}
+        >
+          <div>Last updated: {item.lastUpdated}</div>
+          <div className="px-2 py-1 rounded border"
+            style={{ 
+              background: getThemeValue('components.cardComponents.footer.versionBg'),
+              borderColor: getThemeValue('components.cardComponents.footer.versionBorder'),
+              color: getThemeValue('components.cardComponents.footer.versionText')
+            }}
+          >v{item.version}</div>
         </div>
       </div>
     </div>

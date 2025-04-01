@@ -4,7 +4,6 @@ import StructuredContent from './StructuredContent';
 import CodeExampleViewer from './CodeExampleViewer';
 import { detailedDescriptionsMap } from '../data/content';
 import { codeExamplesMap } from '../data/content/codeExamples';
-import { getThemeColors } from '../utils/themeUtils';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface ExpandedCardProps {
@@ -33,7 +32,7 @@ interface ExpandedCardProps {
 const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Materials' | 'Code Examples' | 'Contact'>('Overview');
   const [expandedPDF, setExpandedPDF] = useState<{ url: string; title: string } | null>(null);
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, getThemeValue, setThemeCategory } = useTheme();
 
   // Refs for header height calculation
   const headerRef = useRef<HTMLDivElement>(null);
@@ -55,6 +54,11 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
     return () => window.removeEventListener('resize', updateHeaderHeight);
   }, []);
 
+  // Set the theme category based on the item's theme
+  useEffect(() => {
+    setThemeCategory(item.theme);
+  }, [item.theme, setThemeCategory]);
+
   // Prevent scrolling of the background when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -62,9 +66,6 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
       document.body.style.overflow = 'auto';
     };
   }, []);
-
-  // Use the centralized theme utility - focus on light mode for redesign
-  const colors = getThemeColors(item.theme, false);
   
   // Get the detailed description for this item
   const detailedDescription = detailedDescriptionsMap[item.id];
@@ -87,25 +88,46 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
           style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
         >
           {/* Gradient Banner */}
-          <div className={`h-2 ${colors.banner}`} />
+          <div className="h-2" style={{ background: getThemeValue('colors.gradients.banner') }} />
           
           {/* Main Header */}
-          <div className={`${colors.header} p-6`}>
+          <div className="p-6" style={{ background: getThemeValue('colors.gradients.header') }}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-xl font-semibold text-gray-800">{item.shortTitle}</h2>
+                <h2 className="text-xl font-semibold" style={{ color: getThemeValue('colors.text.primary') }}>{item.shortTitle}</h2>
                 <div className="flex items-center gap-2">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.themeLabel}`}>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" 
+                    style={{ 
+                      background: getThemeValue('components.baseCard.themeLabel.bg'),
+                      color: getThemeValue('components.baseCard.themeLabel.text')
+                    }}>
                     {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                   </span>
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colors.tagBackground} ${colors.tagText} border ${colors.tagBorder}`}>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border" 
+                    style={{ 
+                      background: getThemeValue('components.baseCard.categoryLabel.bg'),
+                      color: getThemeValue('components.baseCard.categoryLabel.text'),
+                      borderColor: getThemeValue('colors.border')
+                    }}>
                     {item.category}
                   </span>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 transition-colors duration-200 rounded-full p-1 hover:bg-gray-100"
+                className="transition-colors duration-200 rounded-full p-1"
+                style={{ 
+                  color: getThemeValue('components.cardComponents.header.closeButtonColor'),
+                  background: getThemeValue('components.cardComponents.header.closeButtonBg'),
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.color = getThemeValue('components.cardComponents.header.closeButtonColorHover');
+                  e.currentTarget.style.background = getThemeValue('components.cardComponents.header.closeButtonBgHover');
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.color = getThemeValue('components.cardComponents.header.closeButtonColor');
+                  e.currentTarget.style.background = getThemeValue('components.cardComponents.header.closeButtonBg');
+                }}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -117,11 +139,24 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    activeTab === tab
-                      ? `${colors.button} text-white shadow-sm`
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                  }`}
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                  style={{
+                    background: activeTab === tab ? getThemeValue('colors.gradients.button') : 'transparent',
+                    color: activeTab === tab ? getThemeValue('colors.primary.contrast') : getThemeValue('components.expandedCard.tabs.inactive.text'),
+                    boxShadow: activeTab === tab ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+                  }}
+                  onMouseOver={(e) => {
+                    if (activeTab !== tab) {
+                      e.currentTarget.style.color = getThemeValue('components.expandedCard.tabs.inactive.hover');
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (activeTab !== tab) {
+                      e.currentTarget.style.color = getThemeValue('components.expandedCard.tabs.inactive.text');
+                      e.currentTarget.style.background = 'transparent';
+                    }
+                  }}
                 >
                   {tab}
                 </button>
@@ -136,8 +171,13 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
           style={{ 
             height: `calc(100vh - 40px - ${headerHeight}px - 56px)`, // 56px is the footer height
             scrollbarGutter: 'stable',
-            scrollbarWidth: 'thin'
-          }}
+            scrollbarWidth: 'thin',
+            background: getThemeValue('colors.surface'),
+            color: getThemeValue('colors.text.primary'),
+            '--scrollbar-thumb': getThemeValue('components.cardComponents.scrollableContent.thumbColor'),
+            '--scrollbar-thumb-hover': getThemeValue('components.cardComponents.scrollableContent.thumbHoverColor'),
+            '--scrollbar-track': getThemeValue('components.cardComponents.scrollableContent.trackColor')
+          } as React.CSSProperties}
         >
           <div className="p-6" style={{ paddingLeft: '28px', paddingRight: '20px' }}>
             {/* Overview Tab */}
@@ -145,14 +185,21 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               <div className="space-y-6">
                 {/* Description */}
                 <div className="space-y-6">
-                  <p className="text-gray-700 text-lg leading-relaxed">{item.shortDescription}</p>
+                  <p className="text-lg leading-relaxed" style={{ color: getThemeValue('colors.text.secondary') }}>
+                    {item.shortDescription}
+                  </p>
                   
                   {/* Tags Section */}
                   <div className="flex flex-wrap gap-2">
                     {item.availableTags.map((tag) => (
                       <span
                         key={tag}
-                        className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium ${colors.tagBackground} ${colors.tagText} border ${colors.tagBorder} hover:opacity-90 transition-colors`}
+                        className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium border hover:opacity-90 transition-colors"
+                        style={{ 
+                          background: getThemeValue('components.baseCard.tags.bg'),
+                          color: getThemeValue('components.baseCard.tags.text'),
+                          borderColor: getThemeValue('components.baseCard.tags.border')
+                        }}
                       >
                         {tag}
                       </span>
@@ -161,19 +208,30 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 </div>
 
                 {/* Long Description Section */}
-                <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-                  <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                <div className="rounded-xl p-6 shadow-sm"
+                  style={{ 
+                    background: getThemeValue('colors.background'),
+                    borderColor: getThemeValue('colors.border')
+                  }}
+                >
+                  <h3 className="text-lg font-semibold mb-5 flex items-center"
+                    style={{ color: getThemeValue('colors.text.primary') }}
+                  >
+                    <div className="w-1 h-5 rounded-full mr-2"
+                      style={{ background: getThemeValue('colors.primary.main') }}
+                    ></div>
                     Detailed Description
                   </h3>
                   
                   {detailedDescription ? (
-                    <StructuredContent blocks={detailedDescription.blocks} themeColors={colors} />
+                    <StructuredContent blocks={detailedDescription.blocks} />
                   ) : (
                     <div className="prose prose-gray max-w-none">
                       {/* Fallback to original rendering if no structured content is available */}
                       {item.longDescription.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+                        <p key={index} className="mb-4" 
+                          style={{ color: getThemeValue('colors.text.secondary') }}
+                        >{paragraph}</p>
                       ))}
                     </div>
                   )}
@@ -182,7 +240,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 {/* Business Value Section */}
                 <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
                   <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                    <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
                     Business Value
                   </h3>
                   <div className="prose prose-gray max-w-none">
@@ -190,7 +248,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       // Check if this paragraph is a header (ends with ":")
                       if (paragraph.trim().endsWith(':')) {
                         return (
-                          <p key={index} className={`font-medium ${colors.text} mb-3`}>
+                          <p key={index} className={`font-medium ${getThemeValue('colors.text.primary')} mb-3`}>
                             {paragraph.trim()}
                           </p>
                         );
@@ -229,8 +287,8 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                             <ul className="space-y-2 pl-2">
                               {bulletPoints.map((point, idx) => (
                                 <li key={idx} className="flex items-start gap-3 group">
-                                  <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bulletBackground} flex items-center justify-center mt-0.5`}>
-                                    <div className={`w-1.5 h-1.5 rounded-full ${colors.numberBackground}`}></div>
+                                  <div className={`flex-shrink-0 w-5 h-5 rounded-full ${getThemeValue('colors.bulletBackground')} flex items-center justify-center mt-0.5`}>
+                                    <div className={`w-1.5 h-1.5 rounded-full ${getThemeValue('colors.numberBackground')}`}></div>
                                   </div>
                                   <span className="text-gray-700 flex-1">{point}</span>
                                 </li>
@@ -250,7 +308,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                         return (
                           <div key={index} className="mb-3">
                             <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.numberBackground} flex items-center justify-center shadow-sm`}>
+                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${getThemeValue('colors.numberBackground')} flex items-center justify-center shadow-sm`}>
                                 <span className="text-sm font-bold text-white">{number}</span>
                               </div>
                               <div className="text-gray-700 flex-1 pt-1.5">
@@ -286,7 +344,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 {/* Key Capabilities Section */}
                 <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
                   <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                    <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
                     Key Capabilities
                   </h3>
                   <div className="prose prose-gray max-w-none">
@@ -295,7 +353,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       <div>
                         {/* Extract any header/intro text before bullet points */}
                         {item.keyCapabilities.includes(':') && (
-                          <p className={`font-medium ${colors.text} mb-4`}>
+                          <p className={`font-medium ${getThemeValue('colors.text.primary')} mb-4`}>
                             {item.keyCapabilities.split(':')[0]}:
                           </p>
                         )}
@@ -309,8 +367,8 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                               .filter(point => point.trim().length > 0)
                               .map((point, idx) => (
                                 <li key={idx} className="flex items-start gap-3">
-                                  <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bulletBackground} flex items-center justify-center mt-0.5`}>
-                                    <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                  <div className={`flex-shrink-0 w-5 h-5 rounded-full ${getThemeValue('colors.bulletBackground')} flex items-center justify-center mt-0.5`}>
+                                    <div className={`w-1.5 h-1.5 rounded-full ${getThemeValue('colors.primary.main')}`}></div>
                                   </div>
                                   <span className="text-gray-700 flex-1">{point.trim()}</span>
                                 </li>
@@ -328,7 +386,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                   
                                   return (
                                     <li key={idx} className="flex items-start gap-3 mb-3">
-                                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${colors.button} flex items-center justify-center shadow-sm`}>
+                                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${getThemeValue('colors.primary.main')} flex items-center justify-center shadow-sm`}>
                                         <span className="text-sm font-bold text-white">{number}</span>
                                       </div>
                                       <div className="text-gray-700 flex-1 pt-1.5">
@@ -342,8 +400,8 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                 const content = line.trim();
                                 return (
                                   <li key={idx} className="flex items-start gap-3">
-                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bulletBackground} flex items-center justify-center mt-0.5`}>
-                                      <div className={`w-1.5 h-1.5 rounded-full ${colors.button}`}></div>
+                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${getThemeValue('colors.bulletBackground')} flex items-center justify-center mt-0.5`}>
+                                      <div className={`w-1.5 h-1.5 rounded-full ${getThemeValue('colors.primary.main')}`}></div>
                                     </div>
                                     <span className="text-gray-700 flex-1">{content}</span>
                                   </li>
@@ -367,7 +425,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 {item.materials.length > 0 ? (
                   <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
                     <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
                       Available Materials
                     </h3>
                     <div className="space-y-3">
@@ -386,7 +444,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                           <div key={index} className="transition-all duration-200">
                             <div 
                               className={`bg-white rounded-lg border ${
-                                isSelected ? `border-${colors.primary} shadow-md` : 'border-gray-200'
+                                isSelected ? `border-${getThemeValue('colors.primary.main')} shadow-md` : 'border-gray-200'
                               }`}
                             >
                               <div className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
@@ -469,13 +527,13 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 {codeExamples.length > 0 ? (
                   <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
                     <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                      <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                      <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
                       Code Examples
                     </h3>
                     <div className="space-y-4">
                       {codeExamples.map((example, index) => (
                         <div key={index} className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-                          <CodeExampleViewer example={example} themeColors={colors} />
+                          <CodeExampleViewer example={example} />
                         </div>
                       ))}
                     </div>
@@ -494,7 +552,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               <div className="space-y-6">
                 <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
                   <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${colors.button} rounded-full mr-2`}></div>
+                    <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
                     Contact Information
                   </h3>
                   
@@ -504,7 +562,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                     </p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className={`p-4 rounded-lg border ${colors.border} ${colors.lightBg}`}>
+                      <div className={`p-4 rounded-lg border ${getThemeValue('colors.border')} ${getThemeValue('colors.lightBg')}`}>
                         <h4 className="flex items-center gap-2 text-gray-800 font-medium mb-3">
                           <MessageSquare className="w-4 h-4" />
                           <span>Support Team</span>
@@ -521,7 +579,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                         </div>
                       </div>
                       
-                      <div className={`p-4 rounded-lg border ${colors.border} ${colors.lightBg}`}>
+                      <div className={`p-4 rounded-lg border ${getThemeValue('colors.border')} ${getThemeValue('colors.lightBg')}`}>
                         <h4 className="flex items-center gap-2 text-gray-800 font-medium mb-3">
                           <Bookmark className="w-4 h-4" />
                           <span>Documentation Team</span>
@@ -539,7 +597,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       </div>
                     </div>
                     
-                    <button className={`mt-4 px-4 py-2 rounded-lg text-white ${colors.button} hover:${colors.buttonHover} transition-all duration-200 shadow-sm hover:shadow-md flex items-center`}>
+                    <button className={`mt-4 px-4 py-2 rounded-lg text-white ${getThemeValue('colors.primary.main')} hover:${getThemeValue('colors.primary.mainHover')} transition-all duration-200 shadow-sm hover:shadow-md flex items-center`}>
                       <MessageSquare className="w-4 h-4 mr-2" />
                       <span>Request More Information</span>
                     </button>

@@ -1,19 +1,23 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { getTheme, applyCSSVariables, ThemeType } from '../utils/themeUtils';
 
-type Theme = 'light' | 'dark';
+type ThemeMode = 'light' | 'dark';
 
 interface ThemeContextType {
-  theme: Theme;
+  theme: ThemeMode;
   isDarkMode: boolean;
+  currentThemeCategory: ThemeType;
   toggleTheme: () => void;
+  setThemeCategory: (category: ThemeType) => void;
+  getThemeValue: (path: string) => any;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // Get initial theme from localStorage or system preference
-const getInitialTheme = (): Theme => {
+const getInitialTheme = (): ThemeMode => {
   if (typeof window !== 'undefined') {
-    const savedTheme = localStorage.getItem('theme') as Theme;
+    const savedTheme = localStorage.getItem('theme') as ThemeMode;
     if (savedTheme) {
       return savedTheme;
     }
@@ -25,26 +29,60 @@ const getInitialTheme = (): Theme => {
   return 'light'; // default theme
 };
 
+// Get initial theme category from localStorage or default
+const getInitialThemeCategory = (): ThemeType => {
+  if (typeof window !== 'undefined') {
+    const savedCategory = localStorage.getItem('themeCategory') as ThemeType;
+    if (savedCategory && ['Sales', 'Delivery', 'Quality Assurance'].includes(savedCategory)) {
+      return savedCategory;
+    }
+  }
+  return 'Sales'; // default category
+};
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+  const [currentThemeCategory, setCurrentThemeCategory] = useState<ThemeType>(getInitialThemeCategory);
   const isDarkMode = theme === 'dark';
 
+  // Apply the theme whenever it changes
   useEffect(() => {
     // Update localStorage and document class when theme changes
     localStorage.setItem('theme', theme);
+    localStorage.setItem('themeCategory', currentThemeCategory);
+    
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+    
+    // Apply CSS variables from our theme system
+    applyCSSVariables(theme, currentThemeCategory);
+  }, [theme, currentThemeCategory]);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
+  
+  const setThemeCategory = (category: ThemeType) => {
+    setCurrentThemeCategory(category);
+  };
+  
+  // Helper function to get a value from the current theme
+  const getThemeValue = (path: string) => {
+    return getTheme(theme, currentThemeCategory, path);
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme, isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ 
+      theme, 
+      isDarkMode, 
+      currentThemeCategory,
+      toggleTheme, 
+      setThemeCategory,
+      getThemeValue
+    }}>
       {children}
     </ThemeContext.Provider>
   );

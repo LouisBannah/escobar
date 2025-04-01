@@ -2,8 +2,14 @@
  * Theme utilities for consistent styling across components
  */
 
-import { Theme } from '../types';
+import { shared, lightThemes, darkThemes } from './themes';
+import get from 'lodash.get';
 
+export type ThemeType = 'Sales' | 'Delivery' | 'Quality Assurance';
+
+/**
+ * Theme colors interface for backward compatibility
+ */
 export interface ThemeColors {
   // Main colors
   primary: string;
@@ -47,10 +53,38 @@ export interface ThemeColors {
 }
 
 /**
+ * Get theme object for the specified mode and theme
+ * @param mode Light or dark mode
+ * @param themeName Theme name (sales, delivery, qualityAssurance)
+ * @param path Optional path to get a specific value from the theme
+ * @returns The theme object or a specific value if path is provided
+ */
+export const getTheme = (mode: 'light' | 'dark', themeName: string, path?: string) => {
+  const themes = mode === 'light' ? lightThemes : darkThemes;
+  // Normalize theme name to match object keys
+  const normalizedThemeName = themeName.toLowerCase().replace(/\s+/g, '');
+  
+  // Get the full theme object
+  const themeObj = {
+    ...shared,
+    ...(themes[normalizedThemeName as keyof typeof themes] || themes.sales)
+  };
+  
+  // Return specific path or the whole theme object
+  return path ? get(themeObj, path) : themeObj;
+};
+
+/**
+ * Legacy function for backward compatibility
  * Get the theme colors based on theme type and mode
  */
 export const getThemeColors = (theme: string, isDarkMode: boolean = false): ThemeColors => {
-  // For the redesign, we're focusing on light mode only
+  // For backward compatibility, convert the new theme format to the old ThemeColors interface
+  const normalizedThemeName = theme.toLowerCase().replace(/\s+/g, '');
+  const mode = isDarkMode ? 'dark' : 'light';
+  const themeObj = getTheme(mode, normalizedThemeName);
+  
+  // Map new theme structure to the old ThemeColors interface
   if (theme === 'Sales') {
     return {
       // Main colors
@@ -180,6 +214,33 @@ export const getThemeColors = (theme: string, isDarkMode: boolean = false): Them
   }
 };
 
-// Export theme-related constants and types
-export type ThemeType = 'Sales' | 'Delivery' | 'Quality Assurance';
-// ThemeColors is already defined as an interface above, so we don't need to redefine it as a type 
+/**
+ * Apply CSS variables for the theme to the document root
+ * @param mode Light or dark mode
+ * @param themeName Theme name (sales, delivery, qualityAssurance)
+ */
+export const applyCSSVariables = (mode: 'light' | 'dark', themeName: string) => {
+  const theme = getTheme(mode, themeName);
+  
+  // Helper function to recursively set CSS variables
+  const setCSSVars = (obj: any, prefix = '') => {
+    for (const key in obj) {
+      const value = obj[key];
+      
+      if (typeof value === 'object' && value !== null) {
+        // Recursively process nested objects
+        setCSSVars(value, `${prefix}${key}-`);
+      } else if (typeof value === 'string' || typeof value === 'number') {
+        // Set CSS variable for primitive values
+        document.documentElement.style.setProperty(`--${prefix}${key}`, value.toString());
+      }
+    }
+  };
+  
+  // Apply all theme variables
+  setCSSVars(theme);
+  
+  // Also set a theme and mode identifier CSS variables
+  document.documentElement.style.setProperty('--theme', themeName);
+  document.documentElement.style.setProperty('--mode', mode);
+}; 

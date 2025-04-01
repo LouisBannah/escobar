@@ -1,9 +1,10 @@
 import React from 'react';
 import { ContentBlock } from '../data/content';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface StructuredContentProps {
   blocks: ContentBlock[];
-  themeColors: {
+  themeColors?: {
     medium: string;
     text: string;
     border: string;
@@ -14,37 +15,80 @@ interface StructuredContentProps {
     numberText: string;
     contentText: string;
     bulletBackground: string;
-  };
+  } | null;
 }
 
 const StructuredContent: React.FC<StructuredContentProps> = ({ blocks, themeColors }) => {
+  const { getThemeValue } = useTheme();
+  
+  // Helper to get either theme value from the new system or fallback to old themeColors if provided
+  const getThemeStyle = (legacyKey: string, newPath: string) => {
+    if (themeColors) {
+      return themeColors[legacyKey as keyof typeof themeColors];
+    }
+    return getThemeValue(newPath);
+  };
+
   return (
     <div className="prose prose-gray max-w-none">
       {blocks.map((block, blockIndex) => {
         switch (block.type) {
           case 'paragraph':
             return (
-              <p key={blockIndex} className="mb-4 text-gray-700">
+              <p 
+                key={blockIndex} 
+                style={{ 
+                  marginBottom: '1rem', 
+                  color: getThemeStyle('contentText', 'colors.text.secondary') 
+                }}
+              >
                 {block.content}
               </p>
             );
             
           case 'header':
             return (
-              <p key={blockIndex} className={`font-medium ${themeColors.text} mb-4`}>
+              <p 
+                key={blockIndex} 
+                style={{ 
+                  fontWeight: 500, 
+                  color: getThemeStyle('text', 'colors.text.primary'),
+                  marginBottom: '1rem' 
+                }}
+              >
                 {block.content}
               </p>
             );
             
           case 'bullet_list':
             return (
-              <div key={blockIndex} className="space-y-3 mt-3 mb-6">
+              <div key={blockIndex} style={{ marginTop: '0.75rem', marginBottom: '1.5rem', rowGap: '0.75rem', display: 'flex', flexDirection: 'column' }}>
                 {block.items?.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex items-start gap-3">
-                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${themeColors.medium} flex items-center justify-center mt-0.5`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${themeColors.button}`}></div>
+                  <div key={itemIndex} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                    <div style={{ 
+                      flexShrink: 0, 
+                      width: '1.25rem', 
+                      height: '1.25rem', 
+                      borderRadius: '9999px', 
+                      background: getThemeStyle('medium', 'colors.primary.light'),
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginTop: '0.125rem'
+                    }}>
+                      <div style={{ 
+                        width: '0.375rem', 
+                        height: '0.375rem', 
+                        borderRadius: '9999px', 
+                        background: getThemeStyle('button', 'colors.primary.main') 
+                      }}></div>
                     </div>
-                    <span className="text-gray-700 flex-1">{item.content}</span>
+                    <span style={{ 
+                      color: getThemeStyle('contentText', 'colors.text.secondary'), 
+                      flexGrow: 1 
+                    }}>
+                      {item.content}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -52,26 +96,67 @@ const StructuredContent: React.FC<StructuredContentProps> = ({ blocks, themeColo
             
           case 'numbered_list':
             return (
-              <div key={blockIndex} className="space-y-5 mt-3 mb-6">
+              <div key={blockIndex} style={{ rowGap: '1.25rem', marginTop: '0.75rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column' }}>
                 {block.items?.map((item, itemIndex) => (
-                  <div key={itemIndex} className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${themeColors.numberBackground} flex items-center justify-center shadow-sm`}>
-                        <span className={`text-sm font-bold ${themeColors.numberText}`}>{itemIndex + 1}</span>
+                  <div key={itemIndex} style={{ rowGap: '0.75rem', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                      <div style={{ 
+                        flexShrink: 0, 
+                        width: '2rem', 
+                        height: '2rem', 
+                        borderRadius: '9999px', 
+                        background: getThemeStyle('numberBackground', 'colors.primary.main'),
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                      }}>
+                        <span style={{ 
+                          fontSize: '0.875rem', 
+                          fontWeight: 'bold', 
+                          color: getThemeStyle('numberText', 'colors.primary.contrast')
+                        }}>
+                          {itemIndex + 1}
+                        </span>
                       </div>
-                      <div className={`${themeColors.contentText} flex-1 pt-1.5 font-medium`}>
+                      <div style={{ 
+                        color: getThemeStyle('contentText', 'colors.text.secondary'), 
+                        flexGrow: 1, 
+                        paddingTop: '0.375rem', 
+                        fontWeight: 500 
+                      }}>
                         {item.content}
                       </div>
                     </div>
                     
                     {item.sub_bullets && item.sub_bullets.length > 0 && (
-                      <div className="ml-11 space-y-2">
+                      <div style={{ marginLeft: '2.75rem', rowGap: '0.5rem', display: 'flex', flexDirection: 'column' }}>
                         {item.sub_bullets.map((subItem, subIndex) => (
-                          <div key={subIndex} className="flex items-start gap-3">
-                            <div className={`flex-shrink-0 w-4 h-4 rounded-full ${themeColors.bulletBackground} flex items-center justify-center mt-0.5`}>
-                              <div className={`w-1 h-1 rounded-full ${themeColors.numberBackground}`}></div>
+                          <div key={subIndex} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                            <div style={{ 
+                              flexShrink: 0, 
+                              width: '1rem', 
+                              height: '1rem', 
+                              borderRadius: '9999px', 
+                              background: getThemeStyle('bulletBackground', 'colors.primary.light'),
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginTop: '0.125rem'
+                            }}>
+                              <div style={{ 
+                                width: '0.25rem', 
+                                height: '0.25rem', 
+                                borderRadius: '9999px', 
+                                background: getThemeStyle('numberBackground', 'colors.primary.main')
+                              }}></div>
                             </div>
-                            <span className={`${themeColors.contentText} flex-1`}>{subItem}</span>
+                            <span style={{ 
+                              color: getThemeStyle('contentText', 'colors.text.secondary'), 
+                              flexGrow: 1 
+                            }}>
+                              {subItem}
+                            </span>
                           </div>
                         ))}
                       </div>
