@@ -290,27 +290,50 @@ const FilterBar: React.FC<FilterBarProps> = ({
                           setShowThemeDropdown(false);
                           setShowMaterialDropdown(false);
                         }}
-                        className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 flex items-center justify-between"
+                        style={{
+                          background: getThemeValue('components.filterBar.dropdownButtonBackground'),
+                          color: getThemeValue('colors.text.primary'),
+                          borderColor: getThemeValue('colors.border'),
+                        }}
+                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-emerald-500 flex items-center justify-between"
                       >
-                        <span className="text-sm text-gray-700 dark:text-gray-200">Categories</span>
-                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span className="text-sm">Categories</span>
+                        <svg 
+                          style={{ color: getThemeValue('colors.text.secondary') }}
+                          className={`w-4 h-4 transform transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
                       {showCategoryDropdown && (
-                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+                        <div 
+                          className="absolute z-50 w-full mt-1 border rounded-lg shadow-lg"
+                          style={{
+                            background: getThemeValue('components.filterBar.dropdownBackground'),
+                            borderColor: getThemeValue('colors.border'),
+                          }}
+                        >
                           <div className="p-2">
                             {filters.categories.map(category => (
-                              <label key={category} className="flex items-center px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer">
+                              <label 
+                                key={category} 
+                                className="flex items-center px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50"
+                                style={{ 
+                                  color: getThemeValue('colors.text.primary')
+                                }}
+                              >
                                 <input
                                   type="checkbox"
                                   checked={selectedFilters.categories.includes(category)}
                                   onChange={() => onFilterChange('categories', category)}
                                   className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
                                 />
-                                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span className="ml-2 text-sm" style={{ color: getThemeValue('colors.text.primary') }}>
                                   {category}
-                                  <span className="ml-1 text-gray-400 dark:text-gray-500">
+                                  <span className="ml-1" style={{ color: getThemeValue('colors.text.tertiary') }}>
                                     ({getFilterCounts('categories', category)})
                                   </span>
                                 </span>
@@ -334,27 +357,50 @@ const FilterBar: React.FC<FilterBarProps> = ({
                           setShowThemeDropdown(false);
                           setShowCategoryDropdown(false);
                         }}
-                        className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 flex items-center justify-between"
+                        style={{
+                          background: getThemeValue('components.filterBar.dropdownButtonBackground'),
+                          color: getThemeValue('colors.text.primary'),
+                          borderColor: getThemeValue('colors.border'),
+                        }}
+                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-emerald-500 flex items-center justify-between"
                       >
-                        <span className="text-sm text-gray-700 dark:text-gray-200">Material Types</span>
-                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showMaterialDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span className="text-sm">Material Types</span>
+                        <svg 
+                          style={{ color: getThemeValue('colors.text.secondary') }}
+                          className={`w-4 h-4 transform transition-transform ${showMaterialDropdown ? 'rotate-180' : ''}`} 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
                       {showMaterialDropdown && (
-                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+                        <div 
+                          className="absolute z-50 w-full mt-1 border rounded-lg shadow-lg"
+                          style={{
+                            background: getThemeValue('components.filterBar.dropdownBackground'),
+                            borderColor: getThemeValue('colors.border'),
+                          }}
+                        >
                           <div className="p-2">
                             {filters.materialTypes.map(type => (
-                              <label key={type} className="flex items-center px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer">
+                              <label 
+                                key={type} 
+                                className="flex items-center px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50"
+                                style={{ 
+                                  color: getThemeValue('colors.text.primary')
+                                }}
+                              >
                                 <input
                                   type="checkbox"
                                   checked={selectedFilters.materialTypes.includes(type)}
                                   onChange={() => onFilterChange('materialTypes', type)}
                                   className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
                                 />
-                                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span className="ml-2 text-sm" style={{ color: getThemeValue('colors.text.primary') }}>
                                   {type.toUpperCase()}
-                                  <span className="ml-1 text-gray-400 dark:text-gray-500">
+                                  <span className="ml-1" style={{ color: getThemeValue('colors.text.tertiary') }}>
                                     ({getFilterCounts('materialTypes', type)})
                                   </span>
                                 </span>

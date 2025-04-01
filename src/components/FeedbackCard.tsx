@@ -53,6 +53,7 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const [title, setTitle] = useState(item.shortTitle);
   
   const handleRatingClick = (selectedRating: number) => {
     setRating(selectedRating);
@@ -74,7 +75,7 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
     e.preventDefault();
     
     // Log the feedback submission
-    console.log(`Feedback submitted for item ${item.id}: Rating ${rating}, Comment: ${feedback}`);
+    console.log(`Feedback submitted for item ${item.id}: Title "${title}", Rating ${rating}, Comment: ${feedback}`);
     
     // Close the feedback card
     handleClose();
@@ -140,54 +141,60 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
         >
           <div className="p-6" style={{ paddingLeft: '28px', paddingRight: '20px' }}>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Item Name */}
+              {/* Title */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium" style={{ color: getNeutralThemeValue('components.feedbackCard.form.labelText') }}>
-                  Item Name
+                  Title
                 </label>
-                <div className="p-4 rounded-lg border" 
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full p-4 border rounded-lg shadow-sm
+                    focus:ring-2 focus:ring-offset-2 focus:outline-none focus:border-transparent"
                   style={{ 
                     background: getNeutralThemeValue('components.feedbackCard.form.fieldBg'),
                     borderColor: getNeutralThemeValue('components.feedbackCard.form.fieldBorder'),
                     color: getNeutralThemeValue('components.feedbackCard.form.fieldText')
                   }}
-                >
-                  {item.shortTitle}
-                </div>
+                  placeholder="Enter a title for your feedback..."
+                />
               </div>
               
               {/* Rating */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium" style={{ color: getNeutralThemeValue('components.feedbackCard.form.labelText') }}>
-                  Rate this item
+                  How would you rate your experience?
                 </label>
-                <div className="flex items-center space-x-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => handleRatingClick(star)}
-                      onMouseEnter={() => handleMouseEnter(star)}
-                      onMouseLeave={handleMouseLeave}
-                      className="focus:outline-none transition-transform duration-150 hover:scale-110"
-                      style={{ 
-                        color: (hoverRating || rating) >= star 
-                          ? getNeutralThemeValue('components.feedbackCard.starRating.filledColor')
-                          : getNeutralThemeValue('components.feedbackCard.starRating.emptyColor'),
-                        fontSize: getNeutralThemeValue('components.feedbackCard.starRating.size')
-                      }}
-                    >
-                      <Star className="w-8 h-8 fill-current" />
-                    </button>
-                  ))}
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center space-x-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => handleRatingClick(star)}
+                        onMouseEnter={() => handleMouseEnter(star)}
+                        onMouseLeave={handleMouseLeave}
+                        className="focus:outline-none transition-transform duration-150 hover:scale-110"
+                        style={{ 
+                          color: (hoverRating || rating) >= star 
+                            ? getNeutralThemeValue('components.feedbackCard.starRating.filledColor')
+                            : getNeutralThemeValue('components.feedbackCard.starRating.emptyColor'),
+                          fontSize: getNeutralThemeValue('components.feedbackCard.starRating.size')
+                        }}
+                      >
+                        <Star className="w-8 h-8 fill-current" />
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-sm" style={{ color: getNeutralThemeValue('colors.text.secondary') }}>
+                    {rating === 1 && "Poor - Does not meet expectations"}
+                    {rating === 2 && "Fair - Needs improvement"}
+                    {rating === 3 && "Average - Meets basic requirements"}
+                    {rating === 4 && "Good - Exceeds expectations"}
+                    {rating === 5 && "Excellent - Outstanding quality"}
+                  </p>
                 </div>
-                <p className="text-sm mt-1" style={{ color: getNeutralThemeValue('colors.text.secondary') }}>
-                  {rating === 1 && "Poor - Does not meet expectations"}
-                  {rating === 2 && "Fair - Needs improvement"}
-                  {rating === 3 && "Average - Meets basic requirements"}
-                  {rating === 4 && "Good - Exceeds expectations"}
-                  {rating === 5 && "Excellent - Outstanding quality"}
-                </p>
               </div>
               
               {/* Comments */}

@@ -146,7 +146,7 @@ export const Toolkit: React.FC = () => {
 
   // Get the structure style with fixed background image
   const bgStyle = {
-    backgroundImage: "url('/documents/background.png')",
+    backgroundImage: "url('/documents/background4.png')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundAttachment: "fixed",
