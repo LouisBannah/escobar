@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ChevronLeft, Copy, Download, ExternalLink, User, Settings, LogOut, MessageSquare, Lock } from 'lucide-react';
 import { toolkitItems } from '../data/toolkitItems';
-import AccessChallenge from './AccessChallenge';
 import FeedbackCard from './FeedbackCard';
 
 interface ToolkitItemDetailProps {
@@ -11,7 +10,6 @@ interface ToolkitItemDetailProps {
 }
 
 const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, onLogout }) => {
-  const [showAccessChallenge, setShowAccessChallenge] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
   const [activeTab, setActiveTab] = useState<'Overview' | 'Documentation' | 'Examples' | 'Resources'>('Overview');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -83,40 +81,15 @@ const ToolkitItemDetail: React.FC<ToolkitItemDetailProps> = ({ itemId, onBack, o
                   This toolkit provides valuable insights into our banking solutions. 
                   Access is restricted to authorized personnel only.
                 </p>
-                <button
-                  onClick={() => setShowAccessChallenge(true)}
-                  className="w-full px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600"
-                >
-                  <Lock className="w-4 h-4 inline-block mr-2" />
-                  Request Access
-                </button>
+                <div className="bg-amber-50 border border-amber-100 rounded-lg p-4">
+                  <p className="text-sm text-amber-800">
+                    This content contains sensitive information and requires proper authorization.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {showAccessChallenge && (
-          <AccessChallenge
-            onClose={() => setShowAccessChallenge(false)}
-            onBypass={() => setHasAccess(true)}
-            onRequestAccess={() => {
-              setShowAccessChallenge(false);
-              onBack();
-            }}
-          />
-        )}
-
-        {showFeedback && (
-          <FeedbackCard 
-            item={{
-              id: 'feedback',
-              theme: 'Delivery',
-              category: 'General',
-              shortTitle: 'Tool Feedback'
-            }}
-            onClose={() => setShowFeedback(false)}
-          />
-        )}
       </div>
     );
   }
