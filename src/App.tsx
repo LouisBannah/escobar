@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { UserProvider, useUser } from './contexts/UserContext';
-import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { Toolkit } from './components/Toolkit';
 import ToolkitItemDetail from './components/ToolkitItemDetail';
 import LoginScreen from './components/LoginScreen';
 
 const AppContent: React.FC = () => {
   const { user } = useUser();
+  const { getThemeValue } = useTheme();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   
   useEffect(() => {
@@ -26,7 +27,13 @@ const AppContent: React.FC = () => {
   console.log('Rendering main content');
   
   return (
-    <div className="min-h-screen">
+    <div 
+      style={{ 
+        minHeight: '100vh',
+        background: getThemeValue('colors.background'),
+        color: getThemeValue('colors.text.primary')
+      }}
+    >
       {selectedItemId ? (
         <ToolkitItemDetail
           itemId={selectedItemId}

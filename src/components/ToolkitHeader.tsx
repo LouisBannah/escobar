@@ -3,6 +3,7 @@ import { ChevronDown, LogOut, User as UserIcon, Settings, MessageSquare } from '
 import ThemeToggle from './ThemeToggle';
 import { User } from '../types';
 import { useUser } from '../contexts/UserContext';
+import { useTheme } from '../contexts/ThemeContext';
 import FeedbackCard from './FeedbackCard';
 
 interface ToolkitHeaderProps {
@@ -21,6 +22,7 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const { setUser } = useUser();
+  const { getThemeValue, setThemeCategory } = useTheme();
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
   // Effect to handle clicks outside the dropdown
@@ -52,56 +54,82 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
   };
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30">
+    <header 
+      style={{
+        background: getThemeValue('components.header.background'),
+        borderBottom: `1px solid ${getThemeValue('components.header.borderColor')}`,
+        boxShadow: getThemeValue('components.header.boxShadow'),
+        position: 'sticky',
+        top: 0,
+        zIndex: 30
+      }}
+    >
       <div className="w-full max-w-screen-xl mx-auto px-6 py-2">
         <div className="flex items-center justify-between h-16 relative">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <h1 className="text-3xl tracking-tight font-['Open_Sans']">
-              <span className="font-bold text-[#079669]">Converge</span>
-              <span className="font-light text-gray-800 dark:text-gray-200">Toolkit</span>
+              <span style={{ fontWeight: 'bold', color: getThemeValue('colors.primary.main') }}>Converge</span>
+              <span style={{ fontWeight: 'light', color: getThemeValue('colors.text.primary') }}>Toolkit</span>
             </h1>
           </div>
 
           {/* Theme Filter Buttons - Centered */}
           <div className="absolute left-1/2 transform -translate-x-1/2 flex space-x-4">
-            {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => (
-              <button
-                key={theme}
-                onClick={() => onThemeFilterChange(theme)}
-                className={`px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden ${
-                  activeThemeFilters.includes(theme)
-                    ? 'text-white shadow-lg border-none transform scale-105' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 shadow-sm hover:shadow-inner border border-gray-200 hover:border-gray-300'
-                }`}
-                style={
-                  activeThemeFilters.includes(theme)
-                    ? theme === 'Sales'
-                      ? { 
-                          background: 'linear-gradient(135deg, #05ED04, #24920D)',
-                          boxShadow: '0 8px 16px -2px rgba(5, 237, 4, 0.15), 0 3px 6px -2px rgba(36, 146, 13, 0.1)',
-                        }
-                      : theme === 'Delivery'
-                      ? { 
-                          background: 'linear-gradient(135deg, #36DAB3, #00A0DE)',
-                          boxShadow: '0 8px 16px -2px rgba(54, 218, 179, 0.15), 0 3px 6px -2px rgba(0, 160, 222, 0.1)',
-                        }
-                      : { 
-                          background: 'linear-gradient(135deg, #D41EDE, #B38EEF)',
-                          boxShadow: '0 8px 16px -2px rgba(212, 30, 222, 0.15), 0 3px 6px -2px rgba(179, 142, 239, 0.1)',
-                        }
-                    : {}
-                }
-              >
-                {activeThemeFilters.includes(theme) && (
-                  <>
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
-                    <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
-                  </>
-                )}
-                <span className="relative z-10 font-semibold">{theme}</span>
-              </button>
-            ))}
+            {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => {
+              // Temporarily set the theme category to get the correct styles
+              const isActive = activeThemeFilters.includes(theme);
+              
+              // Get the correct theme button styling based on active state
+              const buttonStyle = isActive
+                ? {
+                    background: getThemeValue('colors.gradients.button'),
+                    color: getThemeValue('colors.primary.contrast'),
+                    boxShadow: getThemeValue('shared.boxShadow.md'),
+                    border: 'none',
+                    transform: 'scale(1.05)'
+                  }
+                : {
+                    background: 'transparent',
+                    color: getThemeValue('components.header.themeButton.normal.text'),
+                    border: `1px solid ${getThemeValue('components.header.themeButton.normal.border')}`,
+                    boxShadow: getThemeValue('shared.boxShadow.sm')
+                  };
+              
+              return (
+                <button
+                  key={theme}
+                  onClick={() => {
+                    setThemeCategory(theme);
+                    onThemeFilterChange(theme);
+                  }}
+                  className="px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden"
+                  style={buttonStyle}
+                  onMouseOver={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = getThemeValue('components.header.themeButton.hover.bg');
+                      e.currentTarget.style.color = getThemeValue('components.header.themeButton.hover.text');
+                      e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.hover.border');
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = getThemeValue('components.header.themeButton.normal.text');
+                      e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.normal.border');
+                    }
+                  }}
+                >
+                  {isActive && (
+                    <>
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
+                      <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
+                    </>
+                  )}
+                  <span className="relative z-10 font-semibold">{theme}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Right side navigation items */}
@@ -109,7 +137,28 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
             {/* Feedback Button */}
             <button
               onClick={() => setShowFeedback(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-200 dark:hover:border-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.375rem',
+                padding: '0.375rem 0.75rem',
+                background: getThemeValue('components.header.feedbackButton.bg'),
+                border: `1px solid ${getThemeValue('components.header.feedbackButton.border')}`,
+                borderRadius: '0.375rem',
+                color: getThemeValue('components.header.feedbackButton.text'),
+                fontSize: '0.875rem',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = getThemeValue('components.header.feedbackButton.bgHover');
+                e.currentTarget.style.borderColor = getThemeValue('components.header.feedbackButton.borderHover');
+                e.currentTarget.style.color = getThemeValue('components.header.feedbackButton.textHover');
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = getThemeValue('components.header.feedbackButton.bg');
+                e.currentTarget.style.borderColor = getThemeValue('components.header.feedbackButton.border');
+                e.currentTarget.style.color = getThemeValue('components.header.feedbackButton.text');
+              }}
               title="Provide Feedback"
             >
               <MessageSquare size={14} className="flex-shrink-0" />
@@ -126,7 +175,12 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                     className="flex items-center max-w-xs rounded-full text-sm focus:outline-none"
                   >
-                    <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-medium">
+                    <div className="h-8 w-8 rounded-full flex items-center justify-center"
+                      style={{ 
+                        background: getThemeValue('colors.primary.light'),
+                        color: getThemeValue('colors.primary.main')
+                      }}
+                    >
                       {user.avatar ? (
                         <img
                           className="h-8 w-8 rounded-full"
@@ -137,68 +191,85 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
                         user.name && user.name.charAt(0)
                       )}
                     </div>
-                    <span className="ml-2 text-gray-700 dark:text-gray-300 hidden md:block">
+                    <span className="ml-2 hidden md:block"
+                      style={{ color: getThemeValue('colors.text.primary') }}
+                    >
                       {user.name || user.email.split('@')[0]}
                     </span>
-                    <ChevronDown className="ml-1 h-4 w-4 text-gray-500 dark:text-gray-400" />
+                    <ChevronDown className="ml-1 h-4 w-4" style={{ color: getThemeValue('colors.text.tertiary') }} />
                   </button>
                 </div>
                 {showProfileMenu && (
-                  <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-700">
-                    <div className="px-4 py-3">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg"
+                    style={{ 
+                      background: getThemeValue('components.header.profileMenu.bg'),
+                      borderColor: getThemeValue('components.header.profileMenu.border'),
+                      boxShadow: getThemeValue('components.header.profileMenu.shadow'),
+                      borderWidth: '1px',
+                      borderStyle: 'solid'
+                    }}
+                  >
+                    <div className="px-4 py-3" style={{ borderBottom: `1px solid ${getThemeValue('components.header.profileMenu.divider')}` }}>
+                      <p className="text-sm font-medium" style={{ color: getThemeValue('colors.text.primary') }}>
                         {user?.name || user?.email.split('@')[0]}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      <p className="text-xs truncate" style={{ color: getThemeValue('colors.text.tertiary') }}>
                         {user?.email}
                       </p>
                       <div className="mt-2">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                          style={{ 
+                            background: getThemeValue('colors.primary.light'),
+                            color: getThemeValue('colors.primary.main')
+                          }}
+                        >
                           Level {user?.accessLevel} Access
                         </span>
                       </div>
                     </div>
-                    <div
-                      className="py-1"
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="user-menu"
-                    >
-                      <label className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                    <div className="py-1" style={{ borderBottom: `1px solid ${getThemeValue('components.header.profileMenu.divider')}` }}>
+                      <label className="flex items-center px-4 py-2 text-sm cursor-pointer"
+                        style={{ color: getThemeValue('colors.text.secondary') }}
+                      >
                         <input
                           type="checkbox"
                           checked={user?.accessLevel === 2}
                           onChange={toggleAccessLevel}
-                          className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded mr-3"
+                          className="h-4 w-4 mr-3 rounded"
+                          style={{ 
+                            color: getThemeValue('colors.primary.main'),
+                            borderColor: getThemeValue('colors.border')
+                          }}
                         />
                         Authorized
                       </label>
                       <a
                         href="#"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="flex items-center px-4 py-2 text-sm"
+                        style={{ color: getThemeValue('colors.text.secondary') }}
                         role="menuitem"
                       >
-                        <UserIcon className="h-4 w-4 mr-3 text-gray-500 dark:text-gray-400" />
+                        <UserIcon className="h-4 w-4 mr-3" style={{ color: getThemeValue('colors.text.tertiary') }} />
                         Your Profile
                       </a>
                       <a
                         href="#"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="flex items-center px-4 py-2 text-sm"
+                        style={{ color: getThemeValue('colors.text.secondary') }}
                         role="menuitem"
                       >
-                        <Settings className="h-4 w-4 mr-3 text-gray-500 dark:text-gray-400" />
+                        <Settings className="h-4 w-4 mr-3" style={{ color: getThemeValue('colors.text.tertiary') }} />
                         Settings
                       </a>
                     </div>
-                    <div
-                      className="py-1"
-                    >
+                    <div className="py-1">
                       <div
-                        className="flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 dark:hover:bg-opacity-10 cursor-pointer"
+                        className="flex items-center px-4 py-2 text-sm cursor-pointer"
+                        style={{ color: '#ef4444' }}
                         role="menuitem"
                         onClick={onLogout}
                       >
-                        <LogOut className="h-4 w-4 mr-3" />
+                        <LogOut className="h-4 w-4 mr-3" style={{ color: '#ef4444' }} />
                         Sign out
                       </div>
                     </div>
@@ -210,7 +281,6 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
         </div>
       </div>
       
-      {/* Feedback Modal */}
       {showFeedback && (
         <FeedbackCard 
           item={{

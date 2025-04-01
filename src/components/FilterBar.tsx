@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Filter, Search } from 'lucide-react';
 import { toolkitItems } from '../data/toolkitItems';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface Filters {
   themes: string[];
@@ -29,6 +30,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onSearchChange,
   totalToolsCount
 }) => {
+  const { getThemeValue } = useTheme();
   const [showFiltersPanel, setShowFiltersPanel] = useState(false);
   const [showThemeDropdown, setShowThemeDropdown] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
@@ -118,26 +120,42 @@ const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-sm mb-4 border-b border-gray-200 dark:border-gray-700 sticky top-[4.5rem] z-20">
+    <div 
+      style={{
+        background: getThemeValue('components.filterBar.background'),
+        borderColor: getThemeValue('colors.border'),
+        boxShadow: getThemeValue('shared.boxShadow.sm'),
+      }}
+      className="mb-4 border-b sticky top-[4.5rem] z-20"
+    >
       <div className="w-full max-w-screen-xl mx-auto px-6">
         {/* Main filter bar with search and filter button */}
         <div className="flex items-center gap-4 py-3">
           {/* Search Bar */}
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
+              <Search 
+                className="h-5 w-5" 
+                style={{ color: getThemeValue('colors.text.secondary') }} 
+              />
             </div>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 sm:text-sm text-gray-900 dark:text-gray-100"
+              style={{
+                background: getThemeValue('components.filterBar.searchBackground'),
+                color: getThemeValue('colors.text.primary'),
+                borderColor: getThemeValue('colors.border'),
+              }}
+              className="block w-full pl-10 pr-3 py-2 border rounded-md leading-5 placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-emerald-500 sm:text-sm"
               placeholder="Search for tools, resources, materials..."
             />
             {searchQuery && (
               <button
                 onClick={() => onSearchChange('')}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-gray-600"
+                style={{ color: getThemeValue('colors.text.secondary') }}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -148,23 +166,39 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <button
             ref={filterButtonRef}
             onClick={handleFilterButtonClick}
-            className={`inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium focus:outline-none ${
-              showFiltersPanel || activeFiltersCount > 0
-                ? 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-900 dark:bg-opacity-20 dark:text-emerald-300 dark:border-emerald-800'
-                : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
-            } whitespace-nowrap`}
+            style={{
+              background: showFiltersPanel || activeFiltersCount > 0 
+                ? getThemeValue('components.filterBar.activeButtonBackground')
+                : getThemeValue('components.filterBar.buttonBackground'),
+              color: showFiltersPanel || activeFiltersCount > 0
+                ? getThemeValue('components.filterBar.activeButtonText')
+                : getThemeValue('colors.text.primary'),
+              borderColor: showFiltersPanel || activeFiltersCount > 0
+                ? getThemeValue('components.filterBar.activeButtonBorder')
+                : getThemeValue('colors.border'),
+            }}
+            className="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium focus:outline-none whitespace-nowrap"
           >
             <Filter className="mr-2 h-4 w-4" />
             Filters
             {activeFiltersCount > 0 && (
-              <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-emerald-100 bg-emerald-600 dark:bg-emerald-500 rounded-full">
+              <span 
+                style={{
+                  background: getThemeValue('components.filterBar.badgeBackground'),
+                  color: getThemeValue('components.filterBar.badgeText'),
+                }}
+                className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none rounded-full"
+              >
                 {activeFiltersCount}
               </span>
             )}
           </button>
         
           {/* Tools count */}
-          <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+          <div 
+            className="text-sm whitespace-nowrap"
+            style={{ color: getThemeValue('colors.text.secondary') }}
+          >
             {totalToolsCount} {totalToolsCount === 1 ? 'tool' : 'tools'} found
           </div>
         </div>
@@ -172,7 +206,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
         {/* Enhanced Filter Panel */}
         {showFiltersPanel && (
           <div className="py-3 mb-2" ref={dropdownRef}>
-            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 relative z-40">
+            <div 
+              className="mt-4 p-4 rounded-lg border relative z-40"
+              style={{
+                background: getThemeValue('components.filterBar.panelBackground'),
+                borderColor: getThemeValue('colors.border'),
+              }}
+            >
               <div className="flex flex-wrap gap-4">
                 {/* Theme Filter */}
                 <div className="flex-1 min-w-[200px]" ref={themeDropdownRef}>
@@ -185,18 +225,42 @@ const FilterBar: React.FC<FilterBarProps> = ({
                           setShowCategoryDropdown(false);
                           setShowMaterialDropdown(false);
                         }}
-                        className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 flex items-center justify-between"
+                        style={{
+                          background: getThemeValue('components.filterBar.dropdownButtonBackground'),
+                          color: getThemeValue('colors.text.primary'),
+                          borderColor: getThemeValue('colors.border'),
+                        }}
+                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-emerald-500 flex items-center justify-between"
                       >
-                        <span className="text-sm text-gray-700 dark:text-gray-200">Themes</span>
-                        <svg className={`w-4 h-4 text-gray-400 transform transition-transform ${showThemeDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span className="text-sm">Themes</span>
+                        <svg 
+                          style={{ color: getThemeValue('colors.text.secondary') }}
+                          className={`w-4 h-4 transform transition-transform ${showThemeDropdown ? 'rotate-180' : ''}`} 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
+                      
                       {showThemeDropdown && (
-                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+                        <div 
+                          className="absolute z-50 w-full mt-1 border rounded-lg shadow-lg"
+                          style={{
+                            background: getThemeValue('components.filterBar.dropdownBackground'),
+                            borderColor: getThemeValue('colors.border'),
+                          }}
+                        >
                           <div className="p-2">
                             {filters.themes.map(theme => (
-                              <label key={theme} className="flex items-center px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer">
+                              <label 
+                                key={theme} 
+                                className="flex items-center px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50"
+                                style={{ 
+                                  color: getThemeValue('colors.text.primary')
+                                }}
+                              >
                                 <input
                                   type="checkbox"
                                   checked={selectedFilters.themes.includes(theme)}

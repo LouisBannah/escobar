@@ -115,6 +115,22 @@ const salesLight = {
       },
     },
     
+    // FilterBar component
+    filterBar: {
+      background: '#ffffff',
+      searchBackground: '#ffffff',
+      panelBackground: '#f9fafb',
+      buttonBackground: '#ffffff',
+      activeButtonBackground: '#ecfdf5',
+      activeButtonText: '#059669',
+      activeButtonBorder: '#a7f3d0',
+      badgeBackground: '#10b981',
+      badgeText: '#ffffff',
+      dropdownBackground: '#ffffff',
+      dropdownButtonBackground: '#ffffff',
+      dropdownHoverBackground: '#f9fafb',
+    },
+    
     // Base card
     baseCard: {
       background: '#ffffff',
@@ -358,6 +374,22 @@ const deliveryLight = {
       },
     },
     
+    // FilterBar component
+    filterBar: {
+      background: '#ffffff',
+      searchBackground: '#ffffff',
+      panelBackground: '#f9fafb',
+      buttonBackground: '#ffffff',
+      activeButtonBackground: '#eff6ff',
+      activeButtonText: '#2563eb',
+      activeButtonBorder: '#bfdbfe',
+      badgeBackground: '#3b82f6',
+      badgeText: '#ffffff',
+      dropdownBackground: '#ffffff',
+      dropdownButtonBackground: '#ffffff',
+      dropdownHoverBackground: '#f9fafb',
+    },
+    
     // Base card (blue themed)
     baseCard: {
       background: '#ffffff',
@@ -599,6 +631,22 @@ const qaLight = {
         itemHover: '#f9fafb',
         text: '#4b5563',
       },
+    },
+    
+    // FilterBar component
+    filterBar: {
+      background: '#ffffff',
+      searchBackground: '#ffffff',
+      panelBackground: '#f9fafb',
+      buttonBackground: '#ffffff',
+      activeButtonBackground: '#faf5ff',
+      activeButtonText: '#9333ea',
+      activeButtonBorder: '#e9d5ff',
+      badgeBackground: '#a855f7',
+      badgeText: '#ffffff',
+      dropdownBackground: '#ffffff',
+      dropdownButtonBackground: '#ffffff',
+      dropdownHoverBackground: '#f9fafb',
     },
     
     // Base card (purple themed)

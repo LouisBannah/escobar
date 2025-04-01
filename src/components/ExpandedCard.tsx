@@ -5,6 +5,7 @@ import CodeExampleViewer from './CodeExampleViewer';
 import { detailedDescriptionsMap } from '../data/content';
 import { codeExamplesMap } from '../data/content/codeExamples';
 import { useTheme } from '../contexts/ThemeContext';
+import { ContentBlock } from '../data/content';
 
 interface ExpandedCardProps {
   item: {
@@ -72,6 +73,113 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   
   // Get the code examples for this item
   const codeExamples = codeExamplesMap[item.id] || [];
+
+  // Helper function to convert text with bullet points to ContentBlock[] format
+  const convertTextToContentBlocks = (text: string): ContentBlock[] => {
+    const blocks: ContentBlock[] = [];
+    const paragraphs = text.split('\n\n');
+    
+    paragraphs.forEach(paragraph => {
+      // Check if this paragraph is a header (ends with ":")
+      if (paragraph.trim().endsWith(':')) {
+        blocks.push({
+          type: 'header',
+          content: paragraph.trim()
+        });
+        return;
+      }
+      
+      // Check if this paragraph has bullet points
+      if (paragraph.includes('• ')) {
+        // Check if there's a header section before bullets
+        const headerEndIndex = paragraph.indexOf('• ');
+        const headerPart = headerEndIndex > 0 ? paragraph.substring(0, headerEndIndex).trim() : null;
+        
+        if (headerPart) {
+          blocks.push({
+            type: 'header',
+            content: headerPart
+          });
+        }
+        
+        // Extract all bullet points
+        let bulletPoints: string[] = [];
+        const bulletContent = paragraph.substring(headerEndIndex);
+        
+        // Handle case where bullets are on separate lines
+        if (bulletContent.includes('\n')) {
+          bulletPoints = bulletContent
+            .split('\n')
+            .filter(line => line.trim().startsWith('• '))
+            .map(line => line.trim().substring(2).trim());
+        } 
+        // Handle case where bullets are all on one line separated by •
+        else {
+          bulletPoints = bulletContent
+            .split('• ')
+            .filter(point => point.trim().length > 0)
+            .map(point => point.trim());
+        }
+        
+        blocks.push({
+          type: 'bullet_list',
+          items: bulletPoints.map(content => ({ content }))
+        });
+        return;
+      }
+      
+      // Check if this paragraph starts with a number followed by a dot (like "1. Something")
+      const numberedItems: { content: string, sub_bullets?: string[] }[] = [];
+      const lines = paragraph.split('\n');
+      let currentItem: { content: string, sub_bullets?: string[] } | null = null;
+      
+      for (const line of lines) {
+        const numberedMatch = line.trim().match(/^(\d+)\.\s+(.+)$/);
+        if (numberedMatch) {
+          // If we already have a current item, add it to the list before creating a new one
+          if (currentItem) {
+            numberedItems.push(currentItem);
+          }
+          
+          // Create a new numbered item
+          currentItem = {
+            content: numberedMatch[2],
+            sub_bullets: []
+          };
+        } else if (currentItem && line.trim().length > 0) {
+          // If we have a current item and this line isn't empty,
+          // treat it as a sub-bullet for the current item
+          currentItem.sub_bullets?.push(line.trim());
+        }
+      }
+      
+      // Don't forget to add the last item if there is one
+      if (currentItem) {
+        numberedItems.push(currentItem);
+      }
+      
+      // If we found numbered items, add them as a numbered list
+      if (numberedItems.length > 0) {
+        blocks.push({
+          type: 'numbered_list',
+          items: numberedItems
+        });
+        return;
+      }
+      
+      // If we got here, it's a regular paragraph
+      blocks.push({
+        type: 'paragraph',
+        content: paragraph
+      });
+    });
+    
+    return blocks;
+  };
+  
+  // Convert business value and key capabilities to ContentBlock[] format
+  const businessValueBlocks = convertTextToContentBlocks(item.businessValue);
+  const keyCapabilitiesBlocks = convertTextToContentBlocks(item.keyCapabilities);
 
   const handleDownload = (url: string) => {
     // Always use the sample PDF for downloads
@@ -238,183 +346,41 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 </div>
                 
                 {/* Business Value Section */}
-                <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-                  <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
+                <div className="rounded-xl p-6 shadow-sm"
+                  style={{ 
+                    background: getThemeValue('colors.background'),
+                    borderColor: getThemeValue('colors.border')
+                  }}
+                >
+                  <h3 className="text-lg font-semibold mb-5 flex items-center"
+                    style={{ color: getThemeValue('colors.text.primary') }}
+                  >
+                    <div className="w-1 h-5 rounded-full mr-2"
+                      style={{ background: getThemeValue('colors.primary.main') }}
+                    ></div>
                     Business Value
                   </h3>
-                  <div className="prose prose-gray max-w-none">
-                    {item.businessValue.split('\n\n').map((paragraph, index) => {
-                      // Check if this paragraph is a header (ends with ":")
-                      if (paragraph.trim().endsWith(':')) {
-                        return (
-                          <p key={index} className={`font-medium ${getThemeValue('colors.text.primary')} mb-3`}>
-                            {paragraph.trim()}
-                          </p>
-                        );
-                      }
-                      
-                      // Check if this paragraph has bullet points
-                      if (paragraph.includes('• ')) {
-                        // Check if there's a header section before bullets
-                        const headerEndIndex = paragraph.indexOf('• ');
-                        const headerPart = headerEndIndex > 0 ? paragraph.substring(0, headerEndIndex).trim() : null;
-                        
-                        // Extract all bullet points - handle both multi-line and single-line cases
-                        let bulletPoints: string[] = [];
-                        const bulletContent = paragraph.substring(headerEndIndex);
-                        
-                        // Handle case where bullets are on separate lines
-                        if (bulletContent.includes('\n')) {
-                          bulletPoints = bulletContent
-                            .split('\n')
-                            .filter(line => line.trim().startsWith('• '))
-                            .map(line => line.trim().substring(2).trim());
-                        } 
-                        // Handle case where bullets are all on one line separated by •
-                        else {
-                          bulletPoints = bulletContent
-                            .split('• ')
-                            .filter(point => point.trim().length > 0)
-                            .map(point => point.trim());
-                        }
-
-                        return (
-                          <div key={index} className="mb-6">
-                            {headerPart && (
-                              <p className="mb-3 text-gray-700">{headerPart}</p>
-                            )}
-                            <ul className="space-y-2 pl-2">
-                              {bulletPoints.map((point, idx) => (
-                                <li key={idx} className="flex items-start gap-3 group">
-                                  <div className={`flex-shrink-0 w-5 h-5 rounded-full ${getThemeValue('colors.bulletBackground')} flex items-center justify-center mt-0.5`}>
-                                    <div className={`w-1.5 h-1.5 rounded-full ${getThemeValue('colors.numberBackground')}`}></div>
-                                  </div>
-                                  <span className="text-gray-700 flex-1">{point}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        );
-                      }
-                      
-                      // Check if this paragraph starts with a number followed by a dot (like "1. Something")
-                      const numberedMatch = paragraph.trim().match(/^(\d+)\.\s+(.+)$/);
-                      if (numberedMatch) {
-                        // Extract the number and content
-                        const number = numberedMatch[1];
-                        const content = numberedMatch[2];
-                        
-                        return (
-                          <div key={index} className="mb-3">
-                            <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-8 h-8 rounded-full ${getThemeValue('colors.numberBackground')} flex items-center justify-center shadow-sm`}>
-                                <span className="text-sm font-bold text-white">{number}</span>
-                              </div>
-                              <div className="text-gray-700 flex-1 pt-1.5">
-                                {content}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-
-                      // Handle paragraphs that are continuations of numbered items (indented content)
-                      if (index > 0) {
-                        const prevParagraph = item.businessValue.split('\n\n')[index - 1];
-                        const isPrevNumbered = prevParagraph.trim().match(/^(\d+)\.\s+(.+)$/);
-                        
-                        if (isPrevNumbered && !paragraph.trim().match(/^(\d+)\.\s+/) && !paragraph.trim().endsWith(':')) {
-                          return (
-                            <div key={index} className="mb-4 ml-11 pl-0 border-l-2 border-gray-200">
-                              <p className="text-gray-600 pl-4 py-1">{paragraph}</p>
-                            </div>
-                          );
-                        }
-                      }
-
-                      // Regular paragraph
-                      return (
-                        <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                      );
-                    })}
-                  </div>
+                  
+                  <StructuredContent blocks={businessValueBlocks} />
                 </div>
                 
                 {/* Key Capabilities Section */}
-                <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-                  <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
+                <div className="rounded-xl p-6 shadow-sm"
+                  style={{ 
+                    background: getThemeValue('colors.background'),
+                    borderColor: getThemeValue('colors.border')
+                  }}
+                >
+                  <h3 className="text-lg font-semibold mb-5 flex items-center"
+                    style={{ color: getThemeValue('colors.text.primary') }}
+                  >
+                    <div className="w-1 h-5 rounded-full mr-2"
+                      style={{ background: getThemeValue('colors.primary.main') }}
+                    ></div>
                     Key Capabilities
                   </h3>
-                  <div className="prose prose-gray max-w-none">
-                    {item.keyCapabilities.split('\n').length > 1 || item.keyCapabilities.includes('• ') ? (
-                      // For structured content with bullet points or multiple lines
-                      <div>
-                        {/* Extract any header/intro text before bullet points */}
-                        {item.keyCapabilities.includes(':') && (
-                          <p className={`font-medium ${getThemeValue('colors.text.primary')} mb-4`}>
-                            {item.keyCapabilities.split(':')[0]}:
-                          </p>
-                        )}
-                        
-                        <ul className="space-y-3 pl-0">
-                          {/* Parse and extract bullet points */}
-                          {item.keyCapabilities.includes('• ') ? 
-                            // Handle bullet points format
-                            item.keyCapabilities
-                              .split('• ')
-                              .filter(point => point.trim().length > 0)
-                              .map((point, idx) => (
-                                <li key={idx} className="flex items-start gap-3">
-                                  <div className={`flex-shrink-0 w-5 h-5 rounded-full ${getThemeValue('colors.bulletBackground')} flex items-center justify-center mt-0.5`}>
-                                    <div className={`w-1.5 h-1.5 rounded-full ${getThemeValue('colors.primary.main')}`}></div>
-                                  </div>
-                                  <span className="text-gray-700 flex-1">{point.trim()}</span>
-                                </li>
-                              ))
-                            : 
-                            // Handle multi-line format
-                            item.keyCapabilities.split('\n')
-                              .filter(line => line.trim() && !line.includes(':'))
-                              .map((line, idx) => {
-                                // Check if this is a numbered point
-                                const numberedMatch = line.trim().match(/^(\d+)\.\s+(.+)$/);
-                                if (numberedMatch) {
-                                  const number = numberedMatch[1];
-                                  const content = numberedMatch[2];
-                                  
-                                  return (
-                                    <li key={idx} className="flex items-start gap-3 mb-3">
-                                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${getThemeValue('colors.primary.main')} flex items-center justify-center shadow-sm`}>
-                                        <span className="text-sm font-bold text-white">{number}</span>
-                                      </div>
-                                      <div className="text-gray-700 flex-1 pt-1.5">
-                                        {content}
-                                      </div>
-                                    </li>
-                                  );
-                                }
-                                
-                                // Handle regular lines as bullet points
-                                const content = line.trim();
-                                return (
-                                  <li key={idx} className="flex items-start gap-3">
-                                    <div className={`flex-shrink-0 w-5 h-5 rounded-full ${getThemeValue('colors.bulletBackground')} flex items-center justify-center mt-0.5`}>
-                                      <div className={`w-1.5 h-1.5 rounded-full ${getThemeValue('colors.primary.main')}`}></div>
-                                    </div>
-                                    <span className="text-gray-700 flex-1">{content}</span>
-                                  </li>
-                                );
-                              })
-                          }
-                        </ul>
-                      </div>
-                    ) : (
-                      // For simple text content
-                      <p className="text-gray-700">{item.keyCapabilities}</p>
-                    )}
-                  </div>
+                  
+                  <StructuredContent blocks={keyCapabilitiesBlocks} />
                 </div>
               </div>
             )}
@@ -423,9 +389,18 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
             {activeTab === 'Materials' && (
               <div className="space-y-6">
                 {item.materials.length > 0 ? (
-                  <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-                    <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                      <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
+                  <div className="rounded-xl p-6 shadow-sm"
+                    style={{ 
+                      background: getThemeValue('colors.background'),
+                      borderColor: getThemeValue('colors.border')
+                    }}
+                  >
+                    <h3 className="text-lg font-semibold mb-5 flex items-center"
+                      style={{ color: getThemeValue('colors.text.primary') }}
+                    >
+                      <div className="w-1 h-5 rounded-full mr-2"
+                        style={{ background: getThemeValue('colors.primary.main') }}
+                      ></div>
                       Available Materials
                     </h3>
                     <div className="space-y-3">
@@ -443,21 +418,34 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                         return (
                           <div key={index} className="transition-all duration-200">
                             <div 
-                              className={`bg-white rounded-lg border ${
-                                isSelected ? `border-${getThemeValue('colors.primary.main')} shadow-md` : 'border-gray-200'
-                              }`}
+                              className="rounded-lg border"
+                              style={{
+                                background: getThemeValue('colors.surface'),
+                                borderColor: isSelected 
+                                  ? getThemeValue('colors.primary.main') 
+                                  : getThemeValue('colors.border'),
+                                boxShadow: isSelected 
+                                  ? getThemeValue('shared.boxShadow.md') 
+                                  : getThemeValue('shared.boxShadow.sm')
+                              }}
                             >
-                              <div className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
-                                <Icon className={`w-5 h-5 ${
-                                  material.type === 'Document' ? 'text-red-500' :
-                                  material.type === 'Guide' ? 'text-yellow-500' :
-                                  material.type === 'Template' ? 'text-green-500' :
-                                  material.type === 'Presentation' ? 'text-orange-500' :
-                                  material.type === 'Code' ? 'text-purple-500' :
-                                  'text-blue-500'
-                                }`} />
-                                <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
-                                <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
+                              <div className="flex items-center gap-3 p-3 transition-colors hover:bg-gray-50">
+                                <Icon style={{ 
+                                  width: '1.25rem',
+                                  height: '1.25rem',
+                                  color: material.type.toLowerCase() in getThemeValue('components.cardComponents.materialsSection.icons')
+                                    ? getThemeValue(`components.cardComponents.materialsSection.icons.${material.type.toLowerCase()}`)
+                                    : getThemeValue('components.cardComponents.materialsSection.icons.default')
+                                }} />
+                                <span className="text-sm font-medium flex-grow" 
+                                  style={{ color: getThemeValue('colors.text.primary') }}
+                                >{material.title}</span>
+                                <span className="text-xs px-2 py-1 rounded-md"
+                                  style={{ 
+                                    background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
+                                    color: getThemeValue('components.cardComponents.materialsSection.badgeText')
+                                  }}
+                                >
                                   {material.type.toUpperCase()}
                                 </span>
                                 
@@ -468,15 +456,17 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                         if (isSelected) {
                                           setExpandedPDF(null);
                                         } else {
-                                          setExpandedPDF({ 
-                                            url: '/documents/10-page-sample.pdf',
-                                            title: material.title 
+                                          setExpandedPDF({
+                                            url: material.url,
+                                            title: material.title
                                           });
                                         }
                                       }}
-                                      className={`p-2 rounded-full hover:bg-gray-200 transition-colors text-gray-500 ${
-                                        isSelected ? 'bg-gray-100' : ''
-                                      }`}
+                                      className="p-2 rounded-full transition-colors"
+                                      style={{
+                                        background: getThemeValue('colors.surfaceAlt'),
+                                        color: getThemeValue('colors.primary.main')
+                                      }}
                                     >
                                       {isSelected ? (
                                         <ChevronUp className="w-4 h-4" />
@@ -486,7 +476,11 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                     </button>
                                     <button 
                                       onClick={() => handleDownload(material.url)}
-                                      className="p-2 rounded-full text-gray-500 hover:bg-gray-200 transition-colors"
+                                      className="p-2 rounded-full transition-colors"
+                                      style={{
+                                        background: getThemeValue('colors.surfaceAlt'),
+                                        color: getThemeValue('colors.primary.main')
+                                      }}
                                     >
                                       <Download className="w-4 h-4" />
                                     </button>
@@ -494,16 +488,14 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                 )}
                               </div>
                               
-                              {/* Embedded PDF Viewer */}
-                              {material.type === 'Document' && isSelected && (
-                                <div className="border-t border-gray-200">
-                                  <div className="p-4">
-                                    <iframe
-                                      src={`${expandedPDF.url}#toolbar=0`}
-                                      className="w-full h-[600px] rounded-md border border-gray-200"
-                                      title={expandedPDF.title}
-                                    />
-                                  </div>
+                              {isSelected && expandedPDF && (
+                                <div className="border-t" style={{ borderColor: getThemeValue('colors.border') }}>
+                                  <iframe 
+                                    src="/documents/10-page-sample.pdf" 
+                                    className="w-full"
+                                    style={{ height: '500px' }}
+                                    title={expandedPDF.title}
+                                  />
                                 </div>
                               )}
                             </div>
@@ -513,9 +505,14 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm text-center">
-                    <h3 className="text-gray-800 text-lg font-semibold mb-3">No Materials Available</h3>
-                    <p className="text-gray-600">There are no materials available for this item yet.</p>
+                  <div className="rounded-xl p-6 shadow-sm text-center"
+                    style={{ 
+                      background: getThemeValue('colors.background'),
+                      borderColor: getThemeValue('colors.border'),
+                      color: getThemeValue('colors.text.secondary')
+                    }}
+                  >
+                    No materials are available for this item.
                   </div>
                 )}
               </div>
@@ -525,23 +522,37 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
             {activeTab === 'Code Examples' && (
               <div className="space-y-6">
                 {codeExamples.length > 0 ? (
-                  <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-                    <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                      <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
+                  <div className="rounded-xl p-6 shadow-sm"
+                    style={{ 
+                      background: getThemeValue('colors.background'),
+                      borderColor: getThemeValue('colors.border')
+                    }}
+                  >
+                    <h3 className="text-lg font-semibold mb-5 flex items-center"
+                      style={{ color: getThemeValue('colors.text.primary') }}
+                    >
+                      <div className="w-1 h-5 rounded-full mr-2"
+                        style={{ background: getThemeValue('colors.primary.main') }}
+                      ></div>
                       Code Examples
                     </h3>
                     <div className="space-y-4">
                       {codeExamples.map((example, index) => (
-                        <div key={index} className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+                        <div key={index} className="rounded-xl overflow-hidden shadow-sm">
                           <CodeExampleViewer example={example} />
                         </div>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm text-center">
-                    <h3 className="text-gray-800 text-lg font-semibold mb-3">No Code Examples Available</h3>
-                    <p className="text-gray-600">There are no code examples available for this item yet.</p>
+                  <div className="rounded-xl p-6 shadow-sm text-center"
+                    style={{ 
+                      background: getThemeValue('colors.background'),
+                      borderColor: getThemeValue('colors.border'),
+                      color: getThemeValue('colors.text.secondary')
+                    }}
+                  >
+                    No code examples are available for this item.
                   </div>
                 )}
               </div>
@@ -550,46 +561,69 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
             {/* Contact Tab */}
             {activeTab === 'Contact' && (
               <div className="space-y-6">
-                <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-                  <h3 className="text-gray-800 text-lg font-semibold mb-5 flex items-center">
-                    <div className={`w-1 h-5 ${getThemeValue('colors.primary.main')} rounded-full mr-2`}></div>
+                <div className="rounded-xl p-6 shadow-sm"
+                  style={{ 
+                    background: getThemeValue('colors.background'),
+                    borderColor: getThemeValue('colors.border')
+                  }}
+                >
+                  <h3 className="text-lg font-semibold mb-5 flex items-center"
+                    style={{ color: getThemeValue('colors.text.primary') }}
+                  >
+                    <div className="w-1 h-5 rounded-full mr-2"
+                      style={{ background: getThemeValue('colors.primary.main') }}
+                    ></div>
                     Contact Information
                   </h3>
                   
                   <div className="space-y-6">
-                    <p className="text-gray-700">
+                    <p style={{ color: getThemeValue('colors.text.secondary') }}>
                       For more information about {item.shortTitle}, please reach out to our team using the contact details below.
                     </p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className={`p-4 rounded-lg border ${getThemeValue('colors.border')} ${getThemeValue('colors.lightBg')}`}>
-                        <h4 className="flex items-center gap-2 text-gray-800 font-medium mb-3">
+                      <div className="p-4 rounded-lg border"
+                        style={{ 
+                          borderColor: getThemeValue('colors.border'),
+                          background: getThemeValue('colors.surfaceAlt')
+                        }}
+                      >
+                        <h4 className="flex items-center gap-2 font-medium mb-3"
+                          style={{ color: getThemeValue('colors.text.primary') }}
+                        >
                           <MessageSquare className="w-4 h-4" />
                           <span>Support Team</span>
                         </h4>
                         <div className="space-y-2">
-                          <div className="flex items-center text-gray-600">
+                          <div className="flex items-center" style={{ color: getThemeValue('colors.text.secondary') }}>
                             <Mail className="w-4 h-4 mr-2" />
                             <span>support@example.com</span>
                           </div>
-                          <div className="flex items-center text-gray-600">
+                          <div className="flex items-center" style={{ color: getThemeValue('colors.text.secondary') }}>
                             <Phone className="w-4 h-4 mr-2" />
                             <span>+1 (555) 123-4567</span>
                           </div>
                         </div>
                       </div>
                       
-                      <div className={`p-4 rounded-lg border ${getThemeValue('colors.border')} ${getThemeValue('colors.lightBg')}`}>
-                        <h4 className="flex items-center gap-2 text-gray-800 font-medium mb-3">
+                      <div className="p-4 rounded-lg border"
+                        style={{ 
+                          borderColor: getThemeValue('colors.border'),
+                          background: getThemeValue('colors.surfaceAlt')
+                        }}
+                      >
+                        <h4 className="flex items-center gap-2 font-medium mb-3"
+                          style={{ color: getThemeValue('colors.text.primary') }}
+                        >
                           <Bookmark className="w-4 h-4" />
                           <span>Documentation Team</span>
                         </h4>
                         <div className="space-y-2">
-                          <div className="flex items-center text-gray-600">
+                          <div className="flex items-center" style={{ color: getThemeValue('colors.text.secondary') }}>
                             <Mail className="w-4 h-4 mr-2" />
                             <span>docs@example.com</span>
                           </div>
-                          <div className="flex items-center text-gray-600">
+                          <div className="flex items-center" style={{ color: getThemeValue('colors.text.secondary') }}>
                             <Globe className="w-4 h-4 mr-2" />
                             <span>docs.example.com/support</span>
                           </div>
@@ -597,7 +631,19 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                       </div>
                     </div>
                     
-                    <button className={`mt-4 px-4 py-2 rounded-lg text-white ${getThemeValue('colors.primary.main')} hover:${getThemeValue('colors.primary.mainHover')} transition-all duration-200 shadow-sm hover:shadow-md flex items-center`}>
+                    <button 
+                      className="mt-4 px-4 py-2 rounded-lg text-white flex items-center shadow-sm hover:shadow-md transition-all duration-200"
+                      style={{ 
+                        background: getThemeValue('colors.gradients.button'),
+                        color: getThemeValue('colors.primary.contrast')
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = getThemeValue('colors.gradients.buttonHover');
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = getThemeValue('colors.gradients.button');
+                      }}
+                    >
                       <MessageSquare className="w-4 h-4 mr-2" />
                       <span>Request More Information</span>
                     </button>

@@ -8,6 +8,7 @@ import FilterBar from './FilterBar';
 import CardGrid from './CardGrid';
 import { toolkitItems as importedToolkitItems } from '../data/toolkitItems';
 import { useUser } from '../contexts/UserContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { ToolkitItem, DetailedCardItem, ExpandedCardItem, Filters } from '../types';
 
 export const Toolkit: React.FC = () => {
@@ -20,6 +21,7 @@ export const Toolkit: React.FC = () => {
 
   // Use the User context
   const { user, logout } = useUser();
+  const { getThemeValue } = useTheme();
 
   // Toolkit items - we keep setToolkitItems for future use even though it's not currently used
   const [toolkitItems] = useState<ToolkitItem[]>(importedToolkitItems || []);
@@ -152,11 +154,22 @@ export const Toolkit: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative" style={bgStyle}>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: getThemeValue('colors.background'),
+      position: 'relative',
+      ...bgStyle
+    }}>
       {/* Background pattern or image - using opacity for subtle effect */}
-      <div className="absolute inset-0 bg-black opacity-5 dark:opacity-10 z-0"></div>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundColor: '#000000',
+        opacity: getThemeValue('currentMode') === 'light' ? 0.05 : 0.1,
+        zIndex: 0
+      }}></div>
 
-      <div className="relative z-10">
+      <div style={{ position: 'relative', zIndex: 10 }}>
         {/* Header with profile and theme buttons */}
         <ToolkitHeader 
           user={user}
@@ -199,23 +212,18 @@ export const Toolkit: React.FC = () => {
           )
         )}
 
-        {/* Feedback Card */}
+        {/* Feedback popup */}
         {showFeedback && (
           <FeedbackCard
-            item={toolkitItems.length > 0 ? toolkitItems[0] : {
-              id: 'feedback',
-              theme: 'Delivery',
-              category: 'General',
-              shortTitle: 'Toolkit Feedback'
-            }}
             onClose={() => setShowFeedback(false)}
+            item={toolkitItems.find(item => item.id === currentItemId) as DetailedCardItem}
           />
         )}
 
-        {/* PDF Viewer Modal */}
+        {/* PDF Viewer */}
         {selectedPDF && (
-          <PDFViewer
-            url={selectedPDF.url}
+          <PDFViewer 
+            url={selectedPDF.url} 
             title={selectedPDF.title}
             onClose={handleClosePDF}
             onDownload={() => handleDownload(selectedPDF.url)}

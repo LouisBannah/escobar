@@ -115,6 +115,22 @@ const salesDark = {
       },
     },
     
+    // FilterBar component
+    filterBar: {
+      background: '#0f172a',
+      searchBackground: '#1e293b',
+      panelBackground: '#0f172a',
+      buttonBackground: '#1e293b',
+      activeButtonBackground: '#064e3b',
+      activeButtonText: '#34d399',
+      activeButtonBorder: '#065f46',
+      badgeBackground: '#10b981',
+      badgeText: '#f1f5f9',
+      dropdownBackground: '#0f172a',
+      dropdownButtonBackground: '#1e293b',
+      dropdownHoverBackground: '#1e293b',
+    },
+    
     // Base card
     baseCard: {
       background: '#0f172a',
@@ -358,6 +374,22 @@ const deliveryDark = {
       },
     },
     
+    // FilterBar component
+    filterBar: {
+      background: '#0f172a',
+      searchBackground: '#1e293b',
+      panelBackground: '#0f172a',
+      buttonBackground: '#1e293b',
+      activeButtonBackground: '#064e3b',
+      activeButtonText: '#34d399',
+      activeButtonBorder: '#065f46',
+      badgeBackground: '#10b981',
+      badgeText: '#f1f5f9',
+      dropdownBackground: '#0f172a',
+      dropdownButtonBackground: '#1e293b',
+      dropdownHoverBackground: '#1e293b',
+    },
+    
     // Base card (blue themed)
     baseCard: {
       background: '#0f172a',
@@ -599,6 +631,22 @@ const qaDark = {
         itemHover: '#1e293b',
         text: '#cbd5e1',
       },
+    },
+    
+    // FilterBar component
+    filterBar: {
+      background: '#0f172a',
+      searchBackground: '#1e293b',
+      panelBackground: '#0f172a',
+      buttonBackground: '#1e293b',
+      activeButtonBackground: '#064e3b',
+      activeButtonText: '#34d399',
+      activeButtonBorder: '#065f46',
+      badgeBackground: '#10b981',
+      badgeText: '#f1f5f9',
+      dropdownBackground: '#0f172a',
+      dropdownButtonBackground: '#1e293b',
+      dropdownHoverBackground: '#1e293b',
     },
     
     // Base card (purple themed)

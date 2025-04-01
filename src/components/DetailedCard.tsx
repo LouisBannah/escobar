@@ -201,30 +201,37 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
                   return (
                     <div 
                       key={index} 
-                      className="rounded-lg border shadow-sm transition-all duration-200"
-                      style={{
-                        background: getThemeValue('colors.background'),
-                        borderColor: getThemeValue('colors.border'),
-                      }}
+                      className="transition-all duration-200"
                     >
-                      <div className="flex items-center gap-3 p-3 transition-colors hover:bg-gray-50">
-                        <Icon className="w-5 h-5" style={{ 
-                          color: material.type in getThemeValue('components.cardComponents.materialsSection.icons') 
-                            ? getThemeValue(`components.cardComponents.materialsSection.icons.${material.type}`) 
-                            : getThemeValue('components.cardComponents.materialsSection.icons.default')
-                        }} />
-                        <span className="text-sm font-medium flex-grow" 
-                          style={{ color: getThemeValue('colors.text.primary') }}
-                        >{material.title}</span>
-                        <span className="text-xs px-2 py-1 rounded-md"
-                          style={{ 
-                            background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
-                            color: getThemeValue('components.cardComponents.materialsSection.badgeText')
-                          }}
-                        >
-                          {material.type.toUpperCase()}
-                        </span>
-                        <Lock className="w-4 h-4" style={{ color: getThemeValue('colors.text.tertiary') }} />
+                      <div 
+                        className="rounded-lg border"
+                        style={{
+                          background: getThemeValue('colors.surface'),
+                          borderColor: getThemeValue('colors.border'),
+                          boxShadow: getThemeValue('shared.boxShadow.sm')
+                        }}
+                      >
+                        <div className="flex items-center gap-3 p-3 transition-colors hover:bg-gray-50">
+                          <Icon style={{ 
+                            width: '1.25rem',
+                            height: '1.25rem',
+                            color: material.type.toLowerCase() in getThemeValue('components.cardComponents.materialsSection.icons')
+                              ? getThemeValue(`components.cardComponents.materialsSection.icons.${material.type.toLowerCase()}`)
+                              : getThemeValue('components.cardComponents.materialsSection.icons.default')
+                          }} />
+                          <span className="text-sm font-medium flex-grow" 
+                            style={{ color: getThemeValue('colors.text.primary') }}
+                          >{material.title}</span>
+                          <span className="text-xs px-2 py-1 rounded-md"
+                            style={{ 
+                              background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
+                              color: getThemeValue('components.cardComponents.materialsSection.badgeText')
+                            }}
+                          >
+                            {material.type.toUpperCase()}
+                          </span>
+                          <Lock className="w-4 h-4" style={{ color: getThemeValue('colors.text.tertiary') }} />
+                        </div>
                       </div>
                     </div>
                   );
