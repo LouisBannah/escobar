@@ -22,7 +22,7 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const { setUser } = useUser();
-  const { getThemeValue, setThemeCategory } = useTheme();
+  const { getThemeValue, setThemeCategory, getThemeSpecificValue } = useTheme();
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
   // Effect to handle clicks outside the dropdown
@@ -69,67 +69,150 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <h1 className="text-3xl tracking-tight font-['Open_Sans']">
-              <span style={{ fontWeight: 'bold', color: getThemeValue('colors.primary.main') }}>Converge</span>
+              <span style={{ fontWeight: 'bold', color: getThemeValue('colors.brand.primary') }}>Converge</span>
               <span style={{ fontWeight: 'light', color: getThemeValue('colors.text.primary') }}>Toolkit</span>
             </h1>
           </div>
 
           {/* Theme Filter Buttons - Centered */}
           <div className="absolute left-1/2 transform -translate-x-1/2 flex space-x-4">
-            {(['Sales', 'Delivery', 'Quality Assurance'] as const).map((theme) => {
-              // Temporarily set the theme category to get the correct styles
-              const isActive = activeThemeFilters.includes(theme);
-              
-              // Get the correct theme button styling based on active state
-              const buttonStyle = isActive
-                ? {
-                    background: getThemeValue('colors.gradients.button'),
-                    color: getThemeValue('colors.primary.contrast'),
-                    boxShadow: getThemeValue('shared.boxShadow.md'),
-                    border: 'none',
-                    transform: 'scale(1.05)'
-                  }
-                : {
-                    background: 'transparent',
-                    color: getThemeValue('components.header.themeButton.normal.text'),
-                    border: `1px solid ${getThemeValue('components.header.themeButton.normal.border')}`,
-                    boxShadow: getThemeValue('shared.boxShadow.sm')
-                  };
-              
-              return (
-                <button
-                  key={theme}
-                  onClick={() => {
-                    setThemeCategory(theme);
-                    onThemeFilterChange(theme);
-                  }}
-                  className="px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden"
-                  style={buttonStyle}
-                  onMouseOver={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = getThemeValue('components.header.themeButton.hover.bg');
-                      e.currentTarget.style.color = getThemeValue('components.header.themeButton.hover.text');
-                      e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.hover.border');
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.color = getThemeValue('components.header.themeButton.normal.text');
-                      e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.normal.border');
-                    }
-                  }}
-                >
-                  {isActive && (
-                    <>
-                      <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
-                      <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
-                    </>
-                  )}
-                  <span className="relative z-10 font-semibold">{theme}</span>
-                </button>
-              );
-            })}
+            {/* Sales Button */}
+            <button
+              onClick={() => {
+                setThemeCategory('Sales');
+                onThemeFilterChange('Sales');
+              }}
+              className="px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden"
+              style={{
+                background: activeThemeFilters.includes('Sales') 
+                  ? getThemeSpecificValue('Sales', 'colors.themeSpecific.sales.gradient')
+                  : 'transparent',
+                color: activeThemeFilters.includes('Sales')
+                  ? '#ffffff' 
+                  : getThemeValue('colors.text.secondary'),
+                border: activeThemeFilters.includes('Sales')
+                  ? 'none'
+                  : `1px solid ${getThemeValue('components.header.themeButton.normal.border')}`,
+                boxShadow: activeThemeFilters.includes('Sales')
+                  ? getThemeValue('shared.boxShadow.md')
+                  : getThemeValue('shared.boxShadow.sm'),
+                transform: activeThemeFilters.includes('Sales') ? 'scale(1.05)' : 'none'
+              }}
+              onMouseOver={(e) => {
+                if (!activeThemeFilters.includes('Sales')) {
+                  e.currentTarget.style.background = getThemeValue('components.header.themeButton.hover.bg');
+                  e.currentTarget.style.color = getThemeSpecificValue('Sales', 'colors.themeSpecific.sales.label.text');
+                  e.currentTarget.style.borderColor = getThemeSpecificValue('Sales', 'colors.themeSpecific.sales.light');
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!activeThemeFilters.includes('Sales')) {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = getThemeValue('components.header.themeButton.normal.text');
+                  e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.normal.border');
+                }
+              }}
+            >
+              {activeThemeFilters.includes('Sales') && (
+                <>
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
+                  <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
+                </>
+              )}
+              <span className="relative z-10 font-semibold">Sales</span>
+            </button>
+
+            {/* Delivery Button */}
+            <button
+              onClick={() => {
+                setThemeCategory('Delivery');
+                onThemeFilterChange('Delivery');
+              }}
+              className="px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden"
+              style={{
+                background: activeThemeFilters.includes('Delivery') 
+                  ? getThemeSpecificValue('Delivery', 'colors.themeSpecific.delivery.gradient')
+                  : 'transparent',
+                color: activeThemeFilters.includes('Delivery')
+                  ? '#ffffff' 
+                  : getThemeValue('colors.text.secondary'),
+                border: activeThemeFilters.includes('Delivery')
+                  ? 'none'
+                  : `1px solid ${getThemeValue('components.header.themeButton.normal.border')}`,
+                boxShadow: activeThemeFilters.includes('Delivery')
+                  ? getThemeValue('shared.boxShadow.md')
+                  : getThemeValue('shared.boxShadow.sm'),
+                transform: activeThemeFilters.includes('Delivery') ? 'scale(1.05)' : 'none'
+              }}
+              onMouseOver={(e) => {
+                if (!activeThemeFilters.includes('Delivery')) {
+                  e.currentTarget.style.background = getThemeValue('components.header.themeButton.hover.bg');
+                  e.currentTarget.style.color = getThemeSpecificValue('Delivery', 'colors.themeSpecific.delivery.label.text');
+                  e.currentTarget.style.borderColor = getThemeSpecificValue('Delivery', 'colors.themeSpecific.delivery.light');
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!activeThemeFilters.includes('Delivery')) {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = getThemeValue('components.header.themeButton.normal.text');
+                  e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.normal.border');
+                }
+              }}
+            >
+              {activeThemeFilters.includes('Delivery') && (
+                <>
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
+                  <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
+                </>
+              )}
+              <span className="relative z-10 font-semibold">Delivery</span>
+            </button>
+
+            {/* Quality Assurance Button */}
+            <button
+              onClick={() => {
+                setThemeCategory('Quality Assurance');
+                onThemeFilterChange('Quality Assurance');
+              }}
+              className="px-6 py-2 rounded-lg transition-all duration-300 font-medium relative overflow-hidden"
+              style={{
+                background: activeThemeFilters.includes('Quality Assurance') 
+                  ? getThemeSpecificValue('Quality Assurance', 'colors.themeSpecific.qa.gradient')
+                  : 'transparent',
+                color: activeThemeFilters.includes('Quality Assurance')
+                  ? '#ffffff' 
+                  : getThemeValue('colors.text.secondary'),
+                border: activeThemeFilters.includes('Quality Assurance')
+                  ? 'none'
+                  : `1px solid ${getThemeValue('components.header.themeButton.normal.border')}`,
+                boxShadow: activeThemeFilters.includes('Quality Assurance')
+                  ? getThemeValue('shared.boxShadow.md')
+                  : getThemeValue('shared.boxShadow.sm'),
+                transform: activeThemeFilters.includes('Quality Assurance') ? 'scale(1.05)' : 'none'
+              }}
+              onMouseOver={(e) => {
+                if (!activeThemeFilters.includes('Quality Assurance')) {
+                  e.currentTarget.style.background = getThemeValue('components.header.themeButton.hover.bg');
+                  e.currentTarget.style.color = getThemeSpecificValue('Quality Assurance', 'colors.themeSpecific.qa.label.text');
+                  e.currentTarget.style.borderColor = getThemeSpecificValue('Quality Assurance', 'colors.themeSpecific.qa.light');
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!activeThemeFilters.includes('Quality Assurance')) {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = getThemeValue('components.header.themeButton.normal.text');
+                  e.currentTarget.style.borderColor = getThemeValue('components.header.themeButton.normal.border');
+                }
+              }}
+            >
+              {activeThemeFilters.includes('Quality Assurance') && (
+                <>
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-b from-white/30 to-transparent top-0 left-0" style={{ height: '50%' }}></span>
+                  <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></span>
+                </>
+              )}
+              <span className="relative z-10 font-semibold">Quality Assurance</span>
+            </button>
           </div>
 
           {/* Right side navigation items */}
@@ -177,8 +260,8 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
                   >
                     <div className="h-8 w-8 rounded-full flex items-center justify-center"
                       style={{ 
-                        background: getThemeValue('colors.primary.light'),
-                        color: getThemeValue('colors.primary.main')
+                        background: getThemeValue('colors.brand.avatar'),
+                        color: getThemeValue('colors.brand.primary')
                       }}
                     >
                       {user.avatar ? (
@@ -219,8 +302,8 @@ const ToolkitHeader: React.FC<ToolkitHeaderProps> = ({
                       <div className="mt-2">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                           style={{ 
-                            background: getThemeValue('colors.primary.light'),
-                            color: getThemeValue('colors.primary.main')
+                            background: getThemeValue('colors.brand.avatar'),
+                            color: getThemeValue('colors.brand.primary')
                           }}
                         >
                           Level {user?.accessLevel} Access

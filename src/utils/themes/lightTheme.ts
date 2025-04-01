@@ -16,6 +16,49 @@ const lightBase = {
       tertiary: '#6b7280',
       inverted: '#ffffff',
     },
+    // Brand colors that stay consistent regardless of theme
+    brand: {
+      primary: '#10b981', // Emerald for Converge logo
+      secondary: '#14b8a6', // Teal for accents
+      badge: '#10b981',
+      avatar: '#5eead4'
+    },
+    // Theme-specific colors that remain consistent regardless of active theme
+    themeSpecific: {
+      sales: {
+        primary: '#10b981',       // Emerald
+        secondary: '#14b8a6',     // Teal
+        gradient: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
+        light: '#5eead4',
+        dark: '#047857',
+        label: {
+          bg: '#ecfdf5',
+          text: '#059669',
+        }
+      },
+      delivery: {
+        primary: '#3b82f6',       // Blue
+        secondary: '#60a5fa',     // Light blue
+        gradient: 'linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)',
+        light: '#93c5fd',
+        dark: '#1d4ed8',
+        label: {
+          bg: '#eff6ff',
+          text: '#2563eb',
+        }
+      },
+      qa: {
+        primary: '#a855f7',       // Purple
+        secondary: '#c084fc',     // Light purple
+        gradient: 'linear-gradient(90deg, #a855f7 0%, #c084fc 100%)',
+        light: '#d8b4fe',
+        dark: '#7e22ce',
+        label: {
+          bg: '#faf5ff',
+          text: '#9333ea',
+        }
+      }
+    }
   },
 };
 
@@ -121,11 +164,7 @@ const salesLight = {
       searchBackground: '#ffffff',
       panelBackground: '#f9fafb',
       buttonBackground: '#ffffff',
-      activeButtonBackground: '#ecfdf5',
-      activeButtonText: '#059669',
-      activeButtonBorder: '#a7f3d0',
-      badgeBackground: '#10b981',
-      badgeText: '#ffffff',
+      activeButtonBackground: '#f0fdf4',
       dropdownBackground: '#ffffff',
       dropdownButtonBackground: '#ffffff',
       dropdownHoverBackground: '#f9fafb',
@@ -380,11 +419,7 @@ const deliveryLight = {
       searchBackground: '#ffffff',
       panelBackground: '#f9fafb',
       buttonBackground: '#ffffff',
-      activeButtonBackground: '#eff6ff',
-      activeButtonText: '#2563eb',
-      activeButtonBorder: '#bfdbfe',
-      badgeBackground: '#3b82f6',
-      badgeText: '#ffffff',
+      activeButtonBackground: '#f0fdf4',
       dropdownBackground: '#ffffff',
       dropdownButtonBackground: '#ffffff',
       dropdownHoverBackground: '#f9fafb',
@@ -639,11 +674,7 @@ const qaLight = {
       searchBackground: '#ffffff',
       panelBackground: '#f9fafb',
       buttonBackground: '#ffffff',
-      activeButtonBackground: '#faf5ff',
-      activeButtonText: '#9333ea',
-      activeButtonBorder: '#e9d5ff',
-      badgeBackground: '#a855f7',
-      badgeText: '#ffffff',
+      activeButtonBackground: '#f0fdf4',
       dropdownBackground: '#ffffff',
       dropdownButtonBackground: '#ffffff',
       dropdownHoverBackground: '#f9fafb',

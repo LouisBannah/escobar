@@ -16,6 +16,49 @@ const darkBase = {
       tertiary: '#94a3b8',
       inverted: '#0f172a',
     },
+    // Brand colors that stay consistent regardless of theme
+    brand: {
+      primary: '#10b981', // Emerald for Converge logo
+      secondary: '#14b8a6', // Teal for accents
+      badge: '#34d399',
+      avatar: '#065f46'
+    },
+    // Theme-specific colors that remain consistent regardless of active theme
+    themeSpecific: {
+      sales: {
+        primary: '#10b981',       // Emerald
+        secondary: '#14b8a6',     // Teal
+        gradient: 'linear-gradient(90deg, #10b981 0%, #14b8a6 100%)',
+        light: '#34d399',
+        dark: '#059669',
+        label: {
+          bg: '#064e3b',
+          text: '#34d399',
+        }
+      },
+      delivery: {
+        primary: '#3b82f6',       // Blue
+        secondary: '#60a5fa',     // Light blue
+        gradient: 'linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)',
+        light: '#60a5fa',
+        dark: '#2563eb',
+        label: {
+          bg: '#1e40af',
+          text: '#60a5fa',
+        }
+      },
+      qa: {
+        primary: '#a855f7',       // Purple
+        secondary: '#c084fc',     // Light purple
+        gradient: 'linear-gradient(90deg, #a855f7 0%, #c084fc 100%)',
+        light: '#c084fc',
+        dark: '#9333ea',
+        label: {
+          bg: '#6b21a8',
+          text: '#c084fc',
+        }
+      }
+    }
   },
 };
 
@@ -122,10 +165,6 @@ const salesDark = {
       panelBackground: '#0f172a',
       buttonBackground: '#1e293b',
       activeButtonBackground: '#064e3b',
-      activeButtonText: '#34d399',
-      activeButtonBorder: '#065f46',
-      badgeBackground: '#10b981',
-      badgeText: '#f1f5f9',
       dropdownBackground: '#0f172a',
       dropdownButtonBackground: '#1e293b',
       dropdownHoverBackground: '#1e293b',
@@ -381,10 +420,6 @@ const deliveryDark = {
       panelBackground: '#0f172a',
       buttonBackground: '#1e293b',
       activeButtonBackground: '#064e3b',
-      activeButtonText: '#34d399',
-      activeButtonBorder: '#065f46',
-      badgeBackground: '#10b981',
-      badgeText: '#f1f5f9',
       dropdownBackground: '#0f172a',
       dropdownButtonBackground: '#1e293b',
       dropdownHoverBackground: '#1e293b',
@@ -640,10 +675,6 @@ const qaDark = {
       panelBackground: '#0f172a',
       buttonBackground: '#1e293b',
       activeButtonBackground: '#064e3b',
-      activeButtonText: '#34d399',
-      activeButtonBorder: '#065f46',
-      badgeBackground: '#10b981',
-      badgeText: '#f1f5f9',
       dropdownBackground: '#0f172a',
       dropdownButtonBackground: '#1e293b',
       dropdownHoverBackground: '#1e293b',

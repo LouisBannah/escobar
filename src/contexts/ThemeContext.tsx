@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getTheme, applyCSSVariables, ThemeType } from '../utils/themeUtils';
+import { getTheme, getThemeSpecificValue as getSpecificTheme, applyCSSVariables, ThemeType } from '../utils/themeUtils';
 
 type ThemeMode = 'light' | 'dark';
 
@@ -10,6 +10,7 @@ interface ThemeContextType {
   toggleTheme: () => void;
   setThemeCategory: (category: ThemeType) => void;
   getThemeValue: (path: string) => any;
+  getThemeSpecificValue: (themeName: ThemeType, path: string) => any;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -74,6 +75,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return getTheme(theme, currentThemeCategory, path);
   };
 
+  // Helper function to get a value for a specific theme category regardless of active theme
+  const getThemeSpecificValue = (themeName: ThemeType, path: string) => {
+    return getSpecificTheme(theme, themeName, path);
+  };
+
   return (
     <ThemeContext.Provider value={{ 
       theme, 
@@ -81,7 +87,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       currentThemeCategory,
       toggleTheme, 
       setThemeCategory,
-      getThemeValue
+      getThemeValue,
+      getThemeSpecificValue
     }}>
       {children}
     </ThemeContext.Provider>

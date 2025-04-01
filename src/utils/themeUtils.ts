@@ -243,4 +243,26 @@ export const applyCSSVariables = (mode: 'light' | 'dark', themeName: string) => 
   // Also set a theme and mode identifier CSS variables
   document.documentElement.style.setProperty('--theme', themeName);
   document.documentElement.style.setProperty('--mode', mode);
+};
+
+/**
+ * Get a theme value for a specific theme category regardless of the active theme
+ * Useful for theme-specific elements that should maintain their identity
+ * @param mode Light or dark mode
+ * @param themeName Theme name to get values for (Sales, Delivery, Quality Assurance)
+ * @param path Path to get a specific value from the theme
+ * @returns The specific theme value
+ */
+export const getThemeSpecificValue = (mode: 'light' | 'dark', themeName: string, path: string) => {
+  const themes = mode === 'light' ? lightThemes : darkThemes;
+  // Normalize theme name to match object keys
+  const normalizedThemeName = themeName.toLowerCase().replace(/\s+/g, '');
+  
+  // Get the full theme object
+  const themeObj = {
+    ...shared,
+    ...(themes[normalizedThemeName as keyof typeof themes] || themes.sales)
+  };
+  
+  return get(themeObj, path);
 }; 

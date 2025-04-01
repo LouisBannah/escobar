@@ -170,12 +170,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
               background: showFiltersPanel || activeFiltersCount > 0 
                 ? getThemeValue('components.filterBar.activeButtonBackground')
                 : getThemeValue('components.filterBar.buttonBackground'),
-              color: showFiltersPanel || activeFiltersCount > 0
-                ? getThemeValue('components.filterBar.activeButtonText')
-                : getThemeValue('colors.text.primary'),
-              borderColor: showFiltersPanel || activeFiltersCount > 0
-                ? getThemeValue('components.filterBar.activeButtonBorder')
-                : getThemeValue('colors.border'),
+              color: getThemeValue('colors.brand.primary'),
+              borderColor: getThemeValue('colors.brand.primary'),
+              borderWidth: (showFiltersPanel || activeFiltersCount > 0) ? '1px' : '1px',
             }}
             className="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium focus:outline-none whitespace-nowrap"
           >
@@ -184,8 +181,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
             {activeFiltersCount > 0 && (
               <span 
                 style={{
-                  background: getThemeValue('components.filterBar.badgeBackground'),
-                  color: getThemeValue('components.filterBar.badgeText'),
+                  background: getThemeValue('colors.brand.badge'),
+                  color: getThemeValue('colors.text.inverted'),
                 }}
                 className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none rounded-full"
               >
@@ -375,33 +372,57 @@ const FilterBar: React.FC<FilterBarProps> = ({
               {activeFiltersCount > 0 && (
                 <div className="mt-4 flex flex-wrap gap-2">
                   {selectedFilters.themes.map(theme => (
-                    <span key={theme} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:bg-opacity-40 dark:text-emerald-300">
+                    <span 
+                      key={theme} 
+                      style={{
+                        backgroundColor: getThemeValue('colors.brand.avatar'),
+                        color: getThemeValue('colors.brand.primary')
+                      }}
+                      className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                    >
                       {theme}
                       <button
                         onClick={() => onFilterChange('themes', theme)}
-                        className="ml-1 text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200"
+                        style={{ color: getThemeValue('colors.brand.primary') }}
+                        className="ml-1 hover:opacity-80"
                       >
                         <X className="h-3 w-3" />
                       </button>
                     </span>
                   ))}
                   {selectedFilters.categories.map(category => (
-                    <span key={category} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:bg-opacity-40 dark:text-blue-300">
+                    <span 
+                      key={category} 
+                      style={{
+                        backgroundColor: getThemeValue('colors.brand.avatar'),
+                        color: getThemeValue('colors.brand.primary')
+                      }}
+                      className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                    >
                       {category}
                       <button
                         onClick={() => onFilterChange('categories', category)}
-                        className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+                        style={{ color: getThemeValue('colors.brand.primary') }}
+                        className="ml-1 hover:opacity-80"
                       >
                         <X className="h-3 w-3" />
                       </button>
                     </span>
                   ))}
                   {selectedFilters.materialTypes.map(type => (
-                    <span key={type} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900 dark:bg-opacity-40 dark:text-purple-300">
+                    <span 
+                      key={type} 
+                      style={{
+                        backgroundColor: getThemeValue('colors.brand.avatar'),
+                        color: getThemeValue('colors.brand.primary')
+                      }}
+                      className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                    >
                       {type.toUpperCase()}
                       <button
                         onClick={() => onFilterChange('materialTypes', type)}
-                        className="ml-1 text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-200"
+                        style={{ color: getThemeValue('colors.brand.primary') }}
+                        className="ml-1 hover:opacity-80"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -414,7 +435,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 <div className="mt-4 pt-4 border-t flex justify-end">
                   <button
                     onClick={onClearFilters}
-                    className="text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                    style={{ color: getThemeValue('colors.brand.primary') }}
+                    className="text-sm hover:opacity-80"
                   >
                     Clear all filters
                   </button>
