@@ -11,16 +11,11 @@ const LoginScreen: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!email.trim()) {
-      return;
-    }
-    
     setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
-      login(email);
+      login(email || 'demo@example.com');
       setIsLoading(false);
     }, 800);
   };
@@ -71,7 +66,6 @@ const LoginScreen: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
                 placeholder="you@example.com"
-                required
               />
             </div>
             

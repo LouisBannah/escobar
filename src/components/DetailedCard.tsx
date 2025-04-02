@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { X, FileText, Archive, Table, Presentation, Code, Globe, Lock } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, FileText, Archive, Table, Presentation, Code, Globe, Lock, Shield } from 'lucide-react';
 import { showSubmissionNotice } from './SubmissionPopup';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface DetailedCardProps {
   item: {
@@ -23,6 +24,46 @@ interface DetailedCardProps {
 }
 
 const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAccess }) => {
+  const { isDarkMode, getThemeValue, setThemeCategory } = useTheme();
+  
+  // Refs for header height calculation
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  
+  // Update header height on resize
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+    
+    // Set initial height
+    updateHeaderHeight();
+    
+    // Add resize listener
+    window.addEventListener('resize', updateHeaderHeight);
+    return () => window.removeEventListener('resize', updateHeaderHeight);
+  }, []);
+
+  // Set the theme category based on the item's theme
+  useEffect(() => {
+    // For QA theme, we need to map "Quality Assurance" to "qualityAssurance"
+    if (item.theme === 'Quality Assurance') {
+      setThemeCategory('Quality Assurance');
+    } else {
+      setThemeCategory(item.theme);
+    }
+  }, [item.theme, setThemeCategory]);
+
+  // Prevent scrolling of the background when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+  
   const handleRequestAccess = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -42,164 +83,230 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
     }
   };
 
-  const getThemeColors = (theme: string) => {
-    switch (theme) {
-      case 'Sales':
-        return {
-          light: 'bg-gradient-to-r from-emerald-100/70 to-teal-200/70 backdrop-blur-sm',
-          lighter: 'bg-gradient-to-r from-emerald-50/40 to-teal-50/40 backdrop-blur-sm',
-          medium: 'bg-emerald-200',
-          text: 'text-emerald-800',
-          border: 'border-emerald-200',
-          button: 'bg-emerald-600 hover:bg-emerald-700',
-          success: 'bg-emerald-50',
-          banner: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-400'
-        };
-      case 'Delivery':
-        return {
-          light: 'bg-gradient-to-r from-blue-100/70 to-indigo-200/70 backdrop-blur-sm',
-          lighter: 'bg-gradient-to-r from-blue-50/40 to-indigo-50/40 backdrop-blur-sm',
-          medium: 'bg-blue-200',
-          text: 'text-blue-800',
-          border: 'border-blue-200',
-          button: 'bg-blue-600 hover:bg-blue-700',
-          success: 'bg-blue-50',
-          banner: 'bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-400'
-        };
-      default: // Quality Assurance
-        return {
-          light: 'bg-gradient-to-r from-purple-100/70 to-fuchsia-200/70 backdrop-blur-sm',
-          lighter: 'bg-gradient-to-r from-purple-50/40 to-fuchsia-50/40 backdrop-blur-sm',
-          medium: 'bg-purple-200',
-          text: 'text-purple-800',
-          border: 'border-purple-200',
-          button: 'bg-purple-600 hover:bg-purple-700',
-          success: 'bg-purple-50',
-          banner: 'bg-gradient-to-r from-purple-400 via-fuchsia-500 to-purple-400'
-        };
-    }
-  };
-
-  const colors = getThemeColors(item.theme);
-
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto backdrop-blur-sm bg-black/30">
-      <div className="min-h-screen px-4 text-center">
-        <div className="fixed inset-0" onClick={onClose} />
-        <div className="inline-block w-full max-w-3xl my-8 text-left align-middle transition-all transform">
-          <div className={`rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/90 relative z-[51] border ${colors.border}`}>
-            {/* Gradient Banner */}
-            <div className={`h-4 ${colors.banner}`} />
-            
-            {/* Header */}
-            <div className={`p-6 ${colors.light} border-b ${colors.border}`}>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-semibold text-gray-900">{item.shortTitle}</h2>
-                  <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                      ${colors.medium} ${colors.text}`}>
-                      {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
-                    </span>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                      bg-gray-100 text-gray-700 shadow-sm border border-gray-200">
-                      {item.category}
-                    </span>
-                  </div>
+    <div className="fixed inset-0 z-50 backdrop-blur-md bg-black/30 flex items-center justify-center">
+      <div className="relative w-full max-w-3xl max-h-[calc(100vh-40px)] flex flex-col bg-white rounded-xl shadow-2xl overflow-hidden">
+        {/* Floating Header - Always visible */}
+        <div 
+          ref={headerRef}
+          className="sticky top-0 z-10 border-b"
+          style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
+        >
+          {/* Gradient Banner */}
+          <div className="h-2" style={{ background: getThemeValue('colors.gradients.banner') }} />
+          
+          {/* Main Header */}
+          <div className="p-6" style={{ background: getThemeValue('colors.gradients.header') }}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <h2 className="text-xl font-semibold" style={{ color: getThemeValue('colors.text.primary') }}>{item.shortTitle}</h2>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" 
+                    style={{ 
+                      background: getThemeValue('components.baseCard.themeLabel.bg'),
+                      color: getThemeValue('components.baseCard.themeLabel.text')
+                    }}>
+                    {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border" 
+                    style={{ 
+                      background: getThemeValue('components.baseCard.categoryLabel.bg'),
+                      color: getThemeValue('components.baseCard.categoryLabel.text'),
+                      borderColor: getThemeValue('colors.border')
+                    }}>
+                    {item.category}
+                  </span>
                 </div>
-                <button
-                  onClick={onClose}
-                  className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              </div>
+              <button
+                onClick={onClose}
+                className="transition-colors duration-200 rounded-full p-1"
+                style={{ 
+                  color: getThemeValue('components.cardComponents.header.closeButtonColor'),
+                  background: getThemeValue('components.cardComponents.header.closeButtonBg'),
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.color = getThemeValue('components.cardComponents.header.closeButtonColorHover');
+                  e.currentTarget.style.background = getThemeValue('components.cardComponents.header.closeButtonBgHover');
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.color = getThemeValue('components.cardComponents.header.closeButtonColor');
+                  e.currentTarget.style.background = getThemeValue('components.cardComponents.header.closeButtonBg');
+                }}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Scrollable Content */}
+        <div 
+          className="flex-1 overflow-y-scroll" 
+          style={{ 
+            height: `calc(100vh - 40px - ${headerHeight}px - 56px)`, // 56px is the footer height
+            scrollbarGutter: 'stable',
+            scrollbarWidth: 'thin',
+            background: getThemeValue('colors.surface'),
+            color: getThemeValue('colors.text.primary'),
+          }}
+        >
+          <div className="p-6" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
+            {/* Description */}
+            <div className="space-y-6">
+              <p className="text-lg leading-relaxed" style={{ color: getThemeValue('colors.text.secondary') }}>
+                {item.shortDescription}
+              </p>
+              
+              {/* Tags Section */}
+              <div className="flex flex-wrap gap-2">
+                {item.availableTags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium border hover:opacity-90 transition-colors"
+                    style={{ 
+                      background: getThemeValue('components.baseCard.tags.bg'),
+                      color: getThemeValue('components.baseCard.tags.text'),
+                      borderColor: getThemeValue('components.baseCard.tags.border')
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
 
-            <div className="p-6 space-y-6">
-              {/* Description */}
-              <div className="space-y-6">
-                <p className="text-gray-600 text-lg leading-relaxed">{item.shortDescription}</p>
-                
-                {/* Tags Section */}
-                <div className="flex flex-wrap gap-2">
-                  {item.availableTags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Materials Section */}
-              <div className={`rounded-xl p-6 ${colors.lighter} border ${colors.border}`}>
-                <h3 className="text-gray-900 font-medium mb-4">Available Materials</h3>
-                <div className="space-y-3">
-                  {item.materials.map((material, index) => (
+            {/* Materials Section */}
+            <div className="mt-6 rounded-xl p-6 shadow-sm"
+              style={{ 
+                background: getThemeValue('colors.background'),
+                borderColor: getThemeValue('colors.border')
+              }}
+            >
+              <h3 className="text-lg font-semibold mb-5 flex items-center"
+                style={{ color: getThemeValue('colors.text.primary') }}
+              >
+                <div className="w-1 h-5 rounded-full mr-2"
+                  style={{ background: getThemeValue('colors.primary.main') }}
+                ></div>
+                Available Materials
+              </h3>
+              <div className="space-y-3">
+                {item.materials.map((material, index) => {
+                  const Icon = 
+                    material.type === 'pdf' ? FileText : 
+                    material.type === 'zip' ? Archive :
+                    material.type === 'xls' ? Table :
+                    material.type === 'docx' ? FileText :
+                    material.type === 'ppt' ? Presentation :
+                    material.type === 'yaml' ? Code :
+                    material.type === 'json' ? Code : 
+                    Globe;
+                    
+                  return (
                     <div 
                       key={index} 
-                      className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-gray-100 hover:bg-white/95 transition-colors"
+                      className="transition-all duration-200"
                     >
-                      {material.type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
-                      {material.type === 'zip' && <Archive className="w-5 h-5 text-yellow-500" />}
-                      {material.type === 'xls' && <Table className="w-5 h-5 text-green-500" />}
-                      {material.type === 'docx' && <FileText className="w-5 h-5 text-blue-500" />}
-                      {material.type === 'ppt' && <Presentation className="w-5 h-5 text-orange-500" />}
-                      {material.type === 'yaml' && <Code className="w-5 h-5 text-purple-500" />}
-                      {material.type === 'json' && <Code className="w-5 h-5 text-gray-500" />}
-                      {material.type === 'html' && <Globe className="w-5 h-5 text-blue-400" />}
-                      <span className="text-sm text-gray-900 font-medium flex-grow">{material.title}</span>
-                      <span className="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
-                        {material.type.toUpperCase()}
-                      </span>
-                      <Lock className="w-4 h-4 text-gray-400" />
+                      <div 
+                        className="rounded-lg border"
+                        style={{
+                          background: getThemeValue('colors.surface'),
+                          borderColor: getThemeValue('colors.border'),
+                          boxShadow: getThemeValue('shared.boxShadow.sm')
+                        }}
+                      >
+                        <div className="flex items-center gap-3 p-3 transition-colors hover:bg-gray-50">
+                          <Icon style={{ 
+                            width: '1.25rem',
+                            height: '1.25rem',
+                            color: material.type.toLowerCase() in getThemeValue('components.cardComponents.materialsSection.icons')
+                              ? getThemeValue(`components.cardComponents.materialsSection.icons.${material.type.toLowerCase()}`)
+                              : getThemeValue('components.cardComponents.materialsSection.icons.default')
+                          }} />
+                          <span className="text-sm font-medium flex-grow" 
+                            style={{ color: getThemeValue('colors.text.primary') }}
+                          >{material.title}</span>
+                          <span className="text-xs px-2 py-1 rounded-md"
+                            style={{ 
+                              background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
+                              color: getThemeValue('components.cardComponents.materialsSection.badgeText')
+                            }}
+                          >
+                            {material.type.toUpperCase()}
+                          </span>
+                          <Lock className="w-4 h-4" style={{ color: getThemeValue('colors.text.tertiary') }} />
+                        </div>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
+            </div>
 
-              {/* Access Restricted Notice */}
-              <div className="rounded-xl p-6 bg-amber-50/50 border border-amber-200/70 backdrop-blur-sm relative overflow-hidden group hover:shadow-md transition-all duration-300">
-                <div className="relative flex items-start gap-4">
-                  <Lock className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
+            {/* Access Restricted Notice */}
+            <div className="mt-6 rounded-xl overflow-hidden shadow-sm relative">
+              <div className="absolute inset-0 backdrop-blur-sm rounded-xl" 
+                style={{ 
+                  background: `${getThemeValue('colors.primary.light')}40`,
+                  opacity: 0.4
+                }}
+              ></div>
+              <div className="relative p-6 border rounded-xl"
+                style={{ borderColor: getThemeValue('colors.border') }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{ background: getThemeValue('colors.gradients.button') }}
+                  >
+                    <Shield className="w-5 h-5" style={{ color: getThemeValue('colors.primary.contrast') }} />
+                  </div>
                   <div className="flex-grow">
-                    <h3 className="text-lg font-medium text-amber-800 mb-2">
+                    <h3 className="text-lg font-semibold mb-2" 
+                      style={{ color: getThemeValue('components.detailedCard.accessSection.headingText') }}
+                    >
                       Access Restricted
                     </h3>
-                    <p className="text-amber-700 mb-4">
-                      You currently have Level 1 access which provides limited information.
-                      To view comprehensive details, documentation, and download materials,
-                      please request Level 2 access.
+                    <p className="text-gray-600 mb-4" 
+                      style={{ color: getThemeValue('components.detailedCard.accessSection.bodyText') }}
+                    >
+                      This content is restricted. Please request access to view the full details and download materials.
                     </p>
                     <button
                       onClick={handleRequestAccess}
-                      className={`px-4 py-2 ${colors.button} text-white rounded-lg shadow-sm hover:shadow-md 
-                        transition-all duration-200 flex items-center text-sm font-medium relative z-[52]`}
+                      className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
+                      style={{ 
+                        background: getThemeValue('colors.gradients.button'),
+                        color: getThemeValue('colors.primary.contrast'),
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = getThemeValue('colors.gradients.buttonHover');
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = getThemeValue('colors.gradients.button');
+                      }}
                     >
                       Request Access
                     </button>
                   </div>
                 </div>
               </div>
-              
-              {/* Footer with Last Updated and Version Information */}
-              <div className="border-t border-gray-200 mt-6 pt-4 px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
-                <div>
-                  Last updated: <span className="font-bold">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
-                    day: '2-digit', 
-                    month: '2-digit', 
-                    year: 'numeric' 
-                  })}</span>
-                </div>
-                <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                  bg-white shadow-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
-                  Version {item.version}
-                </div>
-              </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Footer */}
+        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500 h-[56px]">
+          <div>
+            Last updated: <span className="font-medium">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
+              day: '2-digit', 
+              month: '2-digit', 
+              year: 'numeric' 
+            })}</span>
+          </div>
+          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+            bg-white shadow-sm border border-gray-200 text-gray-700">
+            Version {item.version}
           </div>
         </div>
       </div>
