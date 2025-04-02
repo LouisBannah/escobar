@@ -36,9 +36,9 @@
 /* Dark mode variables */
 .dark {
   /* Background colors */
-  --background-primary: #1e1e1e;
-  --background-secondary: #1f2937;
-  --background-tertiary: #374151;
+  --background-primary: #1e293b;
+  --background-secondary: #0f172a;
+  --background-tertiary: #1e293b;
   
   /* Text colors */
   --text-primary: #f9fafb;
@@ -50,7 +50,7 @@
   --border-secondary: #4b5563;
   
   /* Card colors */
-  --card-background: rgb(55, 55, 55);
+  --card-background: #0f172a;
   --card-border: #374151;
   --card-shadow: rgba(0, 0, 0, 0.25);
   
@@ -72,10 +72,6 @@
 body {
   background-color: var(--background-primary);
   transition: background-color 0.3s ease;
-}
-
-body.dark {
-  background-image: url('/documents/background.png');
 }
 
 /* Card styles */
