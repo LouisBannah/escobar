@@ -197,13 +197,31 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 backdrop-blur-md bg-black/30 flex items-center justify-center">
-      <div className="relative w-full max-w-3xl max-h-[calc(100vh-40px)] flex flex-col bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 backdrop-blur-md bg-black/30 flex items-center justify-center p-4">
+      <div className="relative w-full max-w-3xl flex flex-col bg-white rounded-xl shadow-2xl overflow-hidden"
+        style={{
+          maxHeight: 'calc(100vh - 2rem)',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          margin: '0 auto'
+        }}
+      >
         {/* Floating Header - Always visible */}
         <div 
           ref={headerRef}
           className="sticky top-0 z-10 border-b"
-          style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
+          style={{ 
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+            background: getThemeValue('colors.background'),
+            position: 'sticky',
+            top: 0,
+            zIndex: 10
+          }}
         >
           {/* Gradient Banner */}
           <div className="h-2" style={{ background: getThemeValue('colors.gradients.banner') }} />
@@ -287,14 +305,18 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
         <div 
           className="flex-1 overflow-y-auto" 
           style={{ 
-            height: `calc(100vh - 40px - ${headerHeight}px - 56px)`, // 56px is the footer height
+            flex: '1 1 auto',
+            minHeight: 0,
             scrollbarGutter: 'stable',
             scrollbarWidth: 'thin',
             background: getThemeValue('colors.surface'),
             color: getThemeValue('colors.text.primary'),
             '--scrollbar-thumb': getThemeValue('components.cardComponents.scrollableContent.thumbColor'),
             '--scrollbar-thumb-hover': getThemeValue('components.cardComponents.scrollableContent.thumbHoverColor'),
-            '--scrollbar-track': getThemeValue('components.cardComponents.scrollableContent.trackColor')
+            '--scrollbar-track': getThemeValue('components.cardComponents.scrollableContent.trackColor'),
+            position: 'relative',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch'
           } as React.CSSProperties}
         >
           <div className="p-6" style={{ paddingLeft: '28px', paddingRight: '20px' }}>
@@ -703,7 +725,14 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
         </div>
         
         {/* Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500 h-[56px]">
+        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500"
+          style={{ 
+            flex: '0 0 56px',
+            position: 'sticky',
+            bottom: 0,
+            zIndex: 10
+          }}
+        >
           <div>
             Last updated: <span className="font-medium">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
               day: '2-digit', 

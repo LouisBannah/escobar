@@ -42,11 +42,24 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
     return () => window.removeEventListener('resize', updateHeaderHeight);
   }, []);
 
-  // Prevent scrolling of the background when modal is open
+  // Add useEffect to handle body scroll locking
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    // Add class to both html and body
+    document.documentElement.classList.add('overflow-hidden');
+    document.body.classList.add('overflow-hidden');
+    // Set fixed position to prevent iOS Safari bounce
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.top = `-${window.scrollY}px`;
+
     return () => {
-      document.body.style.overflow = 'auto';
+      // Cleanup
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(document.body.style.top || '0', 10) * -1);
     };
   }, []);
   
@@ -89,13 +102,23 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
   };
   
   return (
-    <div className="fixed inset-0 z-50 backdrop-blur-md bg-black/30 flex items-center justify-center">
-      <div className="relative w-full max-w-2xl max-h-[calc(100vh-40px)] flex flex-col bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 backdrop-blur-md bg-black/30 flex items-center justify-center p-4">
+      <div className="relative w-full max-w-2xl flex flex-col bg-white rounded-xl shadow-2xl overflow-hidden"
+        style={{
+          maxHeight: 'calc(100vh - 80px)',
+          height: 'auto',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         {/* Floating Header - Always visible */}
         <div 
           ref={headerRef}
           className="sticky top-0 z-10 border-b"
-          style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
+          style={{ 
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+            background: getNeutralThemeValue('colors.background')
+          }}
         >
           {/* Gradient Banner */}
           <div className="h-2" style={{ background: getNeutralThemeValue('colors.gradients.banner') }} />
@@ -132,7 +155,8 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
         <div 
           className="flex-1 overflow-y-auto" 
           style={{ 
-            height: `calc(100vh - 40px - ${headerHeight}px - 56px)`, // 56px is the footer height
+            height: 'auto',
+            maxHeight: 'calc(100vh - 200px)',
             scrollbarGutter: 'stable',
             scrollbarWidth: 'thin',
             background: getNeutralThemeValue('colors.surface'),
@@ -219,14 +243,8 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
           </div>
         </div>
         
-        {/* Footer with Submit Button */}
-        <div className="p-4 flex justify-between items-center h-[56px] border-t"
-          style={{ 
-            background: getNeutralThemeValue('components.cardComponents.footer.bg'),
-            borderColor: getNeutralThemeValue('components.cardComponents.footer.border'),
-            color: getNeutralThemeValue('components.cardComponents.footer.text')
-          }}
-        >
+        {/* Footer */}
+        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500 h-[56px]">
           <div className="text-xs" style={{ color: getNeutralThemeValue('colors.text.tertiary') }}>
             Your feedback helps us improve our offerings
           </div>

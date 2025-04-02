@@ -7,14 +7,15 @@ const darkBase = {
   // Base colors
   colors: {
     background: '#1e293b',
+    backgroundImage: 'url("/documents/background4.png")',
     surface: '#0f172a',
     surfaceAlt: '#1e293b',
-    border: '#334155',
+    border: '#374151',
     text: {
-      primary: '#f1f5f9',
-      secondary: '#cbd5e1',
-      tertiary: '#94a3b8',
-      inverted: '#0f172a',
+      primary: '#f9fafb',
+      secondary: '#e5e7eb',
+      tertiary: '#d1d5db',
+      inverted: '#111827',
     },
     // Brand colors that stay consistent regardless of theme
     brand: {

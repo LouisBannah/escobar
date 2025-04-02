@@ -41,17 +41,48 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('/documents/background.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 /* Reset for the toolkit content area */
 .toolkit-content {
   min-height: 100vh;
-  backdrop-filter: blur(1px);
+  min-height: -webkit-fill-available;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.toolkit-content::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.toolkit-content::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background-primary);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.toolkit-content > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* Add the animation for the progress bar in the submission notice */

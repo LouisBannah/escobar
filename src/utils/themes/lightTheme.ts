@@ -6,7 +6,8 @@
 const lightBase = {
   // Base colors
   colors: {
-    background: '#ffffff',
+    background: '#F1F1F1',
+    backgroundImage: 'url("/documents/background4.png")',
     surface: '#f9fafb',
     surfaceAlt: '#f3f4f6',
     border: '#e5e7eb',

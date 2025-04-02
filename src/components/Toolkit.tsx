@@ -144,51 +144,70 @@ export const Toolkit: React.FC = () => {
     logout();
   };
 
-  // Get the structure style with fixed background image
-  const bgStyle = {
-    backgroundImage: "url('/documents/background4.png')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundAttachment: "fixed",
-    backgroundRepeat: "no-repeat"
-  };
+  // Add useEffect to handle body scroll locking
+  useEffect(() => {
+    if (currentItemId) {
+      // Add class to both html and body
+      document.documentElement.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden');
+      // Set fixed position to prevent iOS Safari bounce
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      // Remove class from both html and body
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
+      // Restore scroll position
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    }
+    return () => {
+      // Cleanup
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+    };
+  }, [currentItemId]);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: getThemeValue('colors.background'),
-      position: 'relative',
-      ...bgStyle
-    }}>
-      {/* Background pattern or image - using opacity for subtle effect */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundColor: '#000000',
-        opacity: getThemeValue('currentMode') === 'light' ? 0.05 : 0.1,
-        zIndex: 0
-      }}></div>
-
+    <div className="flex flex-col h-screen toolkit-content"
+      style={{
+        height: '-webkit-fill-available',
+        color: getThemeValue('colors.text.primary'),
+        position: 'relative',
+        background: getThemeValue('colors.background'),
+        '--background-image': getThemeValue('colors.backgroundImage'),
+        '--background-primary': getThemeValue('colors.background')
+      } as React.CSSProperties}
+    >
       <div style={{ position: 'relative', zIndex: 10 }}>
         {/* Header with profile and theme buttons */}
-        <ToolkitHeader 
-          user={user}
-          onLogout={handleLogout}
-          activeThemeFilters={filters.themes}
-          onThemeFilterChange={handleThemeFilterChange}
-        />
+        <div className="sticky top-0 z-20">
+          <ToolkitHeader 
+            user={user}
+            onLogout={handleLogout}
+            activeThemeFilters={filters.themes}
+            onThemeFilterChange={handleThemeFilterChange}
+          />
 
-        {/* Filter bar with search */}
-        <FilterBar 
-          filters={availableFilters}
-          selectedFilters={filters}
-          activeFiltersCount={activeFiltersCount}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          totalToolsCount={filteredItems.length}
-        />
+          {/* Filter bar with search */}
+          <FilterBar 
+            filters={availableFilters}
+            selectedFilters={filters}
+            activeFiltersCount={activeFiltersCount}
+            onFilterChange={handleFilterChange}
+            onClearFilters={handleClearFilters}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            totalToolsCount={filteredItems.length}
+          />
+        </div>
 
         {/* Main grid of cards */}
         <CardGrid 
