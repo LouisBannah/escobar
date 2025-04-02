@@ -186,9 +186,14 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
   const businessValueBlocks = convertTextToContentBlocks(item.businessValue);
   const keyCapabilitiesBlocks = convertTextToContentBlocks(item.keyCapabilities);
 
-  const handleDownload = (url: string) => {
-    // Always use the sample PDF for downloads
-    window.open('/documents/10-page-sample.pdf', '_blank');
+  const handleDownload = (url: string, fileType: string) => {
+    if (fileType === 'pdf') {
+      // Use the sample PDF for PDF files
+      window.open('/documents/10-page-sample.pdf', '_blank');
+    } else {
+      // For other file types, show an alert
+      alert(`This is a sample ${fileType.toUpperCase()} file. In a real application, the ${fileType.toUpperCase()} file would be downloaded.`);
+    }
   };
 
   return (
@@ -411,11 +416,14 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                     <div className="space-y-3">
                       {item.materials.map((material, index) => {
                         const Icon = 
-                          material.type === 'Document' ? FileText : 
-                          material.type === 'Guide' ? Archive :
-                          material.type === 'Template' ? Table :
-                          material.type === 'Presentation' ? Presentation :
-                          material.type === 'Code' ? Code : 
+                          material.type === 'pdf' ? FileText : 
+                          material.type === 'docx' ? FileText :
+                          material.type === 'zip' ? Archive :
+                          material.type === 'xls' ? Table :
+                          material.type === 'ppt' ? Presentation :
+                          material.type === 'yaml' ? Code :
+                          material.type === 'json' ? Code :
+                          material.type === 'html' ? Globe :
                           Globe;
                           
                         const isSelected = expandedPDF?.title === material.title;
@@ -426,9 +434,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                               className="rounded-lg border"
                               style={{
                                 background: getThemeValue('colors.surface'),
-                                borderColor: isSelected 
-                                  ? getThemeValue('colors.primary.main') 
-                                  : getThemeValue('colors.border'),
+                                borderColor: getThemeValue('colors.border'),
                                 boxShadow: isSelected 
                                   ? getThemeValue('shared.boxShadow.md') 
                                   : getThemeValue('shared.boxShadow.sm')
@@ -454,8 +460,9 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                   {material.type.toUpperCase()}
                                 </span>
                                 
-                                {material.type === 'Document' && (
-                                  <>
+                                {/* Only show the eye/view button for PDF files */}
+                                <>
+                                  {material.type === 'pdf' && (
                                     <button 
                                       onClick={() => {
                                         if (isSelected) {
@@ -472,6 +479,12 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                         background: getThemeValue('colors.surfaceAlt'),
                                         color: getThemeValue('colors.primary.main')
                                       }}
+                                      onMouseOver={(e) => {
+                                        e.currentTarget.style.background = getThemeValue('colors.surfaceHover');
+                                      }}
+                                      onMouseOut={(e) => {
+                                        e.currentTarget.style.background = getThemeValue('colors.surfaceAlt');
+                                      }}
                                     >
                                       {isSelected ? (
                                         <ChevronUp className="w-4 h-4" />
@@ -479,28 +492,41 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                         <Eye className="w-4 h-4" />
                                       )}
                                     </button>
-                                    <button 
-                                      onClick={() => handleDownload(material.url)}
-                                      className="p-2 rounded-full transition-colors"
-                                      style={{
-                                        background: getThemeValue('colors.surfaceAlt'),
-                                        color: getThemeValue('colors.primary.main')
-                                      }}
-                                    >
-                                      <Download className="w-4 h-4" />
-                                    </button>
-                                  </>
-                                )}
+                                  )}
+                                  <button 
+                                    onClick={() => handleDownload(material.url, material.type)}
+                                    className="p-2 rounded-full transition-colors"
+                                    style={{
+                                      background: getThemeValue('colors.surfaceAlt'),
+                                      color: getThemeValue('colors.primary.main')
+                                    }}
+                                    onMouseOver={(e) => {
+                                      e.currentTarget.style.background = getThemeValue('colors.surfaceHover');
+                                    }}
+                                    onMouseOut={(e) => {
+                                      e.currentTarget.style.background = getThemeValue('colors.surfaceAlt');
+                                    }}
+                                  >
+                                    <Download className="w-4 h-4" />
+                                  </button>
+                                </>
                               </div>
                               
                               {isSelected && expandedPDF && (
                                 <div className="border-t" style={{ borderColor: getThemeValue('colors.border') }}>
-                                  <iframe 
-                                    src="/documents/10-page-sample.pdf" 
-                                    className="w-full"
-                                    style={{ height: '500px' }}
-                                    title={expandedPDF.title}
-                                  />
+                                  {material.type === 'pdf' ? (
+                                    <iframe 
+                                      src="/documents/10-page-sample.pdf#toolbar=0&navpanes=0&scrollbar=0" 
+                                      className="w-full"
+                                      style={{ height: '500px' }}
+                                      title={expandedPDF.title}
+                                    />
+                                  ) : (
+                                    <div className="p-4 text-center text-gray-500">
+                                      <p>Preview not available for this file type.</p>
+                                      <p className="mt-2">Please use the download button to view this file.</p>
+                                    </div>
+                                  )}
                                 </div>
                               )}
                             </div>
