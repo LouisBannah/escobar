@@ -91,14 +91,15 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
   return (
     <div style={{
       backgroundColor: getThemeValue('colors.background'),
-      borderRadius: getThemeValue('shared.borderRadius.lg'),
+      borderRadius: '0.75rem',
       borderWidth: '1px',
       borderColor: getThemeValue('colors.border'),
       transition: 'all 0.2s ease',
       boxShadow: expanded 
         ? getThemeValue('shared.boxShadow.md') 
         : getThemeValue('shared.boxShadow.sm'),
-      marginBottom: '1rem'
+      marginBottom: '1rem',
+      overflow: 'hidden'
     }}>
       {/* Header with title and expand/collapse toggle */}
       <div 
@@ -106,11 +107,12 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
           display: 'flex',
           alignItems: 'center',
           gap: '0.75rem',
-          padding: '0.75rem',
+          padding: '0.75rem 1rem',
           cursor: 'pointer',
           backgroundColor: getThemeValue('colors.surface'),
           transition: 'background-color 0.2s ease',
-          borderRadius: expanded ? `${getThemeValue('shared.borderRadius.lg')} ${getThemeValue('shared.borderRadius.lg')} 0 0` : getThemeValue('shared.borderRadius.lg')
+          borderRadius: expanded ? '0.75rem 0.75rem 0 0' : '0.75rem',
+          overflow: 'visible'
         }}
         onClick={toggleExpanded}
       >
@@ -137,7 +139,12 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
           borderRadius: '0.375rem', 
           backgroundColor: getThemeValue('colors.surfaceAlt'), 
           color: getThemeValue('colors.text.secondary'), 
-          textTransform: 'capitalize' 
+          textTransform: 'capitalize',
+          display: 'inline-block',
+          lineHeight: 1.5,
+          overflow: 'visible',
+          margin: '0 0.125rem',
+          boxShadow: 'none'
         }}>
           {example.language}
         </span>

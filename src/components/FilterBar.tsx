@@ -183,8 +183,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 style={{
                   background: getThemeValue('colors.brand.badge'),
                   color: getThemeValue('colors.text.inverted'),
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  lineHeight: 1,
+                  padding: 0,
+                  textAlign: 'center'
                 }}
-                className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none rounded-full"
+                className="ml-2 text-xs font-bold"
               >
                 {activeFiltersCount}
               </span>
@@ -253,9 +262,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
                             {filters.themes.map(theme => (
                               <label 
                                 key={theme} 
-                                className="flex items-center px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50"
-                                style={{ 
-                                  color: getThemeValue('colors.text.primary')
+                                className="flex items-center px-2 py-1.5 rounded cursor-pointer"
+                                style={{ color: getThemeValue('colors.text.primary') }}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.style.backgroundColor = getThemeValue('colors.surfaceHover');
+                                }}
+                                onMouseOut={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
                                 }}
                               >
                                 <input
@@ -264,9 +277,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                   onChange={() => onFilterChange('themes', theme)}
                                   className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
                                 />
-                                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span className="ml-2 text-sm" style={{ color: getThemeValue('colors.text.primary') }}>
                                   {theme}
-                                  <span className="ml-1 text-gray-400 dark:text-gray-500">
+                                  <span className="ml-1" style={{ color: getThemeValue('colors.text.tertiary') }}>
                                     ({getFilterCounts('themes', theme)})
                                   </span>
                                 </span>
@@ -320,9 +333,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
                             {filters.categories.map(category => (
                               <label 
                                 key={category} 
-                                className="flex items-center px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50"
-                                style={{ 
-                                  color: getThemeValue('colors.text.primary')
+                                className="flex items-center px-2 py-1.5 rounded cursor-pointer"
+                                style={{ color: getThemeValue('colors.text.primary') }}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.style.backgroundColor = getThemeValue('colors.surfaceHover');
+                                }}
+                                onMouseOut={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
                                 }}
                               >
                                 <input
@@ -387,9 +404,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
                             {filters.materialTypes.map(type => (
                               <label 
                                 key={type} 
-                                className="flex items-center px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50"
-                                style={{ 
-                                  color: getThemeValue('colors.text.primary')
+                                className="flex items-center px-2 py-1.5 rounded cursor-pointer"
+                                style={{ color: getThemeValue('colors.text.primary') }}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.style.backgroundColor = getThemeValue('colors.surfaceHover');
+                                }}
+                                onMouseOut={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
                                 }}
                               >
                                 <input

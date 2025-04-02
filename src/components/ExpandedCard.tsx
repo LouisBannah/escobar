@@ -437,10 +437,25 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                 borderColor: getThemeValue('colors.border'),
                                 boxShadow: isSelected 
                                   ? getThemeValue('shared.boxShadow.md') 
-                                  : getThemeValue('shared.boxShadow.sm')
+                                  : getThemeValue('shared.boxShadow.sm'),
+                                borderRadius: '0.5rem',
+                                overflow: 'hidden'
                               }}
                             >
-                              <div className="flex items-center gap-3 p-3 transition-colors hover:bg-gray-50">
+                              <div 
+                                className="flex items-center gap-3 p-3 transition-colors"
+                                style={{
+                                  borderRadius: 'inherit'
+                                }}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.style.background = isDarkMode ? 
+                                    'rgba(255, 255, 255, 0.05)' : 
+                                    'rgba(0, 0, 0, 0.03)';
+                                }}
+                                onMouseOut={(e) => {
+                                  e.currentTarget.style.background = 'transparent';
+                                }}
+                              >
                                 <Icon style={{ 
                                   width: '1.25rem',
                                   height: '1.25rem',
@@ -454,7 +469,9 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                                 <span className="text-xs px-2 py-1 rounded-md"
                                   style={{ 
                                     background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
-                                    color: getThemeValue('components.cardComponents.materialsSection.badgeText')
+                                    color: getThemeValue('components.cardComponents.materialsSection.badgeText'),
+                                    borderRadius: '0.375rem',
+                                    overflow: 'hidden'
                                   }}
                                 >
                                   {material.type.toUpperCase()}
@@ -569,7 +586,7 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                     </h3>
                     <div className="space-y-4">
                       {codeExamples.map((example, index) => (
-                        <div key={index} className="rounded-xl overflow-hidden shadow-sm">
+                        <div key={index} className="overflow-visible">
                           <CodeExampleViewer example={example} />
                         </div>
                       ))}
