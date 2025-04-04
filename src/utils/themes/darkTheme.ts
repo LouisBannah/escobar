@@ -33,8 +33,8 @@ const darkBase = {
         light: '#34d399',
         dark: '#059669',
         label: {
-          bg: '#064e3b',
-          text: '#34d399',
+          bg: '#34d399',
+          text: '#064e3b',
         }
       },
       delivery: {
@@ -42,32 +42,32 @@ const darkBase = {
         secondary: '#60a5fa',     // Light blue
         gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%)',
         light: '#60a5fa',
-        dark: '#2563eb',
+        dark: '#1e40af',
         label: {
-          bg: '#1e40af',
-          text: '#60a5fa',
+          bg: '#60a5fa',
+          text: '#1e3a8a',
         }
       },
       qa: {
         primary: '#a855f7',       // Purple
         secondary: '#c084fc',     // Light purple
-        gradient: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 50%, #c084fc 100%)',
+        gradient: 'linear-gradient(135deg, #6b21a8 0%, #9333ea 50%, #a855f7 100%)',
         light: '#c084fc',
-        dark: '#9333ea',
+        dark: '#6b21a8',
         label: {
-          bg: '#6b21a8',
-          text: '#c084fc',
+          bg: '#c084fc',
+          text: '#581c87',
         }
       },
       neutral: {
         primary: '#64748b',       // Slate
         secondary: '#94a3b8',     // Light slate
-        gradient: 'linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)',
+        gradient: 'linear-gradient(135deg, #334155 0%, #475569 50%, #64748b 100%)',
         light: '#94a3b8',
-        dark: '#475569',
+        dark: '#334155',
         label: {
-          bg: '#1e293b',
-          text: '#94a3b8',
+          bg: '#94a3b8',
+          text: '#1e293b',
         }
       }
     }
@@ -189,17 +189,17 @@ const salesDark = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
       themeLabel: {
-        bg: '#064e3b',
-        text: '#34d399',
+        bg: '#34d399',
+        text: '#064e3b',
       },
       categoryLabel: {
-        bg: '#1e293b',
-        text: '#cbd5e1',
+        bg: '#4b5563',
+        text: '#e5e7eb',
       },
       tags: {
-        bg: '#064e3b',
-        text: '#34d399',
-        border: '#065f46',
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
       },
     },
     
@@ -249,7 +249,7 @@ const salesDark = {
       scrollableContent: {
         thumbColor: '#475569',
         thumbHoverColor: '#64748b',
-        trackColor: '#1e293b',
+        trackColor: '#0f172a',
       },
     },
     
@@ -293,6 +293,23 @@ const salesDark = {
     
     // Expanded card
     expandedCard: {
+      background: 'rgba(15, 23, 42, 0.85)',
+      border: '#334155',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
+      themeLabel: {
+        bg: '#34d399',
+        text: '#064e3b',
+      },
+      categoryLabel: {
+        bg: '#4b5563',
+        text: '#e5e7eb',
+      },
+      tags: {
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
+      },
       tabs: {
         bg: '#0f172a',
         borderBottom: '#334155',
@@ -301,8 +318,8 @@ const salesDark = {
           indicator: '#10b981',
         },
         inactive: {
-          text: '#94a3b8',
-          hover: '#cbd5e1',
+          text: '#e2e8f0',
+          hover: '#f8fafc',
         },
       },
       contactTab: {
@@ -324,6 +341,18 @@ const salesDark = {
         copyButtonBg: 'rgba(255, 255, 255, 0.05)',
         copyButtonHoverBg: 'rgba(255, 255, 255, 0.1)',
         copyButtonText: '#f1f5f9',
+      },
+      button: {
+        active: {
+          bg: '#34d399',
+          text: '#064e3b',
+          border: '#065f46',
+        },
+        inactive: {
+          bg: 'rgba(15, 23, 42, 0.4)',
+          border: '#334155',
+          text: '#94a3b8',
+        },
       },
     },
   },
@@ -444,17 +473,17 @@ const deliveryDark = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
       themeLabel: {
-        bg: '#1e3a8a',
-        text: '#60a5fa',
+        bg: '#60a5fa',
+        text: '#1e3a8a',
       },
       categoryLabel: {
-        bg: '#1e293b',
-        text: '#cbd5e1',
+        bg: '#4b5563',
+        text: '#e5e7eb',
       },
       tags: {
-        bg: '#1e3a8a',
-        text: '#60a5fa',
-        border: '#1e40af',
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
       },
     },
     
@@ -504,7 +533,7 @@ const deliveryDark = {
       scrollableContent: {
         thumbColor: '#475569',
         thumbHoverColor: '#64748b',
-        trackColor: '#1e293b',
+        trackColor: '#0f172a',
       },
     },
     
@@ -548,6 +577,23 @@ const deliveryDark = {
     
     // Expanded card (blue themed)
     expandedCard: {
+      background: 'rgba(15, 23, 42, 0.85)',
+      border: '#334155',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
+      themeLabel: {
+        bg: '#60a5fa',
+        text: '#1e3a8a',
+      },
+      categoryLabel: {
+        bg: '#4b5563',
+        text: '#e5e7eb',
+      },
+      tags: {
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
+      },
       tabs: {
         bg: '#0f172a',
         borderBottom: '#334155',
@@ -556,8 +602,8 @@ const deliveryDark = {
           indicator: '#3b82f6',
         },
         inactive: {
-          text: '#94a3b8',
-          hover: '#cbd5e1',
+          text: '#e2e8f0',
+          hover: '#f8fafc',
         },
       },
       contactTab: {
@@ -579,6 +625,18 @@ const deliveryDark = {
         copyButtonBg: 'rgba(255, 255, 255, 0.05)',
         copyButtonHoverBg: 'rgba(255, 255, 255, 0.1)',
         copyButtonText: '#f1f5f9',
+      },
+      button: {
+        active: {
+          bg: '#60a5fa',
+          text: '#1e3a8a',
+          border: '#1e40af',
+        },
+        inactive: {
+          bg: 'rgba(15, 23, 42, 0.4)',
+          border: '#334155',
+          text: '#94a3b8',
+        },
       },
     },
   },
@@ -699,17 +757,17 @@ const qaDark = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
       themeLabel: {
-        bg: '#581c87',
-        text: '#c084fc',
+        bg: '#c084fc',
+        text: '#581c87',
       },
       categoryLabel: {
-        bg: '#1e293b',
-        text: '#cbd5e1',
+        bg: '#4b5563',
+        text: '#e5e7eb',
       },
       tags: {
-        bg: '#581c87',
-        text: '#c084fc',
-        border: '#6b21a8',
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
       },
     },
     
@@ -759,7 +817,7 @@ const qaDark = {
       scrollableContent: {
         thumbColor: '#475569',
         thumbHoverColor: '#64748b',
-        trackColor: '#1e293b',
+        trackColor: '#0f172a',
       },
     },
     
@@ -803,6 +861,23 @@ const qaDark = {
     
     // Expanded card (purple themed)
     expandedCard: {
+      background: 'rgba(15, 23, 42, 0.85)',
+      border: '#334155',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
+      themeLabel: {
+        bg: '#c084fc',
+        text: '#581c87',
+      },
+      categoryLabel: {
+        bg: '#4b5563',
+        text: '#e5e7eb',
+      },
+      tags: {
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
+      },
       tabs: {
         bg: '#0f172a',
         borderBottom: '#334155',
@@ -811,8 +886,8 @@ const qaDark = {
           indicator: '#a855f7',
         },
         inactive: {
-          text: '#94a3b8',
-          hover: '#cbd5e1',
+          text: '#e2e8f0',
+          hover: '#f8fafc',
         },
       },
       contactTab: {
@@ -834,6 +909,18 @@ const qaDark = {
         copyButtonBg: 'rgba(255, 255, 255, 0.05)',
         copyButtonHoverBg: 'rgba(255, 255, 255, 0.1)',
         copyButtonText: '#f1f5f9',
+      },
+      button: {
+        active: {
+          bg: '#c084fc',
+          text: '#581c87',
+          border: '#6b21a8',
+        },
+        inactive: {
+          bg: 'rgba(15, 23, 42, 0.4)',
+          border: '#334155',
+          text: '#94a3b8',
+        },
       },
     },
   },
@@ -942,17 +1029,17 @@ const neutralDark = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
       themeLabel: {
-        bg: '#1e293b',
-        text: '#94a3b8',
+        bg: '#94a3b8',
+        text: '#1e293b',
       },
       categoryLabel: {
-        bg: '#1e293b',
-        text: '#cbd5e1',
+        bg: '#4b5563',
+        text: '#e5e7eb',
       },
       tags: {
-        bg: '#1e293b',
-        text: '#94a3b8',
-        border: '#334155',
+        bg: '#4b5563',
+        text: '#e5e7eb',
+        border: '#4b5563',
       },
     },
     
@@ -1002,7 +1089,7 @@ const neutralDark = {
       scrollableContent: {
         thumbColor: '#475569',
         thumbHoverColor: '#64748b',
-        trackColor: '#1e293b',
+        trackColor: '#0f172a',
       },
     },
     

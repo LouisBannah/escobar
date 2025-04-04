@@ -234,16 +234,15 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" 
                     style={{ 
-                      background: getThemeValue('components.baseCard.themeLabel.bg'),
-                      color: getThemeValue('components.baseCard.themeLabel.text')
+                      background: getThemeValue('components.expandedCard.themeLabel.bg'),
+                      color: getThemeValue('components.expandedCard.themeLabel.text')
                     }}>
                     {item.theme === 'Quality Assurance' ? 'QA' : item.theme}
                   </span>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border" 
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" 
                     style={{ 
-                      background: getThemeValue('components.baseCard.categoryLabel.bg'),
-                      color: getThemeValue('components.baseCard.categoryLabel.text'),
-                      borderColor: getThemeValue('colors.border')
+                      background: getThemeValue('components.expandedCard.categoryLabel.bg'),
+                      color: getThemeValue('components.expandedCard.categoryLabel.text')
                     }}>
                     {item.category}
                   </span>
@@ -334,11 +333,10 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
                     {item.availableTags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium border hover:opacity-90 transition-colors"
+                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
                         style={{ 
-                          background: getThemeValue('components.baseCard.tags.bg'),
-                          color: getThemeValue('components.baseCard.tags.text'),
-                          borderColor: getThemeValue('components.baseCard.tags.border')
+                          background: getThemeValue('components.expandedCard.tags.bg'),
+                          color: getThemeValue('components.expandedCard.tags.text')
                         }}
                       >
                         {tag}

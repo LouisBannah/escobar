@@ -64,9 +64,9 @@ const BaseCard: React.FC<BaseCardProps> = ({ item, onClick }) => {
         color: getThemeValue('components.baseCard.categoryLabel.text'),
       },
       tags: {
-        background: getThemeValue('components.baseCard.categoryLabel.bg'),
-        color: getThemeValue('components.baseCard.categoryLabel.text'),
-        border: getThemeValue('colors.border'),
+        background: getThemeValue('components.baseCard.tags.bg'),
+        color: getThemeValue('components.baseCard.tags.text'),
+        border: getThemeValue('components.baseCard.tags.border'),
       }
     };
     
@@ -101,7 +101,7 @@ const BaseCard: React.FC<BaseCardProps> = ({ item, onClick }) => {
       {/* Category Label */}
       <div className="mb-4">
         <span 
-          className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium"
+          className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
           style={{ 
             background: cardStyles.categoryLabel.background,
             color: cardStyles.categoryLabel.color,
@@ -151,8 +151,8 @@ const BaseCard: React.FC<BaseCardProps> = ({ item, onClick }) => {
                 <span 
                   className="text-xs font-medium px-2 py-0.5 rounded"
                   style={{ 
-                    background: getThemeValue('components.cardComponents.materialsSection.badgeBg'),
-                    color: getThemeValue('components.cardComponents.materialsSection.badgeText')
+                    background: cardStyles.categoryLabel.background,
+                    color: cardStyles.categoryLabel.color
                   }}
                 >
                   {material.format}
@@ -171,11 +171,10 @@ const BaseCard: React.FC<BaseCardProps> = ({ item, onClick }) => {
           {item.tags.slice(0, 3).map((tag: string, index: number) => (
             <span 
               key={index} 
-              className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium"
+              className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
               style={{ 
                 background: cardStyles.tags.background,
-                color: cardStyles.tags.color,
-                border: `1px solid ${cardStyles.tags.border}`
+                color: cardStyles.tags.color
               }}
             >
               {tag}

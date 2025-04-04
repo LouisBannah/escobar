@@ -33,8 +33,8 @@ const lightBase = {
         light: '#5eead4',
         dark: '#047857',
         label: {
-          bg: '#ecfdf5',
-          text: '#059669',
+          bg: '#10b981',
+          text: '#ffffff',
         }
       },
       delivery: {
@@ -44,8 +44,8 @@ const lightBase = {
         light: '#93c5fd',
         dark: '#1d4ed8',
         label: {
-          bg: '#eff6ff',
-          text: '#2563eb',
+          bg: '#3b82f6',
+          text: '#ffffff',
         }
       },
       qa: {
@@ -55,8 +55,8 @@ const lightBase = {
         light: '#d8b4fe',
         dark: '#7e22ce',
         label: {
-          bg: '#faf5ff',
-          text: '#9333ea',
+          bg: '#a855f7',
+          text: '#ffffff',
         }
       },
       neutral: {
@@ -66,8 +66,8 @@ const lightBase = {
         light: '#cbd5e1',
         dark: '#334155',
         label: {
-          bg: '#f1f5f9',
-          text: '#475569',
+          bg: '#64748b',
+          text: '#ffffff',
         }
       }
     }
@@ -189,17 +189,17 @@ const salesLight = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       themeLabel: {
-        bg: '#ecfdf5',
-        text: '#059669',
+        bg: '#10b981',
+        text: '#ffffff',
       },
       categoryLabel: {
-        bg: '#f3f4f6',
-        text: '#4b5563',
+        bg: '#e2e8f0',
+        text: '#475569',
       },
       tags: {
-        bg: '#ecfdf5',
-        text: '#059669',
-        border: '#d1fae5',
+        bg: '#e2e8f0',
+        text: '#475569',
+        border: '#e2e8f0',
       },
     },
     
@@ -325,6 +325,35 @@ const salesLight = {
         copyButtonHoverBg: 'rgba(255, 255, 255, 0.2)',
         copyButtonText: '#e2e8f0',
       },
+      background: 'rgba(255, 255, 255, 0.85)',
+      border: '#e5e7eb',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      themeLabel: {
+        bg: '#10b981',
+        text: '#ffffff',
+      },
+      categoryLabel: {
+        bg: '#e2e8f0',
+        text: '#475569',
+      },
+      tags: {
+        bg: '#e2e8f0',
+        text: '#475569',
+        border: '#e2e8f0',
+      },
+      button: {
+        active: {
+          bg: '#10b981',
+          text: '#ffffff',
+          border: '#059669',
+        },
+        inactive: {
+          bg: 'rgba(255, 255, 255, 0.8)',
+          border: '#e5e7eb',
+          text: '#6b7280',
+        },
+      },
     },
   },
 };
@@ -444,17 +473,17 @@ const deliveryLight = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       themeLabel: {
-        bg: '#eff6ff',
-        text: '#2563eb',
+        bg: '#3b82f6',
+        text: '#ffffff',
       },
       categoryLabel: {
-        bg: '#f3f4f6',
-        text: '#4b5563',
+        bg: '#e2e8f0',
+        text: '#475569',
       },
       tags: {
-        bg: '#eff6ff',
-        text: '#2563eb',
-        border: '#dbeafe',
+        bg: '#e2e8f0',
+        text: '#475569',
+        border: '#e2e8f0',
       },
     },
     
@@ -580,6 +609,35 @@ const deliveryLight = {
         copyButtonHoverBg: 'rgba(255, 255, 255, 0.2)',
         copyButtonText: '#e2e8f0',
       },
+      background: 'rgba(255, 255, 255, 0.85)',
+      border: '#e5e7eb',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      themeLabel: {
+        bg: '#3b82f6',
+        text: '#ffffff',
+      },
+      categoryLabel: {
+        bg: '#e2e8f0',
+        text: '#475569',
+      },
+      tags: {
+        bg: '#e2e8f0',
+        text: '#475569',
+        border: '#e2e8f0',
+      },
+      button: {
+        active: {
+          bg: '#3b82f6',
+          text: '#ffffff',
+          border: '#2563eb',
+        },
+        inactive: {
+          bg: 'rgba(255, 255, 255, 0.8)',
+          border: '#e5e7eb',
+          text: '#6b7280',
+        },
+      },
     },
   },
 };
@@ -699,17 +757,17 @@ const qaLight = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       themeLabel: {
-        bg: '#faf5ff',
-        text: '#9333ea',
+        bg: '#a855f7',
+        text: '#ffffff',
       },
       categoryLabel: {
-        bg: '#f3f4f6',
-        text: '#4b5563',
+        bg: '#e2e8f0',
+        text: '#475569',
       },
       tags: {
-        bg: '#faf5ff',
-        text: '#9333ea',
-        border: '#f3e8ff',
+        bg: '#e2e8f0',
+        text: '#475569',
+        border: '#e2e8f0',
       },
     },
     
@@ -835,6 +893,35 @@ const qaLight = {
         copyButtonHoverBg: 'rgba(255, 255, 255, 0.2)',
         copyButtonText: '#e2e8f0',
       },
+      background: 'rgba(255, 255, 255, 0.85)',
+      border: '#e5e7eb',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      themeLabel: {
+        bg: '#a855f7',
+        text: '#ffffff',
+      },
+      categoryLabel: {
+        bg: '#e2e8f0',
+        text: '#475569',
+      },
+      tags: {
+        bg: '#e2e8f0',
+        text: '#475569',
+        border: '#e2e8f0',
+      },
+      button: {
+        active: {
+          bg: '#a855f7',
+          text: '#ffffff',
+          border: '#9333ea',
+        },
+        inactive: {
+          bg: 'rgba(255, 255, 255, 0.8)',
+          border: '#e5e7eb',
+          text: '#6b7280',
+        },
+      },
     },
   },
 };
@@ -942,15 +1029,15 @@ const neutralLight = {
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       themeLabel: {
-        bg: '#f1f5f9',
-        text: '#475569',
+        bg: '#64748b',
+        text: '#ffffff',
       },
       categoryLabel: {
-        bg: '#f3f4f6',
-        text: '#4b5563',
+        bg: '#e2e8f0',
+        text: '#475569',
       },
       tags: {
-        bg: '#f1f5f9',
+        bg: '#e2e8f0',
         text: '#475569',
         border: '#e2e8f0',
       },

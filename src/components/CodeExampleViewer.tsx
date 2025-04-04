@@ -43,6 +43,18 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
     }
   }, [expanded]);
 
+  // Add a second effect to retry highlighting if it didn't work the first time
+  useEffect(() => {
+    if (expanded && codeRef.current && window.Prism) {
+      // Small delay to ensure DOM is fully rendered
+      const timer = setTimeout(() => {
+        window.Prism.highlightElement(codeRef.current);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [expanded]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(example.code);
     setCopied(true);
@@ -189,7 +201,10 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
           {/* Code snippet with copy button */}
           <div style={{ position: 'relative' }}>
             <button
-              onClick={handleCopy}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopy();
+              }}
               style={{ 
                 position: 'absolute', 
                 top: '0.5rem', 
@@ -197,24 +212,33 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
                 padding: '0.375rem', 
                 borderRadius: '0.25rem', 
                 backgroundColor: copied 
-                  ? getThemeValue('components.expandedCard.codeTab.copyButtonHoverBg')
-                  : getThemeValue('components.expandedCard.codeTab.copyButtonBg'),
+                  ? 'rgba(39, 174, 96, 0.5)'  // More visible success color
+                  : 'rgba(255, 255, 255, 0.2)', // More visible button
                 transition: 'background-color 0.2s ease',
-                zIndex: 10
+                zIndex: 10,
+                cursor: 'pointer',
+                border: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
               title="Copy code"
+              aria-label="Copy code to clipboard"
             >
               {copied ? (
                 <Check style={{ 
                   width: '1rem', 
                   height: '1rem', 
-                  color: getThemeValue('colors.success')
+                  color: '#ffffff' // Brighter check icon
                 }} />
               ) : (
                 <Copy style={{ 
                   width: '1rem', 
                   height: '1rem', 
-                  color: getThemeValue('components.expandedCard.codeTab.copyButtonText')
+                  color: '#ffffff' // Brighter copy icon
                 }} />
               )}
             </button>
@@ -222,15 +246,34 @@ const CodeExampleViewer: React.FC<CodeExampleViewerProps> = ({ example, themeCol
             <div style={{ 
               overflow: 'auto', 
               maxHeight: '500px', 
-              padding: '1rem', 
+              padding: '1.25rem 1rem 1rem', 
               backgroundColor: getThemeValue('components.expandedCard.codeTab.bg'),
-              borderRadius: '0 0 0.5rem 0.5rem'
+              borderRadius: '0 0 0.5rem 0.5rem',
+              position: 'relative' // Ensure positioning context for absolute elements
             }}>
-              <pre style={{ fontSize: '0.7rem', lineHeight: '1.2' }}>
+              <pre style={{ 
+                fontSize: '0.85rem', 
+                lineHeight: '1.5',
+                margin: 0,
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                padding: '0',
+                overflow: 'visible',
+                backgroundColor: 'transparent',
+                borderRadius: 0,
+                border: 'none'
+              }}>
                 <code 
                   ref={codeRef} 
                   className={getLanguageClass(example.language)}
-                  style={{ color: getThemeValue('components.expandedCard.codeTab.text') }}
+                  style={{ 
+                    color: getThemeValue('components.expandedCard.codeTab.text'),
+                    padding: 0,
+                    backgroundColor: 'transparent',
+                    whiteSpace: 'pre',
+                    wordBreak: 'normal',
+                    wordWrap: 'normal',
+                    tabSize: 2
+                  }}
                 >
                   {example.code}
                 </code>
