@@ -725,12 +725,15 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
         </div>
         
         {/* Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500"
+        <div className="border-t p-4 flex justify-between items-center text-xs"
           style={{ 
             flex: '0 0 56px',
             position: 'sticky',
             bottom: 0,
-            zIndex: 10
+            zIndex: 10,
+            background: getThemeValue('components.cardComponents.footer.bg'),
+            borderColor: getThemeValue('components.cardComponents.footer.border'),
+            color: getThemeValue('components.cardComponents.footer.text')
           }}
         >
           <div>
@@ -740,8 +743,13 @@ const ExpandedCard: React.FC<ExpandedCardProps> = ({ item, onClose }) => {
               year: 'numeric' 
             })}</span>
           </div>
-          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-            bg-white shadow-sm border border-gray-200 text-gray-700">
+          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium shadow-sm border"
+            style={{
+              background: getThemeValue('components.cardComponents.footer.versionBg'),
+              borderColor: getThemeValue('components.cardComponents.footer.versionBorder'),
+              color: getThemeValue('components.cardComponents.footer.versionText')
+            }}
+          >
             Version {item.version}
           </div>
         </div>

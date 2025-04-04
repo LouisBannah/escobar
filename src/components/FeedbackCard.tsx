@@ -244,7 +244,13 @@ const FeedbackCard: React.FC<FeedbackCardProps> = ({ item, onClose }) => {
         </div>
         
         {/* Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500 h-[56px]">
+        <div className="border-t p-4 flex justify-between items-center text-xs h-[56px]"
+          style={{ 
+            background: getNeutralThemeValue('components.cardComponents.footer.bg'),
+            borderColor: getNeutralThemeValue('components.cardComponents.footer.border'),
+            color: getNeutralThemeValue('components.cardComponents.footer.text')
+          }}
+        >
           <div className="text-xs" style={{ color: getNeutralThemeValue('colors.text.tertiary') }}>
             Your feedback helps us improve our offerings
           </div>

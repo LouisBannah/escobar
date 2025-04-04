@@ -22,7 +22,7 @@ const lightBase = {
       primary: '#10b981', // Emerald for Converge logo
       secondary: '#14b8a6', // Teal for accents
       badge: '#10b981',
-      avatar: '#5eead4'
+      avatar: '#e6f7f1'  // Softer pale teal background
     },
     // Theme-specific colors that remain consistent regardless of active theme
     themeSpecific: {
@@ -184,7 +184,7 @@ const salesLight = {
     
     // Base card
     baseCard: {
-      background: '#ffffff',
+      background: 'rgba(255, 255, 255, 0.85)',
       border: '#e5e7eb',
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
@@ -439,7 +439,7 @@ const deliveryLight = {
     
     // Base card (blue themed)
     baseCard: {
-      background: '#ffffff',
+      background: 'rgba(255, 255, 255, 0.85)',
       border: '#e5e7eb',
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
@@ -694,7 +694,7 @@ const qaLight = {
     
     // Base card (purple themed)
     baseCard: {
-      background: '#ffffff',
+      background: 'rgba(255, 255, 255, 0.85)',
       border: '#e5e7eb',
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
@@ -937,7 +937,7 @@ const neutralLight = {
     
     // Base card (neutral themed)
     baseCard: {
-      background: '#ffffff',
+      background: 'rgba(255, 255, 255, 0.85)',
       border: '#e5e7eb',
       shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',

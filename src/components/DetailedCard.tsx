@@ -296,7 +296,13 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
         </div>
         
         {/* Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 p-4 flex justify-between items-center text-xs text-gray-500 h-[56px]">
+        <div className="border-t p-4 flex justify-between items-center text-xs h-[56px]"
+          style={{ 
+            background: getThemeValue('components.cardComponents.footer.bg'),
+            borderColor: getThemeValue('components.cardComponents.footer.border'),
+            color: getThemeValue('components.cardComponents.footer.text')
+          }}
+        >
           <div>
             Last updated: <span className="font-medium">{new Date(item.lastUpdated).toLocaleDateString('en-AU', { 
               day: '2-digit', 
@@ -304,8 +310,13 @@ const DetailedCard: React.FC<DetailedCardProps> = ({ item, onClose, onRequestAcc
               year: 'numeric' 
             })}</span>
           </div>
-          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-            bg-white shadow-sm border border-gray-200 text-gray-700">
+          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium shadow-sm border"
+            style={{
+              background: getThemeValue('components.cardComponents.footer.versionBg'),
+              borderColor: getThemeValue('components.cardComponents.footer.versionBorder'),
+              color: getThemeValue('components.cardComponents.footer.versionText')
+            }}
+          >
             Version {item.version}
           </div>
         </div>
